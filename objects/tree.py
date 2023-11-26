@@ -32,7 +32,6 @@ class Tree:
             self.draw_tree(new_pos, angle + self.branch_angle[1], length, depth - 1)
 
     def draw(self):
-        self.canvas.delete('all')
         self.draw_tree(self.pos, self.trunk_angle, self.trunk_length, self.max_recursion_depth)
 
     def increase_trunk_length(self):
