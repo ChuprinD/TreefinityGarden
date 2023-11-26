@@ -21,7 +21,7 @@ class Garden:
     def draw_day_counter(self):
         if self.day_label is not None:
             self.day_label.destroy()
-            
+
         self.day_label = Label(self.canvas, text="Day:   " + str(self.day_counter), font=32)
         self.day_label.place(x=self.canvas.winfo_reqwidth() - self.day_label.winfo_reqwidth() - 30, y=10)
 

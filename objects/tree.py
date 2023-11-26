@@ -36,12 +36,9 @@ class Tree:
 
     def increase_trunk_length(self):
         self.trunk_length += 10
-        self.draw()
 
     def increase_max_recursion_depth(self):
         self.max_recursion_depth += 1
-        self.draw()
 
     def change_branch_angle(self):
         self.branch_angle = (self.branch_angle[0] + 10, self.branch_angle[1] - 5)
-        self.draw()
