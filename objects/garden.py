@@ -1,5 +1,6 @@
 from tkinter import *
 
+
 class Garden:
     def __init__(self, canvas):
         self.canvas = canvas
@@ -15,8 +16,6 @@ class Garden:
         self.season_label = None
 
         self.index_cur_tree = 0
-
-
 
     def draw_day_counter(self):
         if self.day_label is not None:

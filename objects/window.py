@@ -1,5 +1,6 @@
 from tkinter import *
 
+
 class Window:
     def __init__ (self, root, title="New windwo", size=[1920, 1080], buttons=[], path_background_img="", canvases=[]):
         self.root = root

@@ -1,7 +1,7 @@
 from tkinter import *
 from objects.tree import Tree
 from objects.window import Window
-from objects.game import Garden
+from objects.garden import Garden
 
 
 def start_game():
