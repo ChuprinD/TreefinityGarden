@@ -17,9 +17,9 @@ def draw_tree(canvas, x1, y1, angle, length, depth):
 
         #canvas.create_line(x1, y1, x2, y2, fill='chocolate', width=((depth - 1) * (4 - 1)) / (max_depth - 1) + 1)
 
-        color = blend_colors((34, 139, 34), (139, 69, 19), depth / max_depth)
+        #color = blend_colors((34, 139, 34), (139, 69, 19), depth / max_depth)
         #color = blend_colors((254, 141, 198), (254, 209, 199), depth / max_depth)
-        #color = blend_colors((255, 0, 212), (0, 221, 255), depth / max_depth)
+        color = blend_colors((255, 0, 212), (0, 221, 255), depth / max_depth)
         canvas.create_line(x1, y1, x2, y2, fill=color, width=((depth - 1) * (4 - 1)) / (max_depth - 1) + 1)
 
         angle1 = angle + d_angle1

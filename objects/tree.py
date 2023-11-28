@@ -1,9 +1,11 @@
 import math
+from utilities.color import default_coloring
+from utilities.math import linear_interpolation
 
 
 class Tree:
     def __init__(self, canvas, pos, trunk_length, trunk_angle, branch_angle, branch_length_coefficient,
-                 max_recursion_depth, min_branch_thickness, max_branch_thickness):
+                 max_recursion_depth, min_branch_thickness, max_branch_thickness, color_function=default_coloring):
         self.canvas = canvas
         self.pos = pos
         self.trunk_length = trunk_length
@@ -13,6 +15,7 @@ class Tree:
         self.max_recursion_depth = max_recursion_depth
         self.min_branch_thickness = min_branch_thickness
         self.max_branch_thickness = max_branch_thickness
+        self.color_function = color_function
 
     def draw_tree(self, pos, angle, length, depth):
         if depth:
@@ -23,8 +26,8 @@ class Tree:
                                     # here I use linear interpolation so that the thickness of the branches depends
                                     # on the depth of the recursion. [min_recursion_depth, min_branch_thickness] and
                                     # [min_recursion_depth, max_branch_thickness], min_recursion_depth = 1
-                                    width=((depth - 1) * (self.max_branch_thickness - self.min_branch_thickness)) / (
-                                                self.max_recursion_depth - 1) + 1)
+                                    width=linear_interpolation(depth, 1, self.min_branch_thickness, self.max_recursion_depth, self.max_branch_thickness),
+                                    fill=self.color_function(depth, self.max_recursion_depth))
 
             length *= self.branch_length_coefficient
 
@@ -42,3 +45,5 @@ class Tree:
 
     def change_branch_angle(self):
         self.branch_angle = (self.branch_angle[0] + 10, self.branch_angle[1] - 5)
+
+
