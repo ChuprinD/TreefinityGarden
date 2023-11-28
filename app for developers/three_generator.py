@@ -1,97 +1,81 @@
-import tkinter as tk
-import colorsys
-import math
+from tkinter import *
+from objects.tree import Tree
+from objects.window import Window
+from objects.garden import Garden
+from utilities.color import *
 
 
-def draw_tree(canvas, x1, y1, angle, length, depth):
-    global d_length, d_angle1, d_angle2, max_depth
-    if depth:
-        x2 = x1 + int(math.cos(math.radians(angle)) * length)
-        y2 = y1 - int(math.sin(math.radians(angle)) * length)
 
-        '''hue = (depth / max_depth) * 360
-        rgb_color = colorsys.hsv_to_rgb(hue / 360, 1.0, 1.0)
-        hex_color = '#%02x%02x%02x' % (int(rgb_color[0] * 255), int(rgb_color[1] * 255), int(rgb_color[2] * 255))
+def create_slider(parent, update_callback, minimum, maximum, pos, initial_value, label_text, ratio=1):
+    label = Label(parent, text=label_text)
+    label.place(x=pos[0] - label.winfo_reqwidth(), y=pos[1])
 
-        canvas.create_line(x1, y1, x2, y2, fill=hex_color, width=((depth - 1) * (4 - 1)) / (max_depth - 1) + 1)'''
+    slider = Scale(parent, from_=minimum, to=maximum, orient="horizontal", command=update_callback,
+                   variable=DoubleVar(value=initial_value), resolution=ratio, length=300)
+    slider.place(x=pos[0], y=pos[1])
+    return slider
 
-        #canvas.create_line(x1, y1, x2, y2, fill='chocolate', width=((depth - 1) * (4 - 1)) / (max_depth - 1) + 1)
+def update_trunk_length(value):
+    tree.trunk_length = int(value)
+    garden.draw()
 
-        #color = blend_colors((34, 139, 34), (139, 69, 19), depth / max_depth)
-        #color = blend_colors((254, 141, 198), (254, 209, 199), depth / max_depth)
-        color = blend_colors((255, 0, 212), (0, 221, 255), depth / max_depth)
-        canvas.create_line(x1, y1, x2, y2, fill=color, width=((depth - 1) * (4 - 1)) / (max_depth - 1) + 1)
+def update_branch_length_coefficient(value):
+    tree.branch_length_coefficient = float(value)
+    garden.draw()
 
-        angle1 = angle + d_angle1
-        angle2 = angle - d_angle2
-        length *= d_length
+def update_max_recursion_depth(value):
+    tree.max_recursion_depth = int(value)
+    garden.draw()
 
-        draw_tree(canvas, x2, y2, angle1, length, depth - 1)
-        draw_tree(canvas, x2, y2, angle2, length, depth - 1)
+def update_branch_angle1(value):
+    tree.branch_angle = (int(value), tree.branch_angle[1])
+    garden.draw()
 
+def update_branch_angle2(value):
+    tree.branch_angle = (tree.branch_angle[0], int(value))
+    garden.draw()
 
-def blend_colors(color1, color2, ratio):
-    r = int(color1[0] * (1 - ratio) + color2[0] * ratio)
-    g = int(color1[1] * (1 - ratio) + color2[1] * ratio)
-    b = int(color1[2] * (1 - ratio) + color2[2] * ratio)
-    return f'#{r:02x}{g:02x}{b:02x}'
+root = Tk()
+root.title('DEV APP')
+WIDTH = 1920
+HEIGHT = 1080
 
+window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT],
+                path_background_img='../sprites/window_background.png',
+                canvases=[{'name': 'garden', 'coords': (30, 30, 1350, 1050), 'bg': 'blue',
+                           'bg_picture': '../sprites/garden_background.png'}])
 
-def get_slider_value(*args):
-    global d_angle1, d_angle2, d_length, max_depth
-    canvas.delete('all')
-    d_angle1 = slider_angle1.get()
-    d_angle2 = slider_angle2.get()
-    depth = slider_depth.get()
-    max_depth = depth
-    d_length = slider_length.get()
-    trunk_length = slider_trunk.get()
-    draw_tree(canvas, start_x, start_y, trunk_angle, trunk_length, depth)
+garden = Garden(canvas=window.inner_canvases['garden'])
 
-root = tk.Tk()
-root.title("Fractal tree")
-WIDTH = 800
-HEIGHT = 800
-canvas = tk.Canvas(root, width=WIDTH, height=HEIGHT, bg="white")
+tree = Tree(canvas=window.inner_canvases['garden'],
+            pos=(window.inner_canvases['garden'].winfo_reqwidth() / 2,
+                 window.inner_canvases['garden'].winfo_reqheight() - 30),
+            trunk_length=200, trunk_angle=90, branch_angle=(30, 60), branch_length_coefficient=0.7,
+            max_recursion_depth=7, min_branch_thickness=1,
+            max_branch_thickness=4, color_function=neon_coloring)
 
-start_x, start_y = WIDTH / 2, HEIGHT - 10
-trunk_angle = 90
-max_deph = 0
+slider_trunk_length = create_slider(parent=window.canvas, minimum=0, maximum=400,
+                             update_callback=update_trunk_length, pos=(1550, 30),
+                             label_text='trunk_length', initial_value=tree.trunk_length)
 
-trunk_length = 0
-slider_trunk = tk.Scale(root, from_=0, to=300, command=get_slider_value, orient=tk.HORIZONTAL)
-slider_trunk.pack()
-slider_trunk.place(x=WIDTH - 100, y=210)
-label_trunk = tk.Label(root, text="trunk_length")
-label_trunk.place(x=WIDTH - 170, y=230)
+slider_branch_length_coefficient = create_slider(parent=window.canvas, minimum=0, maximum=1,
+                             update_callback=update_branch_length_coefficient, pos=(1550, 90), ratio=0.005,
+                             label_text='branch_length_coefficient', initial_value=tree.branch_length_coefficient)
 
-d_length = 0.7
-slider_length = tk.Scale(root, from_=0, to=1, command=get_slider_value, resolution=0.005, orient=tk.HORIZONTAL)
-slider_length.pack()
-slider_length.place(x=WIDTH - 100, y=160)
-label_length = tk.Label(root, text="d_length")
-label_length.place(x=WIDTH - 150, y=180)
+slider_max_recursion_depth = create_slider(parent=window.canvas, minimum=2, maximum=15,
+                             update_callback=update_max_recursion_depth, pos=(1550, 150),
+                             label_text='max_recursion_depth', initial_value=tree.max_recursion_depth)
 
-depth = 0
-slider_depth = tk.Scale(root, from_=2, to=15, command=get_slider_value, orient=tk.HORIZONTAL)
-slider_depth.pack()
-slider_depth.place(x=WIDTH - 100, y=110)
-label_depth = tk.Label(root, text="depth")
-label_depth.place(x=WIDTH - 150, y=130)
+slider_branch__angle1 = create_slider(parent=window.canvas, minimum=-90, maximum=90,
+                             update_callback=update_branch_angle1, pos=(1550, 210),
+                             label_text='max_trunk_angle1', initial_value=tree.branch_angle[0])
 
-d_angle1 = 0
-slider_angle1 = tk.Scale(root, from_=-90, to=90, command=get_slider_value, orient=tk.HORIZONTAL)
-slider_angle1.pack()
-slider_angle1.place(x=WIDTH - 100, y=10)
-label_angle1 = tk.Label(root, text="d_angle1")
-label_angle1.place(x=WIDTH - 150, y=30)
+slider_branch__angle2 = create_slider(parent=window.canvas, minimum=-90, maximum=90,
+                             update_callback=update_branch_angle2, pos=(1550, 270),
+                             label_text='max_trunk_angle1', initial_value=tree.branch_angle[1])
 
-d_angle2 = 0
-slider_angle2 = tk.Scale(root, from_=-90, to=90, command=get_slider_value, orient=tk.HORIZONTAL)
-slider_angle2.pack()
-slider_angle2.place(x=WIDTH - 100, y=60)
-label_angle2 = tk.Label(root, text="d_angle2")
-label_angle2.place(x=WIDTH - 150, y=80)
+garden.add_tree(tree)
+garden.draw()
 
-canvas.pack()
+window.canvas.pack()
 root.mainloop()
