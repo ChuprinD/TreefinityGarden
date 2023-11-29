@@ -1,11 +1,11 @@
 import math
-from utilities.color import default_coloring
+from utilities.color import get_coloring_by_name
 from utilities.math import linear_interpolation
 
 
 class Tree:
     def __init__(self, canvas, pos, trunk_length, trunk_angle, branch_angle, branch_length_coefficient,
-                 max_recursion_depth, min_branch_thickness, max_branch_thickness, color_function=default_coloring):
+                 max_recursion_depth, min_branch_thickness, max_branch_thickness, color_function_name='default_coloring'):
         self.canvas = canvas
         self.pos = pos
         self.trunk_length = trunk_length
@@ -15,7 +15,7 @@ class Tree:
         self.max_recursion_depth = max_recursion_depth
         self.min_branch_thickness = min_branch_thickness
         self.max_branch_thickness = max_branch_thickness
-        self.color_function = color_function
+        self.color_function_name = color_function_name
 
     def draw_tree(self, pos, angle, length, depth):
         if depth:
@@ -27,7 +27,7 @@ class Tree:
                                     # on the depth of the recursion. [min_recursion_depth, min_branch_thickness] and
                                     # [min_recursion_depth, max_branch_thickness], min_recursion_depth = 1
                                     width=linear_interpolation(depth, 1, self.min_branch_thickness, self.max_recursion_depth, self.max_branch_thickness),
-                                    fill=self.color_function(depth, self.max_recursion_depth))
+                                    fill=get_coloring_by_name(self.color_function_name)(depth, self.max_recursion_depth))
 
             length *= self.branch_length_coefficient
 

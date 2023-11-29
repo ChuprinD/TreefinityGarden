@@ -25,3 +25,9 @@ def neon_coloring(depth, max_depth):
     hot_magenta = (255, 0, 212)
     deep_sky_blue = (0, 221, 255)
     return blend_colors(deep_sky_blue, hot_magenta, depth / max_depth)
+
+
+def get_coloring_by_name(name):
+    colorings = {'natural_coloring': natural_coloring, 'pink_coloring': pink_coloring,
+                 'neon_coloring': neon_coloring, 'default_coloring': default_coloring}
+    return colorings[name]

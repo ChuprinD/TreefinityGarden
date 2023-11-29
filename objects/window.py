@@ -15,7 +15,7 @@ class Window:
 
         self.buttons = []
         for button in buttons:
-            self.buttons.append(Button(self.canvas, text=button['text'], command=button['command'], ))
+            self.buttons.append(Button(self.canvas, text=button['text'], command=button['command']))
             self.buttons[-1].place(x=button['x'], y=button['y'], width=button['width'], height=button['height'])
 
         self.inner_canvases = {}
