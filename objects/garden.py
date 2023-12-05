@@ -1,11 +1,17 @@
 from tkinter import *
-
+from objects.tree import Tree
+import random
 
 class Garden:
     def __init__(self, canvas):
         self.canvas = canvas
 
+        self.canvas.bind("<Motion>", self.draw_hit_box)
+        self.canvas.bind("<Button-1>", self.choose_tree)
+
         self.trees = []
+        self.trees_pos = [(640, 600), (160, 570), (320, 585), (960, 585), (1120, 570)]
+        self.max_number_trees = 5
 
         self.day_counter = 0
         self.day_label = None
@@ -32,7 +38,16 @@ class Garden:
         self.season_label.place(x=self.canvas.winfo_reqwidth() / 2 - self.season_label.winfo_reqwidth(), y=10)
 
     def add_tree(self, tree):
-        self.trees.append(tree)
+        if len(self.trees) < self.max_number_trees:
+            self.trees.append(tree)
+        self.draw()
+        self.next_day()
+
+    def add_random_tree(self):
+        if len(self.trees) < self.max_number_trees:
+            tree = Tree(canvas=self.canvas, pos=self.trees_pos[len(self.trees)])
+            tree.load_tree_from_json('tree' + str(random.randint(1, 5)))
+            self.add_tree(tree)
 
     def draw(self):
         self.clean_garden()
@@ -44,6 +59,9 @@ class Garden:
     def action(self, command):
         # only one manipulation with a tree in one day
         command(self.trees[self.index_cur_tree])
+        self.next_day()
+
+    def next_day(self):
         self.day_counter += 1
         if self.day_counter % self.days_in_season == 0:
             self.cur_season = (self.cur_season + 1) % len(self.seasons)
@@ -60,3 +78,21 @@ class Garden:
                     self.canvas.delete(item)
         else:
             self.canvas.delete('all')
+
+    def draw_hit_box(self, event):
+        mouse_pos = (self.canvas.winfo_pointerx() - self.canvas.winfo_rootx(),
+                     self.canvas.winfo_pointery() - self.canvas.winfo_rooty())
+        for i, tree in enumerate(self.trees):
+            if tree.check_overlapping_hix_box(mouse_pos[0], mouse_pos[1]):
+                self.canvas.create_rectangle(tree.hit_box[0], tree.hit_box[1], tree.hit_box[2],
+                                             tree.hit_box[3], width=2, tags='tree_' + str(i))
+            else:
+                self.canvas.delete('tree_' + str(i))
+
+    def choose_tree(self, event):
+        mouse_pos = (self.canvas.winfo_pointerx() - self.canvas.winfo_rootx(),
+                     self.canvas.winfo_pointery() - self.canvas.winfo_rooty())
+
+        for i, tree in enumerate(self.trees):
+            if tree.check_overlapping_hix_box(mouse_pos[0], mouse_pos[1]):
+                self.index_cur_tree = i

@@ -5,7 +5,7 @@ from objects.window import Window
 from objects.garden import Garden
 
 
-def create_slider(parent, update_callback, minimum, maximum, pos, initial_value, label_text, ratio=1):
+def create_slider(parent, update_callback, minimum, maximum, pos, initial_value, label_text, ratio=1) -> Scale:
     label = Label(parent, text=label_text)
     label.place(x=pos[0] - label.winfo_reqwidth(), y=pos[1])
 
@@ -56,26 +56,15 @@ def create_file(window, name):
 
 
 def load_file(window, name):
-    with open('../trees/' + name + '.json', "r") as json_file:
-        loaded_data = json.load(json_file)
 
-    tree.trunk_length = loaded_data['trunk_length']
+    tree.load_tree_from_json(name)
+
     slider_trunk_length.set(tree.trunk_length)
-
-    tree.branch_length_coefficient = loaded_data['branch_length_coefficient']
     slider_branch_length_coefficient.set(tree.branch_length_coefficient)
-
-    tree.max_recursion_depth = loaded_data['max_recursion_depth']
     slider_max_recursion_depth.set(tree.max_recursion_depth)
-
-    tree.branch_angle = loaded_data['branch_angle']
     slider_branch_angle1.set(tree.branch_angle[0])
     slider_branch_angle2.set(tree.branch_angle[1])
-
-    tree.max_branch_thickness = loaded_data['max_branch_thickness']
     slider_max_branch_thickness.set(tree.max_branch_thickness)
-
-    tree.color_function_name = loaded_data['color_function_name']
 
     close_window(window)
 

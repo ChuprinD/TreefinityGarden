@@ -2,21 +2,28 @@ from tkinter import *
 
 
 class Window:
-    def __init__(self, root, title='New window', size=(1920, 1080), buttons=[], path_background_img="", canvases=[]):
+    def __init__(self, root, title='New window', size=(1920, 1080), buttons=[], path_background_img='', canvases=[]):
         self.root = root
         self.root.title(title)
 
         self.size = size
 
         self.canvas = Canvas(self.root, width=size[0], height=size[1])
-        if path_background_img:
-            self.img = PhotoImage(file=path_background_img)
-            self.canvas.create_image(0, 0, anchor='nw', image=self.img)
 
+        if path_background_img:
+            self.background_img = PhotoImage(file=path_background_img)
+            self.canvas.create_image(0, 0, anchor='nw', image=self.background_img)
+
+        self.buttons_img = []
         self.buttons = []
         for button in buttons:
-            self.buttons.append(Button(self.canvas, text=button['text'], command=button['command']))
-            self.buttons[-1].place(x=button['x'], y=button['y'], width=button['width'], height=button['height'])
+            self.buttons_img.append(PhotoImage(file=button['path_img']))
+
+            self.buttons.append(Button(self.canvas, command=button['command'], image=self.buttons_img[-1],
+                                       width=self.buttons_img[-1].width(), height=self.buttons_img[-1].height(),
+                                       anchor='nw'))
+            self.buttons[-1].place(x=button['x'] - self.buttons_img[-1].width() / 2,
+                                   y=button['y'] - self.buttons_img[-1].height() / 2)
 
         self.inner_canvases = {}
         self.inner_canvases_picture = {}
