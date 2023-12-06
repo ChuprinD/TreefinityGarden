@@ -1,7 +1,7 @@
 import math
-import json
 from utilities.color import get_coloring_by_name
 from utilities.math import linear_interpolation
+from utilities.json import get_data_from_file
 
 
 class Tree:
@@ -51,8 +51,7 @@ class Tree:
         self.branch_angle = (self.branch_angle[0] + 10, self.branch_angle[1] - 5)
 
     def load_tree_from_json(self, file_name):
-        with open('../trees/' + file_name + '.json', "r") as json_file:
-            loaded_data = json.load(json_file)
+        loaded_data = get_data_from_file('../trees/' + file_name + '.txt')
 
         self.trunk_length = loaded_data['trunk_length']
         self.branch_length_coefficient = loaded_data['branch_length_coefficient']
@@ -75,5 +74,3 @@ class Tree:
                         self.pos[1] - self.trunk_length - 4,
                         self.pos[0] + self.max_branch_thickness / 2 + 4,
                         self.pos[1] + 4)
-
-

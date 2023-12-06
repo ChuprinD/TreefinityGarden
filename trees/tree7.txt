@@ -1,0 +1,6 @@
+trunk_length: 181
+branch_length_coefficient: 0.725
+max_recursion_depth: 11
+branch_angle: (13, 42)
+max_branch_thickness: 20
+color_function_name: neon_coloring

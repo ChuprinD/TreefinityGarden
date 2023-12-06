@@ -18,7 +18,6 @@ class Window:
         self.buttons = []
         for button in buttons:
             self.buttons_img.append(PhotoImage(file=button['path_img']))
-
             self.buttons.append(Button(self.canvas, command=button['command'], image=self.buttons_img[-1],
                                        width=self.buttons_img[-1].width(), height=self.buttons_img[-1].height(),
                                        anchor='nw'))

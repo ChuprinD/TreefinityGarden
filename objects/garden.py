@@ -2,12 +2,13 @@ from tkinter import *
 from objects.tree import Tree
 import random
 
+
 class Garden:
     def __init__(self, canvas):
         self.canvas = canvas
 
-        self.canvas.bind("<Motion>", self.draw_hit_box)
-        self.canvas.bind("<Button-1>", self.choose_tree)
+        self.canvas.bind('<Motion>', self.draw_hit_box)
+        self.canvas.bind('<Button-1>', self.choose_tree)
 
         self.trees = []
         self.trees_pos = [(640, 600), (160, 570), (320, 585), (960, 585), (1120, 570)]
@@ -46,7 +47,7 @@ class Garden:
     def add_random_tree(self):
         if len(self.trees) < self.max_number_trees:
             tree = Tree(canvas=self.canvas, pos=self.trees_pos[len(self.trees)])
-            tree.load_tree_from_json('tree' + str(random.randint(1, 5)))
+            tree.load_tree_from_json('tree' + str(random.randint(1, 7)))
             self.add_tree(tree)
 
     def draw(self):
