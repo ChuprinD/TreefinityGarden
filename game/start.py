@@ -29,14 +29,12 @@ def start_game():
 
     garden = Garden(canvas=window.inner_canvases['garden'])
 
-    tree = Tree(canvas=window.inner_canvases['garden'], pos=(window.inner_canvases['garden'].winfo_reqwidth() / 2,
-                                                             window.inner_canvases[
-                                                                 'garden'].winfo_reqheight() - HEIGHT / 64),
+    tree = Tree(canvas=window.inner_canvases['garden'], pos=(0, 0),
                 trunk_length=150, trunk_angle=90, branch_angle=(30, 60), branch_length_coefficient=0.7,
                 max_recursion_depth=6, min_branch_thickness=1,
                 max_branch_thickness=4, color_function_name='natural_coloring')
 
-    garden.add_tree(tree)
+    garden.set_tree_on_position(tree, 2)
     garden.draw()
 
     window.canvas.pack()

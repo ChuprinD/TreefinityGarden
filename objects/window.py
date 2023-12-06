@@ -8,7 +8,7 @@ class Window:
 
         self.size = size
 
-        self.canvas = Canvas(self.root, width=size[0], height=size[1])
+        self.canvas = Canvas(self.root, width=size[0], height=size[1], bg='green')
 
         if path_background_img:
             self.background_img = PhotoImage(file=path_background_img)

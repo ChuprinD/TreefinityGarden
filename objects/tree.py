@@ -5,7 +5,7 @@ from utilities.json import get_data_from_file
 
 
 class Tree:
-    def __init__(self, canvas, pos, trunk_length=150, trunk_angle=90, branch_angle=(30, 30), branch_length_coefficient=0.7,
+    def __init__(self, canvas, pos=(0, 0), trunk_length=150, trunk_angle=90, branch_angle=(30, 30), branch_length_coefficient=0.7,
                  max_recursion_depth=7, min_branch_thickness=1, max_branch_thickness=4, color_function_name='default_coloring'):
         self.canvas = canvas
         self.pos = pos

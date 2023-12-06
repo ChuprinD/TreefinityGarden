@@ -116,28 +116,33 @@ def load_tree(root):
     button_create.place(x=WIDTH / 9, y=HEIGHT * 2 / 9, width=WIDTH / 9, height=HEIGHT / 22)
 
 
+def change_tree_position():
+    position = int(cur_tree_pos.get())
+    tree.pos = garden.trees_pos[position]
+    garden.draw()
+
+
 root = Tk()
 root.title('DEV APP')
 WIDTH = 1280
 HEIGHT = 720
 
-window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT],
+window = Window(root, title='Treefinity Garden', size=[WIDTH + WIDTH // 3, HEIGHT],
                 path_background_img='./sprites/window_background.png',
                 canvases=[{'name': 'garden',
-                           'coords': (WIDTH / 64, HEIGHT / 64, WIDTH / 64 + WIDTH * 2 / 3, HEIGHT - HEIGHT / 64),
+                           'coords': (WIDTH / 64, WIDTH / 64, WIDTH - WIDTH / 64, HEIGHT - HEIGHT / 8),
                            'bg': 'blue',
                            'bg_picture': './sprites/garden_background.png'}])
 
 garden = Garden(canvas=window.inner_canvases['garden'])
 
 tree = Tree(canvas=window.inner_canvases['garden'],
-            pos=(window.inner_canvases['garden'].winfo_reqwidth() / 2,
-                 window.inner_canvases['garden'].winfo_reqheight() - HEIGHT / 64),
+            pos=(0, 0),
             trunk_length=150, trunk_angle=90, branch_angle=(30, 60), branch_length_coefficient=0.7,
             max_recursion_depth=7, min_branch_thickness=1,
             max_branch_thickness=4, color_function_name='natural_coloring')
 
-slider_pos_x = WIDTH / 64 * 2 + WIDTH * 2 / 3 + WIDTH * 55 / 384 - WIDTH * 3 / 64
+slider_pos_x = WIDTH + WIDTH // 8
 
 slider_trunk_length = create_slider(parent=window.canvas, minimum=0, maximum=400,
                                     update_callback=update_trunk_length, pos=(slider_pos_x, HEIGHT / 64),
@@ -175,14 +180,31 @@ label_combobox_color = Label(window.canvas, text='combobox_color')
 label_combobox_color.place(x=slider_pos_x - label_combobox_color.winfo_reqwidth(), y=HEIGHT / 64 + 360)
 
 save_button = Button(window.canvas, text='save tree', command=lambda: enter_tree_name(root))
-save_button.place(x=WIDTH - WIDTH / 64 - WIDTH * 13 / 64, y=HEIGHT - HEIGHT / 64 - HEIGHT / 17, width=WIDTH * 5 / 32,
+save_button.place(x=WIDTH + WIDTH // 8, y=HEIGHT - HEIGHT / 64 - HEIGHT / 17, width=WIDTH * 5 / 32,
                   height=HEIGHT / 17)
 
 load_button = Button(window.canvas, text='load tree', command=lambda: load_tree(root))
-load_button.place(x=WIDTH - WIDTH / 64 - WIDTH * 13 / 64, y=HEIGHT - HEIGHT * 2 / 64 - HEIGHT * 2 / 17,
+load_button.place(x=WIDTH + WIDTH // 8, y=HEIGHT - HEIGHT * 2 / 64 - HEIGHT * 2 / 17,
                   width=WIDTH * 5 / 32, height=HEIGHT / 17)
 
-garden.add_tree(tree)
+cur_tree_pos = IntVar()
+r_position_0 = Radiobutton(root, text='Position 0', variable=cur_tree_pos, value=0, command=change_tree_position)
+r_position_0.place(x= WIDTH + WIDTH // 8, y=HEIGHT / 64 + 420)
+
+r_position_1 = Radiobutton(root, text='Position 1', variable=cur_tree_pos, value=1, command=change_tree_position)
+r_position_1.place(x= WIDTH + WIDTH // 8, y=HEIGHT / 64 + 450)
+
+r_position_2 = Radiobutton(root, text='Position 2', variable=cur_tree_pos, value=2, command=change_tree_position)
+r_position_2.select()
+r_position_2.place(x= WIDTH + WIDTH // 8, y=HEIGHT / 64 + 480)
+
+r_position_3 = Radiobutton(root, text='Position 3', variable=cur_tree_pos, value=3, command=change_tree_position)
+r_position_3.place(x= WIDTH + WIDTH // 8, y=HEIGHT / 64 + 510)
+
+r_position_4 = Radiobutton(root, text='Position 4', variable=cur_tree_pos, value=4, command=change_tree_position)
+r_position_4.place(x= WIDTH + WIDTH // 8, y=HEIGHT / 64 + 540)
+
+garden.set_tree_on_position(tree, 2)
 garden.draw()
 
 window.canvas.pack()
