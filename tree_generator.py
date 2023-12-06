@@ -11,7 +11,7 @@ def create_slider(parent, update_callback, minimum, maximum, pos, initial_value,
     label = Label(parent, text=label_text)
     label.place(x=pos[0] - label.winfo_reqwidth(), y=pos[1])
 
-    slider = Scale(parent, from_=minimum, to=maximum, orient="horizontal", command=update_callback,
+    slider = Scale(parent, from_=minimum, to=maximum, orient='horizontal', command=update_callback,
                    variable=DoubleVar(value=initial_value), resolution=ratio, length=WIDTH * 5 / 32)
 
     slider.place(x=pos[0], y=pos[1])
@@ -58,7 +58,8 @@ def create_file(window, name):
                 'max_recursion_depth': tree.max_recursion_depth, 'branch_angle': tree.branch_angle,
                 'max_branch_thickness': tree.max_branch_thickness, 'color_function_name': tree.color_function_name}
 
-    set_data_to_file(cur_tree, '../trees/' + name + '.txt')
+    set_data_to_file(cur_tree, './trees/' + name + '.txt')
+
     close_window(window)
 
 
@@ -71,6 +72,7 @@ def load_file(window, name):
     slider_branch_angle1.set(tree.branch_angle[0])
     slider_branch_angle2.set(tree.branch_angle[1])
     slider_max_branch_thickness.set(tree.max_branch_thickness)
+    combobox_color.set(tree.color_function_name)
 
     close_window(window)
 
@@ -82,27 +84,35 @@ def close_window(window):
 def enter_tree_name(root):
     enter_window = Toplevel(root)
     enter_window.title('Save tree')
-    enter_window.geometry(f'{WIDTH // 3}x{HEIGHT // 3}+{WIDTH // 3}+{HEIGHT // 3}')
 
-    entry = Entry(enter_window, font=("Arial", 12))
+    x_coordinate = (root.winfo_screenwidth() - WIDTH // 3) // 2
+    y_coordinate = (root.winfo_screenheight() - HEIGHT // 3) // 2
+
+    enter_window.geometry(f'{WIDTH // 3}x{HEIGHT // 3}+{x_coordinate}+{y_coordinate}')
+
+    entry = Entry(enter_window, font=('Arial', 12))
     entry.place(x=WIDTH / 18, y=HEIGHT / 9, width=WIDTH * 2 / 9, height=HEIGHT / 25)
 
-    button_create = Button(enter_window, text="Save tree", command=lambda: create_file(enter_window, entry.get()))
+    button_create = Button(enter_window, text='Save tree', command=lambda: create_file(enter_window, entry.get()))
     button_create.place(x=WIDTH / 9, y=HEIGHT * 2 / 9, width=WIDTH / 9, height=HEIGHT / 22)
 
-    button_close = Button(enter_window, text="Close", command=lambda: close_window(enter_window))
+    button_close = Button(enter_window, text='Close', command=lambda: close_window(enter_window))
     button_close.place(x=WIDTH / 9, y=HEIGHT * 2 / 9 + HEIGHT / 22 + 10, width=WIDTH / 9, height=HEIGHT / 22)
 
 
 def load_tree(root):
     enter_window = Toplevel(root)
     enter_window.title('Load tree')
-    enter_window.geometry(f'{WIDTH // 3}x{HEIGHT // 3}+{WIDTH // 3}+{HEIGHT // 3}')
 
-    entry = Entry(enter_window, font=("Arial", 12))
+    x_coordinate = (root.winfo_screenwidth() - WIDTH // 3) // 2
+    y_coordinate = (root.winfo_screenheight() - HEIGHT // 3) // 2
+
+    enter_window.geometry(f'{WIDTH // 3}x{HEIGHT // 3}+{x_coordinate}+{y_coordinate}')
+
+    entry = Entry(enter_window, font=('Arial', 12))
     entry.place(x=WIDTH / 18, y=HEIGHT / 9, width=WIDTH * 2 / 9, height=HEIGHT / 25)
 
-    button_create = Button(enter_window, text="Load tree", command=lambda: load_file(enter_window, entry.get()))
+    button_create = Button(enter_window, text='Load tree', command=lambda: load_file(enter_window, entry.get()))
     button_create.place(x=WIDTH / 9, y=HEIGHT * 2 / 9, width=WIDTH / 9, height=HEIGHT / 22)
 
 
@@ -112,11 +122,11 @@ WIDTH = 1280
 HEIGHT = 720
 
 window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT],
-                path_background_img='../sprites/window_background.png',
+                path_background_img='./sprites/window_background.png',
                 canvases=[{'name': 'garden',
                            'coords': (WIDTH / 64, HEIGHT / 64, WIDTH / 64 + WIDTH * 2 / 3, HEIGHT - HEIGHT / 64),
                            'bg': 'blue',
-                           'bg_picture': '../sprites/garden_background.png'}])
+                           'bg_picture': './sprites/garden_background.png'}])
 
 garden = Garden(canvas=window.inner_canvases['garden'])
 
@@ -160,7 +170,7 @@ slider_max_branch_thickness = create_slider(parent=window.canvas, minimum=1, max
 combobox_color = ttk.Combobox(window.canvas, values=list(COLORINGS.keys()))
 combobox_color.set(tree.color_function_name)
 combobox_color.place(x=slider_pos_x, y=HEIGHT / 64 + 360)
-combobox_color.bind("<<ComboboxSelected>>", update_color_function_name)
+combobox_color.bind('<<ComboboxSelected>>', update_color_function_name)
 label_combobox_color = Label(window.canvas, text='combobox_color')
 label_combobox_color.place(x=slider_pos_x - label_combobox_color.winfo_reqwidth(), y=HEIGHT / 64 + 360)
 

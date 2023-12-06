@@ -44,3 +44,14 @@ class Window:
                 inner_canvas.create_image(0, 0, anchor='nw', image=self.inner_canvases_picture[name], tags='bg')
 
             self.inner_canvases.update({name: inner_canvas})
+
+            self.center_window()
+
+    def center_window(self):
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+
+        x_coordinate = (screen_width - self.size[0]) // 2
+        y_coordinate = (screen_height - self.size[1]) // 2
+
+        self.root.geometry(f"{self.size[0]}x{self.size[1]}+{x_coordinate}+{y_coordinate}")

@@ -18,6 +18,7 @@ class Tree:
         self.max_branch_thickness = max_branch_thickness
         self.color_function_name = color_function_name
         self.hit_box = ()
+
         self.update_hit_box()
 
     def draw_tree(self, pos, angle, length, depth):
@@ -51,7 +52,7 @@ class Tree:
         self.branch_angle = (self.branch_angle[0] + 10, self.branch_angle[1] - 5)
 
     def load_tree_from_json(self, file_name):
-        loaded_data = get_data_from_file('../trees/' + file_name + '.txt')
+        loaded_data = get_data_from_file('./trees/' + file_name + '.txt')
 
         self.trunk_length = loaded_data['trunk_length']
         self.branch_length_coefficient = loaded_data['branch_length_coefficient']
