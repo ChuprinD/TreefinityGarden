@@ -13,7 +13,7 @@ At the moment we have two applications in one.<br/>
 The first one starts the game itself (you need to run the file main.py).<br/>
 The second one is made for developers so that they can create different trees and save them for future use (you need to start a file tree_generator.py) 
 
-## Authors
+## Сo-Authors
 
 - [@Cecilia](https://github.com/Cecilpill)
 - [@Hamza](https://github.com/hamzarehan68)

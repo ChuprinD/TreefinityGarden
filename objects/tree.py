@@ -39,7 +39,7 @@ class Tree:
             self.draw_tree(new_pos, angle + self.branch_angle[1], length, depth - 1)
 
     def draw(self):
-        self.draw_tree(self.pos, self.trunk_angle, self.trunk_length, self.max_recursion_depth)
+        self.draw_tree(self.get_tree_coordinates(), self.trunk_angle, self.trunk_length, self.max_recursion_depth)
 
     def increase_trunk_length(self):
         self.trunk_length += 10
@@ -71,7 +71,11 @@ class Tree:
         return False
 
     def update_hit_box(self):
-        self.hit_box = (self.pos[0] - self.max_branch_thickness / 2 - 4,
-                        self.pos[1] - self.trunk_length - 4,
-                        self.pos[0] + self.max_branch_thickness / 2 + 4,
-                        self.pos[1] + 4)
+        coords_tree = self.get_tree_coordinates()
+        self.hit_box = (coords_tree[0] - self.max_branch_thickness / 2 - 4,
+                        coords_tree[1] - self.trunk_length - 4,
+                        coords_tree[0] + self.max_branch_thickness / 2 + 4,
+                        coords_tree[1] + 4)
+
+    def get_tree_coordinates(self):
+        return (self.pos[0] * self.canvas.winfo_reqwidth(), self.pos[1] * self.canvas.winfo_reqheight())

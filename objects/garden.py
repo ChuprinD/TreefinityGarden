@@ -11,7 +11,7 @@ class Garden:
         self.canvas.bind('<Button-1>', self.choose_tree)
 
 
-        self.trees_pos = [(160, 570), (320, 585), (640, 600), (960, 585), (1120, 570)]
+        self.trees_pos = [(1/6, 57/63), (2/6, 59/63), (3/6, 61/63), (4/6, 59/63), (5/6, 57/63)]
         self.max_number_trees = 5
         self.trees = [None] * 5
 
@@ -43,6 +43,7 @@ class Garden:
         position = self.get_first_free_position()
         if position != -1:
             tree.pos = self.trees_pos[position]
+            tree.update_hit_box()
             self.trees[position] = tree
         self.draw()
         self.next_day()
@@ -55,6 +56,7 @@ class Garden:
     def set_tree_on_position(self, tree, positon):
         if self.trees[positon] is None:
             tree.pos = self.trees_pos[positon]
+            tree.update_hit_box()
             self.trees[positon] = tree
             self.draw()
 
@@ -93,18 +95,19 @@ class Garden:
         mouse_pos = (self.canvas.winfo_pointerx() - self.canvas.winfo_rootx(),
                      self.canvas.winfo_pointery() - self.canvas.winfo_rooty())
         for i, tree in enumerate(self.trees):
-            if tree is not None and tree.check_overlapping_hix_box(mouse_pos[0], mouse_pos[1]):
-                self.canvas.create_rectangle(tree.hit_box[0], tree.hit_box[1], tree.hit_box[2],
+            if tree is not None:
+                if tree.check_overlapping_hix_box(mouse_pos[0], mouse_pos[1]):
+                    self.canvas.create_rectangle(tree.hit_box[0], tree.hit_box[1], tree.hit_box[2],
                                              tree.hit_box[3], width=2, tags='tree_' + str(i))
-            else:
-                self.canvas.delete('tree_' + str(i))
+                else:
+                    self.canvas.delete('tree_' + str(i))
 
     def choose_tree(self, event):
         mouse_pos = (self.canvas.winfo_pointerx() - self.canvas.winfo_rootx(),
                      self.canvas.winfo_pointery() - self.canvas.winfo_rooty())
 
         for i, tree in enumerate(self.trees):
-            if tree.check_overlapping_hix_box(mouse_pos[0], mouse_pos[1]):
+            if tree is not None and tree.check_overlapping_hix_box(mouse_pos[0], mouse_pos[1]):
                 self.index_cur_tree = i
 
     def get_first_free_position(self) -> int:
