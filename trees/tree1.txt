@@ -1,4 +1,4 @@
-trunk_length: 150
+trunk_length: 100
 branch_length_coefficient: 0.63
 max_recursion_depth: 7
 branch_angle: (46, 60)

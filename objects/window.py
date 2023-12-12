@@ -45,7 +45,7 @@ class Window:
 
             self.inner_canvases.update({name: inner_canvas})
 
-            self.center_window()
+        self.center_window()
 
     def center_window(self):
         screen_width = self.root.winfo_screenwidth()

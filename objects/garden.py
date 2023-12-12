@@ -1,6 +1,8 @@
-from tkinter import *
-from objects.tree import Tree
 import random
+from tkinter import *
+from tkinter import messagebox
+
+from objects.tree import Tree
 
 
 class Garden:
@@ -10,8 +12,7 @@ class Garden:
         self.canvas.bind('<Motion>', self.draw_hit_box)
         self.canvas.bind('<Button-1>', self.choose_tree)
 
-
-        self.trees_pos = [(1/6, 57/63), (2/6, 59/63), (3/6, 61/63), (4/6, 59/63), (5/6, 57/63)]
+        self.trees_pos = [(1 / 6, 57 / 63), (2 / 6, 59 / 63), (3 / 6, 61 / 63), (4 / 6, 59 / 63), (5 / 6, 57 / 63)]
         self.max_number_trees = 5
         self.trees = [None] * 5
 
@@ -22,6 +23,7 @@ class Garden:
         self.days_in_season = 5
         self.seasons = ['Summer', 'Autumn', 'Winter', 'Spring']
         self.season_label = None
+        self.season_background = None
 
         self.index_cur_tree = 2
 
@@ -36,17 +38,29 @@ class Garden:
         if self.season_label is not None:
             self.season_label.destroy()
 
-        self.season_label = Label(self.canvas, text=str(self.seasons[self.cur_season]), font=32)
+        if self.cur_season == 0:
+            self.season_background = PhotoImage(file='./sprites/summer_background.png')
+        elif self.cur_season == 1:
+            self.season_background = PhotoImage(file='./sprites/autumn_background.png')
+        elif self.cur_season == 2:
+            self.season_background = PhotoImage(file='./sprites/winter_background.png')
+        elif self.cur_season == 3:
+            self.season_background = PhotoImage(file='./sprites/spring_background.png')
+
+        self.canvas.create_image(0, 0, anchor='nw', image=self.season_background, tags='bg')
+
+        self.season_label = Label(self.canvas, text=self.seasons[self.cur_season], font=32)
         self.season_label.place(x=self.canvas.winfo_reqwidth() / 2 - self.season_label.winfo_reqwidth(), y=10)
 
     def add_tree(self, tree):
         position = self.get_first_free_position()
         if position != -1:
             tree.pos = self.trees_pos[position]
-            tree.update_hit_box()
             self.trees[position] = tree
+            self.next_day()
+        else:
+            messagebox.showinfo("Warning", "Max amount of trees was reached")
         self.draw()
-        self.next_day()
 
     def add_random_tree(self):
         tree = Tree(canvas=self.canvas)
@@ -56,22 +70,21 @@ class Garden:
     def set_tree_on_position(self, tree, positon):
         if self.trees[positon] is None:
             tree.pos = self.trees_pos[positon]
-            tree.update_hit_box()
             self.trees[positon] = tree
             self.draw()
 
     def draw(self):
         self.clean_garden()
+        self.draw_season()
+        self.draw_day_counter()
         for tree in self.trees:
             if tree is not None:
                 tree.draw()
-        self.draw_day_counter()
-        self.draw_season()
 
     def action(self, command):
         # only one manipulation with a tree in one day
-        command(self.trees[self.index_cur_tree])
-        self.next_day()
+        if command(self.trees[self.index_cur_tree]):
+            self.next_day()
 
     def next_day(self):
         self.day_counter += 1
@@ -97,8 +110,9 @@ class Garden:
         for i, tree in enumerate(self.trees):
             if tree is not None:
                 if tree.check_overlapping_hix_box(mouse_pos[0], mouse_pos[1]):
-                    self.canvas.create_rectangle(tree.hit_box[0], tree.hit_box[1], tree.hit_box[2],
-                                             tree.hit_box[3], width=2, tags='tree_' + str(i))
+                    self.canvas.create_rectangle(tree.trunk_hit_box[0][0], tree.trunk_hit_box[0][1],
+                                                 tree.trunk_hit_box[1][0],
+                                                 tree.trunk_hit_box[1][1], width=2, tags='tree_' + str(i))
                 else:
                     self.canvas.delete('tree_' + str(i))
 
