@@ -60,22 +60,19 @@ def create_file(window, name):
 
     set_data_to_file(cur_tree, './trees/' + name + '.txt')
 
-    close_window(window)
+    window.destroy()
 
 
 def load_file(window, name):
     tree.load_tree_from_json(name)
     garden.draw()
 
-    close_window(window)
-
-
-def close_window(window):
     window.destroy()
 
 
 def enter_tree_name(root):
     enter_window = Toplevel(root)
+    enter_window.resizable(False, False)
     enter_window.title('Save tree')
 
     x_coordinate = (root.winfo_screenwidth() - WIDTH // 3) // 2
@@ -89,12 +86,10 @@ def enter_tree_name(root):
     button_create = Button(enter_window, text='Save tree', command=lambda: create_file(enter_window, entry.get()))
     button_create.place(x=WIDTH / 9, y=HEIGHT * 2 / 9, width=WIDTH / 9, height=HEIGHT / 22)
 
-    button_close = Button(enter_window, text='Close', command=lambda: close_window(enter_window))
-    button_close.place(x=WIDTH / 9, y=HEIGHT * 2 / 9 + HEIGHT / 22 + 10, width=WIDTH / 9, height=HEIGHT / 22)
-
 
 def load_tree(root):
     enter_window = Toplevel(root)
+    enter_window.resizable(False, False)
     enter_window.title('Load tree')
 
     x_coordinate = (root.winfo_screenwidth() - WIDTH // 3) // 2
@@ -121,6 +116,7 @@ def change_season(season):
 
 def open_tool_window():
     tool_window = Toplevel(root)
+    tool_window.resizable(False, False)
     tool_window.title('Tool Window')
     x_coordinate = (root.winfo_screenwidth() - WIDTH // 2) // 2
     y_coordinate = (root.winfo_screenheight() - HEIGHT // 2) // 2
@@ -128,7 +124,7 @@ def open_tool_window():
     tool_window.geometry(f'{WIDTH // 3 + 30}x{HEIGHT // 2}+{x_coordinate}+{y_coordinate}')
 
     slider_pos = (10, 0)
-    slider_trunk_length = create_slider(parent=tool_window, minimum=0, maximum=400,
+    slider_trunk_length = create_slider(parent=tool_window, minimum=0, maximum=300,
                                         update_callback=update_trunk_length, pos=(slider_pos[0], slider_pos[1]),
                                         label_text='trunk_length', initial_value=tree.trunk_length)
 
@@ -229,16 +225,17 @@ def open_tool_window():
 
 root = Tk()
 root.resizable(False, False)
+root.iconbitmap('./sprites/icon.ico')
 root.title('DEV APP')
 WIDTH = 1280
 HEIGHT = 720
 
 window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT],
-                path_background_img='./sprites/window_background.png',
+                path_background_img='./sprites/backgrounds/window_background.png',
                 canvases=[{'name': 'garden',
                            'coords': (WIDTH / 64, WIDTH / 64, WIDTH - WIDTH / 64, HEIGHT - HEIGHT / 8),
                            'bg': 'blue',
-                           'bg_picture': './sprites/garden_background.png'}])
+                           'bg_picture': './sprites/backgrounds/summer_background.png'}])
 
 garden = Garden(canvas=window.inner_canvases['garden'])
 
@@ -260,7 +257,7 @@ load_button = Button(window.canvas, text='load tree', command=lambda: load_tree(
 load_button.place(x=buttons_pos[0] - WIDTH * 5 / 64 + 320, y=buttons_pos[1], width=WIDTH * 5 / 32, height=HEIGHT / 17)
 load_button.config(font=("Arial", 14))
 
-open_tool_window_button = Button(window.canvas, text='open tool window', command=open_tool_window)
+open_tool_window_button = Button(window.canvas, text='open tool window', command=lambda: open_tool_window())
 open_tool_window_button.place(x=buttons_pos[0] - WIDTH * 5 / 64 + 640, y=buttons_pos[1], width=WIDTH * 5 / 32, height=HEIGHT / 17)
 open_tool_window_button.config(font=("Arial", 14))
 

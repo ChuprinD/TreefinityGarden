@@ -1,6 +1,6 @@
 trunk_length: 100
 branch_length_coefficient: 0.645
-max_recursion_depth: 12
+max_recursion_depth: 2
 branch_angle: (90, 90)
 max_branch_thickness: 7
 color_function_name: default_coloring

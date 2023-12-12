@@ -4,6 +4,7 @@ from tkinter import *
 class Window:
     def __init__(self, root, title='New window', size=(1280, 720), buttons=[], path_background_img='', canvases=[]):
         self.root = root
+        self.root.resizable(False, False)
         self.root.title(title)
 
         self.size = size
@@ -17,12 +18,20 @@ class Window:
         self.buttons_img = []
         self.buttons = []
         for button in buttons:
-            self.buttons_img.append(PhotoImage(file=button['path_img']))
-            self.buttons.append(Button(self.canvas, command=button['command'], image=self.buttons_img[-1],
-                                       width=self.buttons_img[-1].width(), height=self.buttons_img[-1].height(),
-                                       anchor='nw'))
-            self.buttons[-1].place(x=button['x'] - self.buttons_img[-1].width() / 2,
-                                   y=button['y'] - self.buttons_img[-1].height() / 2)
+            if 'path_img' in button:
+                self.buttons_img.append(PhotoImage(file=button['path_img']))
+                self.buttons.append(Button(self.canvas, command=button['command'], image=self.buttons_img[-1],
+                                           width=self.buttons_img[-1].width(), height=self.buttons_img[-1].height(),
+                                           anchor='nw'))
+                self.buttons[-1].place(x=button['x'] - self.buttons_img[-1].width() / 2,
+                                       y=button['y'] - self.buttons_img[-1].height() / 2)
+            else:
+                self.buttons.append(Button(self.canvas, command=button['command'], text=button['text'], font=button['font'],
+                                           width=15))
+                self.buttons[-1].place(x=button['x'] - self.buttons[-1].winfo_reqwidth() / 2,
+                                       y=button['y'] - self.buttons[-1].winfo_reqheight() / 2)
+
+
 
         self.inner_canvases = {}
         self.inner_canvases_picture = {}

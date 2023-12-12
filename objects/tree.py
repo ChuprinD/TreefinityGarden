@@ -36,7 +36,7 @@ class Tree:
                                         # here I use linear interpolation so that the thickness of the branches depends
                                         # on the depth of the recursion. [min_recursion_depth, min_branch_thickness] and
                                         # [min_recursion_depth, max_branch_thickness], min_recursion_depth = 1
-                                        width=linear_interpolation(depth, 1, self.min_branch_thickness,
+                                        width=linear_interpolation(depth, 1, max(self.min_branch_thickness, self.max_branch_thickness - self.max_recursion_depth),
                                                                    self.max_recursion_depth, self.max_branch_thickness),
                                         fill=get_coloring_by_name(self.color_function_name)(depth,
                                                                                             self.max_recursion_depth))

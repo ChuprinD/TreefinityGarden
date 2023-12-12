@@ -39,13 +39,13 @@ class Garden:
             self.season_label.destroy()
 
         if self.cur_season == 0:
-            self.season_background = PhotoImage(file='./sprites/summer_background.png')
+            self.season_background = PhotoImage(file='./sprites/backgrounds/summer_background.png')
         elif self.cur_season == 1:
-            self.season_background = PhotoImage(file='./sprites/autumn_background.png')
+            self.season_background = PhotoImage(file='./sprites/backgrounds/autumn_background.png')
         elif self.cur_season == 2:
-            self.season_background = PhotoImage(file='./sprites/winter_background.png')
+            self.season_background = PhotoImage(file='./sprites/backgrounds/winter_background.png')
         elif self.cur_season == 3:
-            self.season_background = PhotoImage(file='./sprites/spring_background.png')
+            self.season_background = PhotoImage(file='./sprites/backgrounds/spring_background.png')
 
         self.canvas.create_image(0, 0, anchor='nw', image=self.season_background, tags='bg')
 
