@@ -1,0 +1,6 @@
+trunk_length: 100
+branch_length_coefficient: 0.7
+max_recursion_depth: 2
+branch_angle: (-49, -26)
+max_branch_thickness: 9
+color_function_name: pink_coloring

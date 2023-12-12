@@ -3,6 +3,7 @@ from tkinter import *
 from objects.tree import Tree
 from objects.window import Window
 from objects.garden import Garden
+from game.select_tree import open_window_of_select_tree
 
 
 def close_game(root):
@@ -19,8 +20,10 @@ def run_game():
 
     WIDTH = 1280
     HEIGHT = 720
+    x_coordinate = (root.winfo_screenwidth() - WIDTH) // 2
+    y_coordinate = (root.winfo_screenheight() - HEIGHT) // 2
 
-    root.geometry(str(WIDTH) + 'x' + str(HEIGHT))
+    root.geometry(f'{WIDTH}x{HEIGHT}+{x_coordinate}+{y_coordinate}')
 
     buttons = [{'x': WIDTH / 5, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/sun_button.png',
                 'command': lambda: garden.action(Tree.increase_trunk_length)},
@@ -30,7 +33,7 @@ def run_game():
                {'x': WIDTH / 5 * 3, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/water_button.png',
                 'command': lambda: garden.action(Tree.change_branch_angle)},
                {'x': WIDTH / 5 * 4, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/plant_button.png',
-                'command': lambda: garden.add_random_tree()}]
+                'command': lambda: open_window_of_select_tree(root, garden)}]
 
     window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT],
                     path_background_img='./sprites/backgrounds/window_background.png', buttons=buttons,

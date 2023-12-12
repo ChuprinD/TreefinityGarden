@@ -64,3 +64,13 @@ class Window:
         y_coordinate = (screen_height - self.size[1]) // 2
 
         self.root.geometry(f"{self.size[0]}x{self.size[1]}+{x_coordinate}+{y_coordinate}")
+
+    def check_mouse_on_inner_canvas(self):
+        mouse_pos = (self.canvas.winfo_pointerx() - self.canvas.winfo_rootx(),
+                     self.canvas.winfo_pointery() - self.canvas.winfo_rooty())
+
+        for name, inner_canvas in self.inner_canvases.items():
+            if (0 <= mouse_pos[0] <= inner_canvas.winfo_reqwidth() and
+                    0 <= mouse_pos[1] <= inner_canvas.winfo_reqheight()):
+                return name
+        return 'None'

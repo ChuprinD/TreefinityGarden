@@ -74,10 +74,10 @@ def enter_tree_name(root):
     enter_window = Toplevel(root)
     enter_window.resizable(False, False)
     enter_window.title('Save tree')
+    enter_window.iconbitmap('./sprites/icon.ico')
 
     x_coordinate = (root.winfo_screenwidth() - WIDTH // 3) // 2
     y_coordinate = (root.winfo_screenheight() - HEIGHT // 3) // 2
-
     enter_window.geometry(f'{WIDTH // 3}x{HEIGHT // 3}+{x_coordinate}+{y_coordinate}')
 
     entry = Entry(enter_window, font=('Arial', 12))
@@ -91,10 +91,10 @@ def load_tree(root):
     enter_window = Toplevel(root)
     enter_window.resizable(False, False)
     enter_window.title('Load tree')
+    enter_window.iconbitmap('./sprites/icon.ico')
 
     x_coordinate = (root.winfo_screenwidth() - WIDTH // 3) // 2
     y_coordinate = (root.winfo_screenheight() - HEIGHT // 3) // 2
-
     enter_window.geometry(f'{WIDTH // 3}x{HEIGHT // 3}+{x_coordinate}+{y_coordinate}')
 
     entry = Entry(enter_window, font=('Arial', 12))
@@ -118,9 +118,10 @@ def open_tool_window():
     tool_window = Toplevel(root)
     tool_window.resizable(False, False)
     tool_window.title('Tool Window')
+    tool_window.iconbitmap('./sprites/icon.ico')
+
     x_coordinate = (root.winfo_screenwidth() - WIDTH // 2) // 2
     y_coordinate = (root.winfo_screenheight() - HEIGHT // 2) // 2
-
     tool_window.geometry(f'{WIDTH // 3 + 30}x{HEIGHT // 2}+{x_coordinate}+{y_coordinate}')
 
     slider_pos = (10, 0)

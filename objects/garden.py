@@ -62,9 +62,9 @@ class Garden:
             messagebox.showinfo("Warning", "Max amount of trees was reached")
         self.draw()
 
-    def add_random_tree(self):
+    def add_tree_from_file(self, file_name):
         tree = Tree(canvas=self.canvas)
-        tree.load_tree_from_json('tree' + str(random.randint(1, 8)))
+        tree.load_tree_from_json(file_name)
         self.add_tree(tree)
 
     def set_tree_on_position(self, tree, positon):

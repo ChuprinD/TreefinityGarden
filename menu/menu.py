@@ -15,6 +15,9 @@ def run_menu():
 
     WIDTH = 420
     HEIGHT = 720
+    x_coordinate = (root.winfo_screenwidth() - WIDTH) // 2
+    y_coordinate = (root.winfo_screenheight() - HEIGHT) // 2
+    root.geometry(f'{WIDTH // 3 + 30}x{HEIGHT // 2}+{x_coordinate}+{y_coordinate}')
 
     buttons = [{'x': WIDTH / 2, 'y': HEIGHT * 2 / 5, 'text': 'Start', 'font': ('Arial', 20, 'bold'),
                 'command': lambda: close_menu_run_game(root)},
