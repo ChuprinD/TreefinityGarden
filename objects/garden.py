@@ -25,7 +25,7 @@ class Garden:
         self.season_label = None
         self.season_background = None
 
-        self.index_cur_tree = 2
+        self.index_cur_tree = -1
 
     def draw_day_counter(self):
         if self.day_label is not None:
@@ -73,6 +73,19 @@ class Garden:
             self.trees[positon] = tree
             self.draw()
 
+    def delete_tree(self):
+        if self.index_cur_tree == -1:
+            if self.trees.count(None) != self.max_number_trees:
+                messagebox.showinfo("Warning", "Please choose a tree")
+            else:
+                messagebox.showinfo("Warning", "The garden is empty")
+        else:
+            self.trees[self.index_cur_tree] = None
+            self.index_cur_tree = -1
+            self.draw()
+
+        self.next_day()
+
     def draw(self):
         self.clean_garden()
         self.draw_season()
@@ -83,8 +96,13 @@ class Garden:
 
     def action(self, command):
         # only one manipulation with a tree in one day
-        if command(self.trees[self.index_cur_tree]):
-            self.next_day()
+        if self.index_cur_tree != -1:
+            if command(self.trees[self.index_cur_tree]):
+                self.next_day()
+        elif self.trees.count(None) != self.max_number_trees:
+            messagebox.showinfo("Warning", "Please choose a tree")
+        else:
+            messagebox.showinfo("Warning", "The garden is empty")
 
     def next_day(self):
         self.day_counter += 1

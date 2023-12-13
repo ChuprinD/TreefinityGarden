@@ -19,11 +19,13 @@ def run_menu():
     y_coordinate = (root.winfo_screenheight() - HEIGHT) // 2
     root.geometry(f'{WIDTH // 3 + 30}x{HEIGHT // 2}+{x_coordinate}+{y_coordinate}')
 
-    buttons = [{'x': WIDTH / 2, 'y': HEIGHT * 2 / 5, 'text': 'Start', 'font': ('Arial', 20, 'bold'),
+    #buttons = [{'x': WIDTH / 2, 'y': HEIGHT * 2 / 5, 'text': 'Start', 'font': ('Arial', 20, 'bold'),
+    #            'command': lambda: close_menu_run_game(root)},
+    buttons = [{'x': WIDTH / 2, 'y': HEIGHT * 2 / 5, 'path_img': './sprites/buttons/start_button.png',
                 'command': lambda: close_menu_run_game(root)},
-               {'x': WIDTH / 2, 'y': HEIGHT * 2 / 5 + HEIGHT / 10, 'text': 'Skins', 'font': ('Arial', 20, 'bold'),
+               {'x': WIDTH / 2, 'y': HEIGHT * 2 / 5 + HEIGHT / 10, 'path_img': './sprites/buttons/skins_button.png',
                 'command': lambda: print('lol')},
-               {'x': WIDTH / 2, 'y': HEIGHT * 2 / 5 + HEIGHT / 5, 'text': 'Achievements', 'font': ('Arial', 20, 'bold'),
+               {'x': WIDTH / 2, 'y': HEIGHT * 2 / 5 + HEIGHT / 5, 'path_img': './sprites/buttons/achievements_button.png',
                 'command': lambda: print('kek')}]
 
     window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT],

@@ -20,7 +20,7 @@ class Window:
         for button in buttons:
             if 'path_img' in button:
                 self.buttons_img.append(PhotoImage(file=button['path_img']))
-                self.buttons.append(Button(self.canvas, command=button['command'], image=self.buttons_img[-1],
+                self.buttons.append(Button(self.canvas, image=self.buttons_img[-1], command=button['command'],
                                            width=self.buttons_img[-1].width(), height=self.buttons_img[-1].height(),
                                            anchor='nw'))
                 self.buttons[-1].place(x=button['x'] - self.buttons_img[-1].width() / 2,
