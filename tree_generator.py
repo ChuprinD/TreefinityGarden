@@ -107,6 +107,7 @@ def load_tree(root):
 def change_tree_position(pos):
     position = int(pos)
     tree.pos = garden.trees_pos[position]
+    garden.trees[garden.index_cur_tree], garden.trees[pos] = garden.trees[pos], garden.trees[garden.index_cur_tree]
     garden.index_cur_tree = pos
     garden.draw()
 
@@ -247,6 +248,7 @@ tree = Tree(canvas=window.inner_canvases['garden'],
             max_branch_thickness=4, color_function_name='natural_coloring')
 
 garden.set_tree_on_position(tree, 2)
+garden.index_cur_tree = 2
 garden.draw()
 
 buttons_pos = (320, 666)

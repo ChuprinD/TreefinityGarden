@@ -19,27 +19,28 @@ def set_tree_canvases(gap_size, picture_tree_size):
     return canvases
 
 
-def draw_all_trees(window, garden):
+def draw_all_trees(window, player):
     for i, (name, canvas) in enumerate(window.inner_canvases.items()):
-        tree = Tree(canvas, pos=(1 / 2, 61 / 63))
-        tree.load_tree_from_json('tree' + str(i + 1))
-        tree.trunk_length = 45
-        tree.max_recursion_depth = 7
-        tree.max_branch_thickness = 5
-        tree.draw()
+        if player.skins[str(i + 1)][0]:
+            tree = Tree(canvas, pos=(1 / 2, 61 / 63))
+            tree.load_tree_from_json('tree' + str(i + 1))
+            tree.trunk_length = 45
+            tree.max_recursion_depth = 7
+            tree.max_branch_thickness = 5
+            tree.draw()
 
-        canvas.bind('<Button-1>', lambda event, cur_name=name, cur_garden=garden, root=window.root: choose_tree(cur_name, cur_garden, root))
+            canvas.bind('<Button-1>', lambda event, cur_name=name, cur_player=player, root=window.root: choose_tree(cur_name, player, root))
 
 
-def choose_tree(cur_name, cur_garden, root):
-    cur_garden.add_tree_from_file(cur_name)
+def choose_tree(cur_name, cur_player, root):
+    if cur_player.garden.get_first_free_position() == -1:
+        messagebox.showinfo("Warning", "Max amount of trees was reached")
+        return
+    cur_player.garden.add_tree_from_file(cur_name)
     root.destroy()
 
 
-def open_window_of_select_tree(root, garden):
-    if garden.get_first_free_position() == -1:
-        messagebox.showinfo("Warning", "Max amount of trees was reached")
-        return
+def open_window_of_select_tree(root, player):
 
     select_tree_window = Toplevel(root)
     select_tree_window.resizable(False, False)
@@ -56,4 +57,4 @@ def open_window_of_select_tree(root, garden):
                     path_background_img='./sprites/backgrounds/window_background.png',
                     canvases=set_tree_canvases(gap_size=30, picture_tree_size=160))
 
-    draw_all_trees(window, garden)
+    draw_all_trees(window, player)

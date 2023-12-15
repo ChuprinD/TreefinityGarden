@@ -24,7 +24,7 @@ class Tree:
         self.color_function_name = color_function_name
         self.gap_between_tree_hit_box = 4
         self.trunk_hit_box = []
-        self.hit_box = []
+        self.hit_box = [[self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight()], [0, 0]]
 
     def generate_tree(self, pos, angle, length, depth, to_draw):
         if depth:
@@ -120,8 +120,9 @@ class Tree:
     def check_tree_visibility(self):
         self.generate_tree(pos=self.get_tree_coordinates(), angle=self.trunk_angle, length=self.trunk_length,
                            depth=self.max_recursion_depth, to_draw=False)
+
         if (0 <= self.hit_box[0][0] and self.hit_box[1][0] <= self.canvas.winfo_reqwidth() and
-                0 <= self.hit_box[0][1] and self.hit_box[1][1] <= self.canvas.winfo_reqheight()):
+            self.canvas.winfo_reqheight() // 6 <= self.hit_box[0][1] and self.hit_box[1][1] <= self.canvas.winfo_reqheight()):
             return True
 
         messagebox.showinfo("Warning", "Tree is bigger than screen")

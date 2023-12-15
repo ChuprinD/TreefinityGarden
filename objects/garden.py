@@ -1,6 +1,8 @@
 import random
+import math
 from tkinter import *
 from tkinter import messagebox
+
 
 from objects.tree import Tree
 
@@ -15,6 +17,8 @@ class Garden:
         self.trees_pos = [(1 / 6, 57 / 63), (2 / 6, 59 / 63), (3 / 6, 61 / 63), (4 / 6, 59 / 63), (5 / 6, 57 / 63)]
         self.max_number_trees = 5
         self.trees = [None] * 5
+        self.number_felled_trees = 0
+        self.number_planted_trees = 0
 
         self.day_counter = 0
         self.day_label = None
@@ -32,7 +36,7 @@ class Garden:
             self.day_label.destroy()
 
         self.day_label = Label(self.canvas, text='Day:   ' + str(self.day_counter), font=32)
-        self.day_label.place(x=self.canvas.winfo_reqwidth() - self.day_label.winfo_reqwidth() - 30, y=10)
+        self.day_label.place(x=self.canvas.winfo_reqwidth() - self.day_label.winfo_reqwidth() - 20, y=10)
 
     def draw_season(self):
         if self.season_label is not None:
@@ -50,13 +54,14 @@ class Garden:
         self.canvas.create_image(0, 0, anchor='nw', image=self.season_background, tags='bg')
 
         self.season_label = Label(self.canvas, text=self.seasons[self.cur_season], font=32)
-        self.season_label.place(x=self.canvas.winfo_reqwidth() / 2 - self.season_label.winfo_reqwidth(), y=10)
+        self.season_label.place(x=15, y=10)
 
     def add_tree(self, tree):
         position = self.get_first_free_position()
         if position != -1:
             tree.pos = self.trees_pos[position]
             self.trees[position] = tree
+            self.number_planted_trees += 1
             self.next_day()
         else:
             messagebox.showinfo("Warning", "Max amount of trees was reached")
@@ -71,6 +76,7 @@ class Garden:
         if self.trees[positon] is None:
             tree.pos = self.trees_pos[positon]
             self.trees[positon] = tree
+            self.number_planted_trees += 1
             self.draw()
 
     def delete_tree(self):
@@ -82,6 +88,7 @@ class Garden:
         else:
             self.trees[self.index_cur_tree] = None
             self.index_cur_tree = -1
+            self.number_felled_trees += 1
             self.draw()
 
         self.next_day()
@@ -93,6 +100,7 @@ class Garden:
         for tree in self.trees:
             if tree is not None:
                 tree.draw()
+        self.draw_arrow_over_selected_tree()
 
     def action(self, command):
         # only one manipulation with a tree in one day
@@ -141,9 +149,23 @@ class Garden:
         for i, tree in enumerate(self.trees):
             if tree is not None and tree.check_overlapping_hix_box(mouse_pos[0], mouse_pos[1]):
                 self.index_cur_tree = i
+                self.draw()
 
     def get_first_free_position(self) -> int:
         for pos in range(self.max_number_trees):
             if self.trees[pos] is None:
                 return pos
         return -1
+
+    def draw_arrow_over_selected_tree(self):
+        if self.index_cur_tree != -1:
+            arrow_x = self.trees[self.index_cur_tree].get_tree_coordinates()[0]
+            arrow_y = self.canvas.winfo_reqheight() // 6
+            arrow_angle = 30
+            side_lines_length = 30
+
+            self.canvas.create_line(arrow_x, arrow_y, arrow_x, 20, width=5, fill='red')
+            self.canvas.create_line(arrow_x, arrow_y,
+                                    arrow_x + int(math.sin(math.radians(arrow_angle)) * side_lines_length), arrow_y - int(math.cos(math.radians(arrow_angle)) * side_lines_length), width=5, fill='red')
+            self.canvas.create_line(arrow_x, arrow_y,
+                                    arrow_x - int(math.sin(math.radians(arrow_angle)) * side_lines_length), arrow_y - int(math.cos(math.radians(arrow_angle)) * side_lines_length), width=5, fill='red')
