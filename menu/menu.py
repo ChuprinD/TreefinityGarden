@@ -2,6 +2,7 @@ from tkinter import *
 
 from game.game import run_game
 from objects.window import Window
+from utilities.json import set_player_default_file
 
 
 def close_menu_run_game(root):
@@ -19,14 +20,14 @@ def run_menu():
     y_coordinate = (root.winfo_screenheight() - HEIGHT) // 2
     root.geometry(f'{WIDTH // 3 + 30}x{HEIGHT // 2}+{x_coordinate}+{y_coordinate}')
 
-    #buttons = [{'x': WIDTH / 2, 'y': HEIGHT * 2 / 5, 'text': 'Start', 'font': ('Arial', 20, 'bold'),
-    #            'command': lambda: close_menu_run_game(root)},
-    buttons = [{'x': WIDTH / 2, 'y': HEIGHT * 2 / 5, 'path_img': './sprites/buttons/start_button.png',
+    buttons = [{'x': WIDTH // 2, 'y': HEIGHT * 2 // 5, 'path_img': './sprites/buttons/start_button.png',
                 'command': lambda: close_menu_run_game(root)},
-               {'x': WIDTH / 2, 'y': HEIGHT * 2 / 5 + HEIGHT / 10, 'path_img': './sprites/buttons/skins_button.png',
-                'command': lambda: print('lol')},
-               {'x': WIDTH / 2, 'y': HEIGHT * 2 / 5 + HEIGHT / 5, 'path_img': './sprites/buttons/achievements_button.png',
-                'command': lambda: print('kek')}]
+               {'x': WIDTH // 2, 'y': HEIGHT * 2 // 5 + HEIGHT // 10, 'path_img': './sprites/buttons/skins_button.png',
+                'command': lambda: print('qwe')},
+               {'x': WIDTH // 2, 'y': HEIGHT * 2 // 5 + HEIGHT // 5, 'path_img': './sprites/buttons/achievements_button.png',
+                'command': lambda: print('asd')},
+               {'x': WIDTH // 2, 'y': HEIGHT * 2 // 5 + HEIGHT * 3 // 10, 'path_img': './sprites/buttons/reset_button.png',
+                'command': lambda: set_player_default_file('./players/player.txt')}]
 
     window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT],
                     path_background_img='./sprites/backgrounds/window_background.png', buttons=buttons)

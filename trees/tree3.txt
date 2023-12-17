@@ -1,6 +1,5 @@
-trunk_length: 100
+tree
 branch_length_coefficient: 0.645
-max_recursion_depth: 2
 branch_angle: (-7, -57)
 max_branch_thickness: 16
 color_function_name: natural_coloring

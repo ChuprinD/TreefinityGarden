@@ -7,10 +7,8 @@ from utilities.json import get_data_from_file
 
 
 class Tree:
-    def __init__(self, canvas, pos=(0, 0), trunk_length=150, trunk_angle=90, branch_angle=(30, 30),
-                 branch_length_coefficient=0.7,
-                 max_recursion_depth=7, min_branch_thickness=1, max_branch_thickness=4,
-                 color_function_name='default_coloring'):
+    def __init__(self, canvas, pos=(0, 0), trunk_length=150, trunk_angle=90, branch_angle=(30, 30), branch_length_coefficient=0.7,
+                 max_recursion_depth=7, min_branch_thickness=1, max_branch_thickness=4, color_function_name='default_coloring'):
         self.canvas = canvas
         self.pos = pos
         self.trunk_length = trunk_length
@@ -38,8 +36,7 @@ class Tree:
                                         # [min_recursion_depth, max_branch_thickness], min_recursion_depth = 1
                                         width=linear_interpolation(depth, 1, max(self.min_branch_thickness, self.max_branch_thickness - self.max_recursion_depth),
                                                                    self.max_recursion_depth, self.max_branch_thickness),
-                                        fill=get_coloring_by_name(self.color_function_name)(depth,
-                                                                                            self.max_recursion_depth))
+                                        fill=get_coloring_by_name(self.color_function_name)(depth, self.max_recursion_depth))
 
             length *= self.branch_length_coefficient
 
@@ -58,7 +55,7 @@ class Tree:
             self.generate_tree(pos=self.get_tree_coordinates(), angle=self.trunk_angle, length=self.trunk_length,
                                depth=self.max_recursion_depth, to_draw=True)
 
-    def increase_trunk_length(self) -> bool:
+    def increase_trunk_length(self):
         self.trunk_length += 10
         if not self.check_tree_visibility():
             self.trunk_length -= 10
@@ -66,7 +63,7 @@ class Tree:
 
         return True
 
-    def increase_max_recursion_depth(self) -> bool:
+    def increase_max_recursion_depth(self):
         self.max_recursion_depth += 1
         if not self.check_tree_visibility():
             self.max_recursion_depth -= 1
@@ -74,7 +71,7 @@ class Tree:
 
         return True
 
-    def change_branch_angle(self) -> bool:
+    def change_branch_angle(self):
         self.branch_angle = (self.branch_angle[0] + 10, self.branch_angle[1] - 5)
         if not self.check_tree_visibility():
             self.branch_angle = (self.branch_angle[0] - 10, self.branch_angle[1] + 5)
@@ -85,29 +82,30 @@ class Tree:
     def load_tree_from_json(self, file_name):
         loaded_data = get_data_from_file('./trees/' + file_name + '.txt')
 
-        self.trunk_length = loaded_data['trunk_length']
+        self.trunk_length = 100
+        self.max_recursion_depth = 2
         self.branch_length_coefficient = loaded_data['branch_length_coefficient']
         self.max_branch_thickness = loaded_data['max_branch_thickness']
-        self.max_recursion_depth = loaded_data['max_recursion_depth']
         self.branch_angle = loaded_data['branch_angle']
         self.max_branch_thickness = loaded_data['max_branch_thickness']
         self.color_function_name = loaded_data['color_function_name']
 
-    def check_overlapping_hix_box(self, x, y) -> bool:
+
+    def check_overlapping_hix_box(self, x, y):
         if (self.trunk_hit_box[0][0] <= x <= self.trunk_hit_box[1][0] and
                 self.trunk_hit_box[0][1] <= y <= self.trunk_hit_box[1][1]):
             return True
+
         return False
 
     def update_trunk_hit_box(self):
         coords_tree = self.get_tree_coordinates()
 
         if self.max_branch_thickness < self.absolut_max_branch_thickness:
-            self.trunk_hit_box = [
-                [coords_tree[0] - self.absolut_max_branch_thickness / 2 - self.gap_between_tree_hit_box,
-                 coords_tree[1] - self.trunk_length - self.gap_between_tree_hit_box],
-                [coords_tree[0] + self.absolut_max_branch_thickness / 2 + self.gap_between_tree_hit_box,
-                 coords_tree[1] + self.gap_between_tree_hit_box]]
+            self.trunk_hit_box = [[coords_tree[0] - self.absolut_max_branch_thickness / 2 - self.gap_between_tree_hit_box,
+                                   coords_tree[1] - self.trunk_length - self.gap_between_tree_hit_box],
+                                  [coords_tree[0] + self.absolut_max_branch_thickness / 2 + self.gap_between_tree_hit_box,
+                                   coords_tree[1] + self.gap_between_tree_hit_box]]
         else:
             self.trunk_hit_box = [[coords_tree[0] - self.max_branch_thickness / 2 - self.gap_between_tree_hit_box,
                                    coords_tree[1] - self.trunk_length - self.gap_between_tree_hit_box],
@@ -125,5 +123,5 @@ class Tree:
             self.canvas.winfo_reqheight() // 6 <= self.hit_box[0][1] and self.hit_box[1][1] <= self.canvas.winfo_reqheight()):
             return True
 
-        messagebox.showinfo("Warning", "Tree is bigger than screen")
+        messagebox.showwarning('Warning', 'Tree is too big')
         return False

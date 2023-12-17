@@ -1,0 +1,8 @@
+player
+name: Bob
+skins: [1, 1, 1, 0, 0, 0, 0, 0, 0]
+garden
+day_counter: 0
+cur_season: 0
+number_planted_trees: 0
+number_felled_trees: 0

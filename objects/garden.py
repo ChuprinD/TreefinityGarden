@@ -1,8 +1,6 @@
-import random
 import math
 from tkinter import *
 from tkinter import messagebox
-
 
 from objects.tree import Tree
 
@@ -16,7 +14,7 @@ class Garden:
 
         self.trees_pos = [(1 / 6, 57 / 63), (2 / 6, 59 / 63), (3 / 6, 61 / 63), (4 / 6, 59 / 63), (5 / 6, 57 / 63)]
         self.max_number_trees = 5
-        self.trees = [None] * 5
+        self.trees = [None] * self.max_number_trees
         self.number_felled_trees = 0
         self.number_planted_trees = 0
 
@@ -64,7 +62,8 @@ class Garden:
             self.number_planted_trees += 1
             self.next_day()
         else:
-            messagebox.showinfo("Warning", "Max amount of trees was reached")
+            messagebox.showwarning('Warning', 'Max amount of trees was reached')
+
         self.draw()
 
     def add_tree_from_file(self, file_name):
@@ -82,9 +81,9 @@ class Garden:
     def delete_tree(self):
         if self.index_cur_tree == -1:
             if self.trees.count(None) != self.max_number_trees:
-                messagebox.showinfo("Warning", "Please choose a tree")
+                messagebox.showwarning('Warning', 'Please choose a tree')
             else:
-                messagebox.showinfo("Warning", "The garden is empty")
+                messagebox.showwarning('Warning', 'The garden is empty')
         else:
             self.trees[self.index_cur_tree] = None
             self.index_cur_tree = -1
@@ -100,6 +99,7 @@ class Garden:
         for tree in self.trees:
             if tree is not None:
                 tree.draw()
+
         self.draw_arrow_over_selected_tree()
 
     def action(self, command):
@@ -108,9 +108,9 @@ class Garden:
             if command(self.trees[self.index_cur_tree]):
                 self.next_day()
         elif self.trees.count(None) != self.max_number_trees:
-            messagebox.showinfo("Warning", "Please choose a tree")
+            messagebox.showwarning('Warning', 'Please choose a tree')
         else:
-            messagebox.showinfo("Warning", "The garden is empty")
+            messagebox.showwarning('Warning', 'The garden is empty')
 
     def next_day(self):
         self.day_counter += 1
@@ -123,7 +123,6 @@ class Garden:
         background = self.canvas.find_withtag('bg')
         if background:
             background_id = background[0]
-
             for item in self.canvas.find_all():
                 if item != background_id:
                     self.canvas.delete(item)
@@ -133,12 +132,13 @@ class Garden:
     def draw_hit_box(self, event):
         mouse_pos = (self.canvas.winfo_pointerx() - self.canvas.winfo_rootx(),
                      self.canvas.winfo_pointery() - self.canvas.winfo_rooty())
+
         for i, tree in enumerate(self.trees):
             if tree is not None:
                 if tree.check_overlapping_hix_box(mouse_pos[0], mouse_pos[1]):
                     self.canvas.create_rectangle(tree.trunk_hit_box[0][0], tree.trunk_hit_box[0][1],
-                                                 tree.trunk_hit_box[1][0],
-                                                 tree.trunk_hit_box[1][1], width=2, tags='tree_' + str(i))
+                                                 tree.trunk_hit_box[1][0], tree.trunk_hit_box[1][1],
+                                                 width=2, tags='tree_' + str(i))
                 else:
                     self.canvas.delete('tree_' + str(i))
 
@@ -151,7 +151,7 @@ class Garden:
                 self.index_cur_tree = i
                 self.draw()
 
-    def get_first_free_position(self) -> int:
+    def get_first_free_position(self):
         for pos in range(self.max_number_trees):
             if self.trees[pos] is None:
                 return pos
@@ -169,3 +169,4 @@ class Garden:
                                     arrow_x + int(math.sin(math.radians(arrow_angle)) * side_lines_length), arrow_y - int(math.cos(math.radians(arrow_angle)) * side_lines_length), width=5, fill='red')
             self.canvas.create_line(arrow_x, arrow_y,
                                     arrow_x - int(math.sin(math.radians(arrow_angle)) * side_lines_length), arrow_y - int(math.cos(math.radians(arrow_angle)) * side_lines_length), width=5, fill='red')
+

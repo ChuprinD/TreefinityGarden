@@ -1,10 +1,11 @@
 from tkinter import *
 import tkinter.ttk as ttk
+
 from objects.tree import Tree
 from objects.window import Window
 from objects.garden import Garden
 from utilities.color import COLORINGS
-from utilities.json import set_data_to_file
+from utilities.json import set_tree_to_file
 
 
 def create_slider(parent, update_callback, minimum, maximum, pos, initial_value, label_text, ratio=1) -> Scale:
@@ -54,11 +55,10 @@ def update_color_function_name(pos):
 
 
 def create_file(window, name):
-    cur_tree = {'trunk_length': tree.trunk_length, 'branch_length_coefficient': tree.branch_length_coefficient,
-                'max_recursion_depth': tree.max_recursion_depth, 'branch_angle': tree.branch_angle,
+    cur_tree = {'branch_length_coefficient': tree.branch_length_coefficient, 'branch_angle': tree.branch_angle,
                 'max_branch_thickness': tree.max_branch_thickness, 'color_function_name': tree.color_function_name}
 
-    set_data_to_file(cur_tree, './trees/' + name + '.txt')
+    set_tree_to_file(cur_tree, './trees/' + name + '.txt')
 
     window.destroy()
 
