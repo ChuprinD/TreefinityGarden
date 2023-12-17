@@ -69,7 +69,7 @@ class Player:
         call_ids.append(call_id)
 
     def unlock_tree4(self):
-        if self.garden.day_counter == 5:
+        if self.garden.day_counter >= 5:
             return True
         return False
 
@@ -84,16 +84,16 @@ class Player:
         return False
 
     def unlock_tree7(self):
-        if self.garden.number_felled_trees == 5:
+        if self.garden.number_felled_trees >= 5:
             return True
         return False
 
     def unlock_tree8(self):
-        if self.garden.number_planted_trees == 10:
+        if self.garden.number_planted_trees >= 10:
             return True
         return False
 
     def unlock_tree9(self):
-        if self.garden.day_counter == 50:
+        if self.garden.day_counter >= 50:
             return True
         return False

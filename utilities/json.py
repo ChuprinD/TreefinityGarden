@@ -70,6 +70,7 @@ def get_player_from_file(file):
 
     result_dict['player'] = cur_player
 
+
     cur_garden = {}
     while True:
         line = file.readline().strip()

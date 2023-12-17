@@ -33,6 +33,7 @@ def draw_all_trees(window, player, picture_tree_size, lock_image):
         else:
             tree.canvas.create_image(picture_tree_size // 3, picture_tree_size // 3, anchor='nw', image=lock_image)
 
+
 def choose_tree(cur_name, cur_player, root):
     if cur_player.garden.get_first_free_position() == -1:
         messagebox.showwarning('Warning', 'Max amount of trees was reached')
