@@ -1,5 +1,5 @@
 tree
 branch_length_coefficient: 0.645
-branch_angle: (-20, -60)
+branch_angle: [-20, -60]
 max_branch_thickness: 11
-color_function_name: pink_coloring
+color_function_name: gold_coloring

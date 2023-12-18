@@ -111,9 +111,11 @@ def change_tree_position(pos):
     garden.index_cur_tree = pos
     garden.draw()
 
+
 def change_season(season):
     garden.cur_season = season
     garden.draw()
+
 
 def open_tool_window():
     tool_window = Toplevel(root)
@@ -199,19 +201,19 @@ def open_tool_window():
     cur_season = IntVar()
     radiobutton_season = (350, 60)
     r_summer = Radiobutton(tool_window, text='Summer', variable=cur_season, value=0,
-                               command=lambda: change_season(cur_season.get()))
+                           command=lambda: change_season(cur_season.get()))
     r_summer.place(x=radiobutton_season[0], y=radiobutton_season[1])
 
     r_autumn = Radiobutton(tool_window, text='Autumn', variable=cur_season, value=1,
-                               command=lambda: change_season(cur_season.get()))
+                           command=lambda: change_season(cur_season.get()))
     r_autumn.place(x=radiobutton_season[0], y=radiobutton_season[1] + 30)
 
     r_winter = Radiobutton(tool_window, text='Winter', variable=cur_season, value=2,
-                               command=lambda: change_season(cur_season.get()))
+                           command=lambda: change_season(cur_season.get()))
     r_winter.place(x=radiobutton_season[0], y=radiobutton_season[1] + 60)
 
     r_spring = Radiobutton(tool_window, text='Spring', variable=cur_season, value=3,
-                               command=lambda: change_season(cur_season.get()))
+                           command=lambda: change_season(cur_season.get()))
     r_spring.place(x=radiobutton_season[0], y=radiobutton_season[1] + 90)
 
     match garden.cur_season:
@@ -261,9 +263,9 @@ load_button.place(x=buttons_pos[0] - WIDTH * 5 / 64 + 320, y=buttons_pos[1], wid
 load_button.config(font=("Arial", 14))
 
 open_tool_window_button = Button(window.canvas, text='open tool window', command=lambda: open_tool_window())
-open_tool_window_button.place(x=buttons_pos[0] - WIDTH * 5 / 64 + 640, y=buttons_pos[1], width=WIDTH * 5 / 32, height=HEIGHT / 17)
+open_tool_window_button.place(x=buttons_pos[0] - WIDTH * 5 / 64 + 640, y=buttons_pos[1], width=WIDTH * 5 / 32,
+                              height=HEIGHT / 17)
 open_tool_window_button.config(font=("Arial", 14))
-
 
 window.canvas.pack()
 root.mainloop()

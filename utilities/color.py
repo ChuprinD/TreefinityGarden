@@ -27,8 +27,28 @@ def neon_coloring(depth, max_depth):
     return blend_colors(deep_sky_blue, hot_magenta, depth / max_depth)
 
 
+def ukrainian_coloring(depth, max_depth):
+    light_blue = (0, 191, 255)
+    yellow = (255, 186, 0)
+    return blend_colors(light_blue, yellow, depth / max_depth)
+
+
+def red_white_coloring(depth, max_depth):
+    white = (255, 255, 255)
+    cherry_red = (121, 6, 4)
+    return blend_colors(white, cherry_red, depth / max_depth)
+
+
+def gold_coloring(depth, max_depth):
+    tangerine = (217, 163, 0)
+    dandelion = (253, 207, 94)
+    return blend_colors(tangerine, dandelion, depth / max_depth)
+
+
 COLORINGS = {'natural_coloring': natural_coloring, 'pink_coloring': pink_coloring,
-             'neon_coloring': neon_coloring, 'default_coloring': default_coloring}
+             'neon_coloring': neon_coloring, 'default_coloring': default_coloring,
+             'ukrainian_coloring': ukrainian_coloring, 'red_white_coloring': red_white_coloring,
+             'gold_coloring': gold_coloring}
 
 
 def get_coloring_by_name(name):
