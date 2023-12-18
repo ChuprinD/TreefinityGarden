@@ -20,6 +20,14 @@ def run_achievements():
     achievements = [
         "Grew your first tree",
         "Grew your third tree",
+        "Killed your first tree ):",
+        "Killed your third tree ):",
+        "Maxxed out garden!",
+        "Made it through winter!",
+        "Made it to day 365!",
+        "Unlocked all skins!",
+        "Killed all trees ):",
+        "Mystery",
     ]
 
     for i, achievement in enumerate(achievements):
