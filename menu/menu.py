@@ -1,6 +1,7 @@
 from tkinter import *
 
 from game.game import run_game
+from menu.achievements_window import run_achievements
 from objects.window import Window
 from utilities.json import set_player_default_file
 
@@ -8,6 +9,10 @@ from utilities.json import set_player_default_file
 def close_menu_run_game(root):
     root.destroy()
     run_game()
+
+
+def open_achievement_window():
+    run_achievements()
 
 
 def run_menu():
@@ -25,7 +30,7 @@ def run_menu():
                {'x': WIDTH // 2, 'y': HEIGHT * 2 // 5 + HEIGHT // 10, 'path_img': './sprites/buttons/skins_button.png',
                 'command': lambda: print('qwe')},
                {'x': WIDTH // 2, 'y': HEIGHT * 2 // 5 + HEIGHT // 5, 'path_img': './sprites/buttons/achievements_button.png',
-                'command': lambda: print('asd')},
+                'command': lambda: open_achievement_window()},
                {'x': WIDTH // 2, 'y': HEIGHT * 2 // 5 + HEIGHT * 3 // 10, 'path_img': './sprites/buttons/reset_button.png',
                 'command': lambda: set_player_default_file('./players/player.txt')}]
 

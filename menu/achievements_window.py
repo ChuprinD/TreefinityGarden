@@ -1,4 +1,5 @@
-rom tkinter import Tk, Canvas
+from tkinter import Tk, Canvas, Label
+
 
 def run_achievements():
     root = Tk()
@@ -13,20 +14,18 @@ def run_achievements():
     root.geometry(f'{WIDTH}x{HEIGHT}+{x_coordinate}+{y_coordinate}')
     root.title('Achievements')
 
-    # Creating a canvas for background and achievements
-    canvas = Canvas(root, width=WIDTH, height=HEIGHT, bg='lightgray')
+    canvas = Canvas(root, width=WIDTH, height=HEIGHT, bg='white')
     canvas.pack()
 
-achievements = [
-    "Grew your first tree",
-    "Grew your third tree",
+    achievements = [
+        "Grew your first tree",
+        "Grew your third tree",
+    ]
 
-]
-
-
-    num_achievements = 10  # example number of achievements
-    for i in achievements enumerate():
+    for i, achievement in enumerate(achievements):
         canvas.create_rectangle(50, 30 + i*60, 150, 80 + i*60, fill='darkgrey', outline='black')
 
-    root.mainloop()
+        label = Label(root, text=achievement)
+        label.place(x=200, y=50 + i * 60, anchor='w')  # Adjust the coordinates as needed
 
+    root.mainloop()
