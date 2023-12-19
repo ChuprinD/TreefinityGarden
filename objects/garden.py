@@ -161,7 +161,7 @@ class Garden:
     def draw_arrow_over_selected_tree(self):
         if self.index_cur_tree != -1:
             arrow_x = self.trees[self.index_cur_tree].get_tree_coordinates()[0]
-            arrow_y = self.canvas.winfo_reqheight() // 6
+            arrow_y = self.canvas.winfo_reqheight() // 7
             arrow_angle = 30
             side_lines_length = 30
 

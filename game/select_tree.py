@@ -24,6 +24,7 @@ def set_tree_canvases(gap_size, picture_tree_size, number_row, numbers_skins_on_
 
 def draw_all_trees(window, player, picture_tree_size, lock_image):
     for i, (name, canvas) in enumerate(window.inner_canvases.items()):
+        canvas.bind("<MouseWheel>", lambda event, cur_canvas=window.canvas: on_mouse_wheel(event, cur_canvas))
         tree = Tree(canvas, pos=(1 / 2, 60 / 63))
         tree.load_tree_from_json('tree' + str(i + 1))
 

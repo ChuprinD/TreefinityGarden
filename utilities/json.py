@@ -64,7 +64,10 @@ def get_player_from_file(file):
         key, value = line.split(': ')
         if key == 'skins':
             value = value[1:-1]
-            value = [int(skin) for skin in value.split(',')]
+            if len(value) != 0:
+                value = [int(skin) for skin in value.split(',')]
+            else:
+                value = []
 
         cur_player[key] = value
 
