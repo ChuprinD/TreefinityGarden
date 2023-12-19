@@ -8,20 +8,20 @@ class Player:
         self.name = name
         self.garden = garden
 
-        self.skins = {'1': [True, lambda: True], '2': [True, lambda: True], '3': [True, lambda: True],
-                      '4': [False, lambda: self.unlock_tree4()], '5': [False, lambda: self.unlock_tree5()], '6': [False, lambda: self.unlock_tree6()],
+        self.skins = {'4': [False, lambda: self.unlock_tree4()], '5': [False, lambda: self.unlock_tree5()], '6': [False, lambda: self.unlock_tree6()],
                       '7': [False, lambda: self.unlock_tree7()], '8': [False, lambda: self.unlock_tree8()], '9': [False, lambda: self.unlock_tree9()]}
 
         self.all_achievements = []
-        self.number_achievements = 9
-        for i in range(self.number_achievements):
-            achievement = Achievement(is_it_unlock=self.skins[str(i + 1)][0], condition=self.skins[str(i + 1)][1])
+        self.number_achievements = len(self.skins)
+        for key, value in self.skins.items():
+            achievement = Achievement(is_it_unlock=value[0], condition=value[1], unlocked_tree=key)
             self.all_achievements.append(achievement)
 
     def save_player(self):
-        cur_skins = [False] * len(self.skins)
-        for key, value in self.skins.items():
-            cur_skins[int(key) - 1] = int(value[0])
+        cur_skins = []
+        for key in self.skins.keys():
+            if not self.skins[key][0]:
+                cur_skins.append(int(key))
 
         player_data = {'name': self.name, 'skins': cur_skins}
 
@@ -41,9 +41,11 @@ class Player:
         data = get_data_from_file('./players/player.txt')
         player_data = data['player']
         self.name = player_data['name']
-        for i, skin in enumerate(player_data['skins']):
-            self.skins[str(i + 1)][0] = bool(skin)
-            self.all_achievements[i].is_it_unlock = bool(skin)
+        for achievement in self.all_achievements:
+            is_it_locked = int(achievement.unlocked_tree) in player_data['skins']
+            achievement.is_it_unlock = not is_it_locked
+            self.skins[achievement.unlocked_tree][0] = not is_it_locked
+
 
 
         garden_data = data['garden'].copy()
@@ -62,8 +64,8 @@ class Player:
                 self.garden.trees[tree['pos'] - 1] = cur_tree
 
     def check_all_achievements(self, root, call_ids):
-        for i, achievement in enumerate(self.all_achievements):
-            self.skins[str(i + 1)][0] = achievement.check_condition()
+        for achievement in self.all_achievements:
+            self.skins[achievement.unlocked_tree][0] = achievement.check_condition()
 
         call_id = root.after(500, self.check_all_achievements, root, call_ids)
         call_ids.append(call_id)

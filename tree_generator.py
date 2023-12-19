@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter.ttk as ttk
+from tkinter import messagebox
 
 from objects.tree import Tree
 from objects.window import Window
@@ -8,7 +9,13 @@ from utilities.color import COLORINGS
 from utilities.json import set_tree_to_file
 
 
-def create_slider(parent, update_callback, minimum, maximum, pos, initial_value, label_text, ratio=1) -> Scale:
+def close_generator(root):
+    from menu.menu import run_menu
+    root.destroy()
+    run_menu()
+
+
+def create_slider(parent, update_callback, minimum, maximum, pos, initial_value, label_text, ratio=1):
     label = Label(parent, text=label_text)
     label.place(x=pos[0], y=pos[1] + 40)
 
@@ -20,145 +27,173 @@ def create_slider(parent, update_callback, minimum, maximum, pos, initial_value,
 
 
 def update_trunk_length(value):
-    tree.trunk_length = int(value)
+    global garden
+    garden.trees[garden.index_cur_tree].trunk_length = int(value)
     garden.draw()
 
 
 def update_branch_length_coefficient(value):
-    tree.branch_length_coefficient = float(value)
+    global garden
+    garden.trees[garden.index_cur_tree].branch_length_coefficient = float(value)
     garden.draw()
 
 
 def update_max_recursion_depth(value):
-    tree.max_recursion_depth = int(value)
+    global garden
+    garden.trees[garden.index_cur_tree].max_recursion_depth = int(value)
     garden.draw()
 
 
 def update_branch_angle1(value):
-    tree.branch_angle = (int(value), tree.branch_angle[1])
+    global garden
+    garden.trees[garden.index_cur_tree].branch_angle = (int(value), garden.trees[garden.index_cur_tree].branch_angle[1])
     garden.draw()
 
 
 def update_branch_angle2(value):
-    tree.branch_angle = (tree.branch_angle[0], int(value))
+    global garden
+    garden.trees[garden.index_cur_tree].branch_angle = (garden.trees[garden.index_cur_tree].branch_angle[0], int(value))
     garden.draw()
 
 
 def update_max_branch_thickness(value):
-    tree.max_branch_thickness = int(value)
+    global garden
+    garden.trees[garden.index_cur_tree].max_branch_thickness = int(value)
     garden.draw()
 
 
 def update_color_function_name(pos):
-    tree.color_function_name = str(pos)
+    global garden
+    garden.trees[garden.index_cur_tree].color_function_name = str(pos)
     garden.draw()
 
 
-def create_file(window, name):
-    cur_tree = {'branch_length_coefficient': tree.branch_length_coefficient, 'branch_angle': tree.branch_angle,
-                'max_branch_thickness': tree.max_branch_thickness, 'color_function_name': tree.color_function_name}
+def create_file(window=None, name='test'):
+    cur_tree = {'branch_length_coefficient': garden.trees[garden.index_cur_tree].branch_length_coefficient, 'branch_angle': garden.trees[garden.index_cur_tree].branch_angle,
+                'max_branch_thickness': garden.trees[garden.index_cur_tree].max_branch_thickness, 'color_function_name': garden.trees[garden.index_cur_tree].color_function_name}
 
     set_tree_to_file(cur_tree, './trees/' + name + '.txt')
+    messagebox.showinfo('Saved', 'You have successfully saved the skin!')
 
-    window.destroy()
+    if window is not None:
+        window.destroy()
 
 
 def load_file(window, name):
-    tree.load_tree_from_json(name)
+    global garden
+    garden.trees[garden.index_cur_tree].load_tree_from_json(name)
     garden.draw()
 
     window.destroy()
 
 
 def enter_tree_name(root):
-    enter_window = Toplevel(root)
-    enter_window.resizable(False, False)
-    enter_window.title('Save tree')
-    enter_window.iconbitmap('./sprites/icon.ico')
+    global SIZE, is_it_admin
 
-    x_coordinate = (root.winfo_screenwidth() - WIDTH // 3) // 2
-    y_coordinate = (root.winfo_screenheight() - HEIGHT // 3) // 2
-    enter_window.geometry(f'{WIDTH // 3}x{HEIGHT // 3}+{x_coordinate}+{y_coordinate}')
+    if is_it_admin:
+        enter_window = Toplevel(root)
+        enter_window.resizable(False, False)
+        enter_window.title('Save tree')
+        enter_window.iconbitmap('./sprites/icon.ico')
 
-    entry = Entry(enter_window, font=('Arial', 12))
-    entry.place(x=WIDTH / 18, y=HEIGHT / 9, width=WIDTH * 2 / 9, height=HEIGHT / 25)
+        x_coordinate = (root.winfo_screenwidth() - SIZE[0] // 3) // 2
+        y_coordinate = (root.winfo_screenheight() - SIZE[1] // 3) // 2
+        enter_window.geometry(f'{SIZE[0] // 3}x{SIZE[1] // 3}+{x_coordinate}+{y_coordinate}')
 
-    button_create = Button(enter_window, text='Save tree', command=lambda: create_file(enter_window, entry.get()))
-    button_create.place(x=WIDTH / 9, y=HEIGHT * 2 / 9, width=WIDTH / 9, height=HEIGHT / 22)
+        entry = Entry(enter_window, font=('Arial', 12))
+        entry.place(x=SIZE[0] / 18, y=SIZE[1] / 9, width=SIZE[0] * 2 / 9, height=SIZE[1] / 25)
+
+        button_create = Button(enter_window, text='Save tree', command=lambda: create_file(enter_window, entry.get()))
+        button_create.place(x=SIZE[0] / 9, y=SIZE[1] * 2 / 9, width=SIZE[0] / 9, height=SIZE[1] / 22)
+        enter_window.mainloop()
+    else:
+        with open('./trees/skin_counter.txt', 'r') as file:
+            number = int(file.readline().strip())
+
+        number += 1
+
+        create_file(name='tree' + str(number))
+
+        with open('./trees/skin_counter.txt', 'w') as file:
+            file.write(str(number))
 
 
 def load_tree(root):
+    global SIZE
     enter_window = Toplevel(root)
     enter_window.resizable(False, False)
     enter_window.title('Load tree')
     enter_window.iconbitmap('./sprites/icon.ico')
 
-    x_coordinate = (root.winfo_screenwidth() - WIDTH // 3) // 2
-    y_coordinate = (root.winfo_screenheight() - HEIGHT // 3) // 2
-    enter_window.geometry(f'{WIDTH // 3}x{HEIGHT // 3}+{x_coordinate}+{y_coordinate}')
+    x_coordinate = (root.winfo_screenwidth() - SIZE[0] // 3) // 2
+    y_coordinate = (root.winfo_screenheight() - SIZE[1] // 3) // 2
+    enter_window.geometry(f'{SIZE[0] // 3}x{SIZE[1] // 3}+{x_coordinate}+{y_coordinate}')
 
     entry = Entry(enter_window, font=('Arial', 12))
-    entry.place(x=WIDTH / 18, y=HEIGHT / 9, width=WIDTH * 2 / 9, height=HEIGHT / 25)
+    entry.place(x=SIZE[0] / 18, y=SIZE[1] / 9, width=SIZE[0] * 2 / 9, height=SIZE[1] / 25)
 
     button_create = Button(enter_window, text='Load tree', command=lambda: load_file(enter_window, entry.get()))
-    button_create.place(x=WIDTH / 9, y=HEIGHT * 2 / 9, width=WIDTH / 9, height=HEIGHT / 22)
+    button_create.place(x=SIZE[0] / 9, y=SIZE[1] * 2 / 9, width=SIZE[0] / 9, height=SIZE[1] / 22)
 
 
 def change_tree_position(pos):
+    global garden
     position = int(pos)
-    tree.pos = garden.trees_pos[position]
+    garden.trees[garden.index_cur_tree].pos = garden.trees_pos[position]
     garden.trees[garden.index_cur_tree], garden.trees[pos] = garden.trees[pos], garden.trees[garden.index_cur_tree]
     garden.index_cur_tree = pos
     garden.draw()
 
 
 def change_season(season):
+    global garden
     garden.cur_season = season
     garden.draw()
 
 
-def open_tool_window():
+def open_tool_window(root):
+    global garden, SIZE
     tool_window = Toplevel(root)
     tool_window.resizable(False, False)
     tool_window.title('Tool Window')
     tool_window.iconbitmap('./sprites/icon.ico')
 
-    x_coordinate = (root.winfo_screenwidth() - WIDTH // 2) // 2
-    y_coordinate = (root.winfo_screenheight() - HEIGHT // 2) // 2
-    tool_window.geometry(f'{WIDTH // 3 + 30}x{HEIGHT // 2}+{x_coordinate}+{y_coordinate}')
+    x_coordinate = (root.winfo_screenwidth() - SIZE[0] // 2) // 2
+    y_coordinate = (root.winfo_screenheight() - SIZE[1] // 2) // 2
+    tool_window.geometry(f'{SIZE[0] // 3 + 30}x{SIZE[1] // 2}+{x_coordinate}+{y_coordinate}')
 
     slider_pos = (10, 0)
     slider_trunk_length = create_slider(parent=tool_window, minimum=0, maximum=300,
                                         update_callback=update_trunk_length, pos=(slider_pos[0], slider_pos[1]),
-                                        label_text='trunk_length', initial_value=tree.trunk_length)
+                                        label_text='trunk_length', initial_value=garden.trees[garden.index_cur_tree].trunk_length)
 
-    slider_branch_length_coefficient = create_slider(parent=tool_window, minimum=0, maximum=1,
+    slider_branch_length_coefficient = create_slider(parent=tool_window, minimum=0, maximum=0.7,
                                                      update_callback=update_branch_length_coefficient,
                                                      pos=(slider_pos[0], slider_pos[1] + 60),
                                                      ratio=0.005, label_text='branch_length_coefficient',
-                                                     initial_value=tree.branch_length_coefficient)
+                                                     initial_value=garden.trees[garden.index_cur_tree].branch_length_coefficient)
 
     slider_max_recursion_depth = create_slider(parent=tool_window, minimum=2, maximum=15,
                                                update_callback=update_max_recursion_depth,
                                                pos=(slider_pos[0], slider_pos[1] + 120),
-                                               label_text='max_recursion_depth', initial_value=tree.max_recursion_depth)
+                                               label_text='max_recursion_depth', initial_value=garden.trees[garden.index_cur_tree].max_recursion_depth)
 
     slider_branch_angle1 = create_slider(parent=tool_window, minimum=-90, maximum=90,
                                          update_callback=update_branch_angle1, pos=(slider_pos[0], slider_pos[1] + 180),
-                                         label_text='max_trunk_angle1', initial_value=tree.branch_angle[0])
+                                         label_text='max_trunk_angle1', initial_value=garden.trees[garden.index_cur_tree].branch_angle[0])
 
     slider_branch_angle2 = create_slider(parent=tool_window, minimum=-90, maximum=90,
                                          update_callback=update_branch_angle2, pos=(slider_pos[0], slider_pos[1] + 240),
-                                         label_text='max_trunk_angle1', initial_value=tree.branch_angle[1])
+                                         label_text='max_trunk_angle1', initial_value=garden.trees[garden.index_cur_tree].branch_angle[1])
 
     slider_max_branch_thickness = create_slider(parent=tool_window, minimum=1, maximum=20,
                                                 update_callback=update_max_branch_thickness,
                                                 pos=(slider_pos[0], slider_pos[1] + 300),
-                                                label_text='max_trunk_angle1', initial_value=tree.max_branch_thickness)
+                                                label_text='max_trunk_angle1', initial_value=garden.trees[garden.index_cur_tree].max_branch_thickness)
 
     combobox_color_pos = (250, 25)
     combobox_color = ttk.Combobox(tool_window, values=list(COLORINGS.keys()))
-    combobox_color.set(tree.color_function_name)
+    combobox_color.set(garden.trees[garden.index_cur_tree].color_function_name)
     combobox_color.place(x=combobox_color_pos[0], y=combobox_color_pos[1])
     combobox_color.bind('<<ComboboxSelected>>', lambda event: update_color_function_name(combobox_color.get()))
     label_combobox_color = Label(tool_window, text='combobox_color')
@@ -227,45 +262,54 @@ def open_tool_window():
             r_spring.select()
 
 
-root = Tk()
-root.resizable(False, False)
-root.iconbitmap('./sprites/icon.ico')
-root.title('DEV APP')
-WIDTH = 1280
-HEIGHT = 720
+def run_generator(admin):
+    global window, garden, SIZE, is_it_admin
+    is_it_admin = admin
+    root = Tk()
+    root.resizable(False, False)
+    root.iconbitmap('./sprites/icon.ico')
+    root.title('DEV APP')
+    root.protocol("WM_DELETE_WINDOW", lambda: close_generator(root))
 
-window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT],
-                path_background_img='./sprites/backgrounds/window_background.png',
-                canvases=[{'name': 'garden',
-                           'coords': (WIDTH / 64, WIDTH / 64, WIDTH - WIDTH / 64, HEIGHT - HEIGHT / 8),
-                           'bg': 'blue',
-                           'bg_picture': './sprites/backgrounds/summer_background.png'}])
 
-garden = Garden(canvas=window.inner_canvases['garden'])
+    window = Window(root, title='Treefinity Garden', size=[SIZE[0], SIZE[1]],
+                    path_background_img='./sprites/backgrounds/window_background.png',
+                    canvases=[{'name': 'garden',
+                               'coords': (SIZE[0] / 64, SIZE[0] / 64, SIZE[0] - SIZE[0] / 64, SIZE[1] - SIZE[1] / 8),
+                               'bg': 'blue',
+                               'bg_picture': './sprites/backgrounds/summer_background.png'}])
 
-tree = Tree(canvas=window.inner_canvases['garden'],
-            pos=(0, 0),
-            trunk_length=100, trunk_angle=90, branch_angle=(30, 60), branch_length_coefficient=0.7,
-            max_recursion_depth=7, min_branch_thickness=1,
-            max_branch_thickness=4, color_function_name='natural_coloring')
+    garden = Garden(canvas=window.inner_canvases['garden'])
 
-garden.set_tree_on_position(tree, 2)
-garden.index_cur_tree = 2
-garden.draw()
+    tree = Tree(canvas=window.inner_canvases['garden'],
+                pos=(0, 0),
+                trunk_length=100, trunk_angle=90, branch_angle=(30, 60), branch_length_coefficient=0.7,
+                max_recursion_depth=7, min_branch_thickness=1,
+                max_branch_thickness=4, color_function_name='natural_coloring')
 
-buttons_pos = (320, 666)
-save_button = Button(window.canvas, text='save tree', command=lambda: enter_tree_name(root))
-save_button.place(x=buttons_pos[0] - WIDTH * 5 / 64, y=buttons_pos[1], width=WIDTH * 5 / 32, height=HEIGHT / 17)
-save_button.config(font=("Arial", 14))
+    garden.set_tree_on_position(tree, 2)
+    garden.index_cur_tree = 2
+    garden.draw()
 
-load_button = Button(window.canvas, text='load tree', command=lambda: load_tree(root))
-load_button.place(x=buttons_pos[0] - WIDTH * 5 / 64 + 320, y=buttons_pos[1], width=WIDTH * 5 / 32, height=HEIGHT / 17)
-load_button.config(font=("Arial", 14))
+    buttons_pos = (320, 666)
+    save_button = Button(window.canvas, text='save tree', command=lambda: enter_tree_name(root))
+    save_button.place(x=buttons_pos[0] - SIZE[0] * 5 / 64, y=buttons_pos[1], width=SIZE[0] * 5 / 32, height=SIZE[1] / 17)
+    save_button.config(font=("Arial", 14))
 
-open_tool_window_button = Button(window.canvas, text='open tool window', command=lambda: open_tool_window())
-open_tool_window_button.place(x=buttons_pos[0] - WIDTH * 5 / 64 + 640, y=buttons_pos[1], width=WIDTH * 5 / 32,
-                              height=HEIGHT / 17)
-open_tool_window_button.config(font=("Arial", 14))
+    if is_it_admin:
+        load_button = Button(window.canvas, text='load tree', command=lambda: load_tree(root))
+        load_button.place(x=buttons_pos[0] - SIZE[0] * 5 / 64 + 320, y=buttons_pos[1], width=SIZE[0] * 5 / 32, height=SIZE[1] / 17)
+        load_button.config(font=("Arial", 14))
 
-window.canvas.pack()
-root.mainloop()
+    open_tool_window_button = Button(window.canvas, text='open tool window', command=lambda: open_tool_window(root))
+    open_tool_window_button.place(x=buttons_pos[0] - SIZE[0] * 5 / 64 + 640, y=buttons_pos[1], width=SIZE[0] * 5 / 32,
+                                  height=SIZE[1] / 17)
+    open_tool_window_button.config(font=("Arial", 14))
+
+    window.canvas.pack()
+    root.mainloop()
+
+is_it_admin = False
+window = None
+garden = None
+SIZE = (1280, 720)

@@ -1,6 +1,6 @@
 player
 name: Bob
-skins: [1, 1, 1, 0, 0, 0, 0, 0, 0]
+skins: [4, 5, 6, 7, 8, 9]
 garden
 day_counter: 0
 cur_season: 0

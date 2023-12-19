@@ -1,0 +1,5 @@
+tree
+branch_length_coefficient: 0.7
+branch_angle: (18, 60)
+max_branch_thickness: 13
+color_function_name: default_coloring

@@ -139,6 +139,7 @@ class Garden:
                     self.canvas.create_rectangle(tree.trunk_hit_box[0][0], tree.trunk_hit_box[0][1],
                                                  tree.trunk_hit_box[1][0], tree.trunk_hit_box[1][1],
                                                  width=2, tags='tree_' + str(i))
+
                 else:
                     self.canvas.delete('tree_' + str(i))
 

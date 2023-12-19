@@ -116,12 +116,15 @@ class Tree:
         return self.pos[0] * self.canvas.winfo_reqwidth(), self.pos[1] * self.canvas.winfo_reqheight()
 
     def check_tree_visibility(self):
-        self.generate_tree(pos=self.get_tree_coordinates(), angle=self.trunk_angle, length=self.trunk_length,
-                           depth=self.max_recursion_depth, to_draw=False)
-
+        self.update_hit_box()
         if (0 <= self.hit_box[0][0] and self.hit_box[1][0] <= self.canvas.winfo_reqwidth() and
-            self.canvas.winfo_reqheight() // 6 <= self.hit_box[0][1] and self.hit_box[1][1] <= self.canvas.winfo_reqheight()):
+            self.canvas.winfo_reqheight() // 6 <= self.hit_box[0][1] and self.hit_box[1][1] <=self.canvas.winfo_reqheight()):
             return True
 
         messagebox.showwarning('Warning', 'Tree is too big')
         return False
+
+    def update_hit_box(self):
+        self.generate_tree(pos=self.get_tree_coordinates(), angle=self.trunk_angle, length=self.trunk_length,
+                           depth=self.max_recursion_depth, to_draw=False)
+

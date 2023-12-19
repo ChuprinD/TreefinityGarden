@@ -19,8 +19,8 @@ class Window:
         for button in buttons:
             if 'path_img' in button:
                 self.buttons_img.append(PhotoImage(file=button['path_img']))
-                self.buttons.append(Button(self.canvas, image=self.buttons_img[-1], command=button['command'],
-                                           width=self.buttons_img[-1].width(), height=self.buttons_img[-1].height(), anchor='nw'))
+                self.buttons.append(Button(self.canvas, anchor='center', width=self.buttons_img[-1].width(), height=self.buttons_img[-1].height(),
+                                           borderwidth=0, image=self.buttons_img[-1], command=button['command']))
 
                 self.buttons[-1].place(x=button['x'] - self.buttons_img[-1].width() / 2,
                                        y=button['y'] - self.buttons_img[-1].height() / 2)
@@ -46,6 +46,7 @@ class Window:
             canvas_size = (abs(coords[0] - coords[2]), abs(coords[1] - coords[3]))
             inner_canvas = Canvas(self.root, width=canvas_size[0], height=canvas_size[1], bg=color)
             inner_canvas.place(x=coords[0], y=coords[1], width=canvas_size[0], height=canvas_size[1])
+            self.canvas.create_window(coords[0], coords[1], width=canvas_size[0], height=canvas_size[1], anchor='nw', window=inner_canvas)
             if 'bg_picture' in canvas:
                 inner_canvas.create_image(0, 0, anchor='nw', image=self.inner_canvases_picture[name], tags='bg')
 

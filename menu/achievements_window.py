@@ -1,10 +1,16 @@
-from tkinter import Tk, Canvas, Label
+from tkinter import *
+
+
+def close_achievements(root):
+    from menu.menu import run_menu
+    root.destroy()
+    run_menu()
 
 
 def run_achievements():
     root = Tk()
     root.iconbitmap('./sprites/icon.ico')
-    root.protocol("WM_DELETE_WINDOW", lambda: root.destroy())
+    root.protocol("WM_DELETE_WINDOW", lambda: close_achievements(root))
 
     WIDTH = 420
     HEIGHT = 720

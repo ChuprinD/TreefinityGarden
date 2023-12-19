@@ -1,0 +1,5 @@
+tree
+branch_length_coefficient: 0.7
+branch_angle: (30, 34)
+max_branch_thickness: 8
+color_function_name: neon_coloring
