@@ -51,7 +51,7 @@ class Garden:
 
         self.canvas.create_image(0, 0, anchor='nw', image=self.season_background, tags='bg')
 
-        self.season_label = Label(self.canvas, text=self.seasons[self.cur_season], font=32)
+        self.season_label = Label(self.canvas, text=self.seasons[self.cur_season], font=32, bg='white')
         self.season_label.place(x=15, y=10)
 
     def add_tree(self, tree):
@@ -71,10 +71,10 @@ class Garden:
         tree.load_tree_from_json(file_name)
         self.add_tree(tree)
 
-    def set_tree_on_position(self, tree, positon):
-        if self.trees[positon] is None:
-            tree.pos = self.trees_pos[positon]
-            self.trees[positon] = tree
+    def set_tree_on_position(self, tree, position):
+        if self.trees[position] is None:
+            tree.pos = self.trees_pos[position]
+            self.trees[position] = tree
             self.number_planted_trees += 1
             self.draw()
 

@@ -31,7 +31,7 @@ class Player:
         trees_data = []
         for i, tree in enumerate(self.garden.trees):
             if tree is not None:
-                cur_tree = {'pos': i+1, 'trunk_length': tree.trunk_length, 'max_recursion_depth': tree.max_recursion_depth, 'branch_length_coefficient': tree.branch_length_coefficient,
+                cur_tree = {'pos': i + 1, 'trunk_length': tree.trunk_length, 'max_recursion_depth': tree.max_recursion_depth, 'branch_length_coefficient': tree.branch_length_coefficient,
                             'branch_angle': tree.branch_angle, 'max_branch_thickness': tree.max_branch_thickness, 'color_function_name': tree.color_function_name}
                 trees_data.append(cur_tree)
 

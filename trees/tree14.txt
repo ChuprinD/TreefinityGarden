@@ -1,5 +1,0 @@
-tree
-branch_length_coefficient: 0.7
-branch_angle: (30, 60)
-max_branch_thickness: 19
-color_function_name: pink_coloring

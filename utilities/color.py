@@ -45,10 +45,16 @@ def gold_coloring(depth, max_depth):
     return blend_colors(tangerine, dandelion, depth / max_depth)
 
 
+def green_black_coloring(depth, max_depth):
+    green = (76, 187, 23)
+    black = (1, 1, 1)
+    return blend_colors(green, black, depth / max_depth)
+
+
 COLORINGS = {'natural_coloring': natural_coloring, 'pink_coloring': pink_coloring,
              'neon_coloring': neon_coloring, 'default_coloring': default_coloring,
              'ukrainian_coloring': ukrainian_coloring, 'red_white_coloring': red_white_coloring,
-             'gold_coloring': gold_coloring}
+             'gold_coloring': gold_coloring, 'green_black_coloring': green_black_coloring}
 
 
 def get_coloring_by_name(name):

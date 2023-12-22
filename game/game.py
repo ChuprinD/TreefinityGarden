@@ -22,17 +22,12 @@ def close_game(root, player, call_ids):
 
 def run_game(root=None):
     root = Tk()
-    root.iconbitmap('./sprites/icon.ico')
-    root.protocol("WM_DELETE_WINDOW", lambda: close_game(root, player, call_ids))
+    root.protocol('WM_DELETE_WINDOW', lambda: close_game(root, player, call_ids))
 
     WIDTH = 1280
     HEIGHT = 720
-    x_coordinate = (root.winfo_screenwidth() - WIDTH) // 2
-    y_coordinate = (root.winfo_screenheight() - HEIGHT) // 2
 
-    root.geometry(f'{WIDTH}x{HEIGHT}+{x_coordinate}+{y_coordinate}')
-
-    buttons = [{'x': WIDTH / 6, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/sun_button.png',
+    buttons = [{'x': WIDTH / 6,     'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/sun_button.png',
                 'command': lambda: player.garden.action(Tree.increase_trunk_length)},
                {'x': WIDTH / 6 * 2, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/fertilizer_button.png',
                 'command': lambda: player.garden.action(Tree.increase_max_recursion_depth)},
@@ -43,7 +38,7 @@ def run_game(root=None):
                {'x': WIDTH / 6 * 5, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/delete_button.png',
                 'command': lambda: player.garden.delete_tree()}]
 
-    window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT],
+    window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT], path_icon='./sprites/icon.ico',
                     path_background_img='./sprites/backgrounds/window_background.png', buttons=buttons,
                     canvases=[{'name': 'garden', 'coords': (WIDTH / 64, WIDTH / 64, WIDTH - WIDTH / 64, HEIGHT - HEIGHT / 8),
                                'bg': 'blue', 'bg_picture': './sprites/backgrounds/summer_background.png'}])
@@ -55,9 +50,7 @@ def run_game(root=None):
 
     player.garden.draw()
 
-    window.canvas.pack()
-
     call_ids = []
-    root.after(500, player.check_all_achievements, root, call_ids)
+    window.root.after(500, player.check_all_achievements, root, call_ids)
 
-    root.mainloop()
+    window.root.mainloop()

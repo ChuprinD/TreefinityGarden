@@ -1,5 +1,5 @@
 tree
-branch_length_coefficient: 0.7
-branch_angle: (30, 60)
-max_branch_thickness: 10
-color_function_name: ukrainian_coloring
+branch_length_coefficient: 0.62
+branch_angle: [5, 5]
+max_branch_thickness: 12
+color_function_name: gold_coloring

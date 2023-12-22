@@ -1,3 +1,6 @@
+from tkinter import messagebox
+
+
 def set_tree_to_file(data, file_name):
     with open(file_name, 'w') as file:
         file.write('tree\n')
@@ -41,16 +44,17 @@ def set_player_to_file(player_data, garden_data, trees_data, file_name):
 
 
 def set_player_default_file(file_name):
-    with open(file_name, 'w') as file:
-        file.write('player\n')
-        file.write('name: Bob\n')
-        file.write('skins: [4, 5, 6, 7, 8, 9]\n')
+    if messagebox.askokcancel('Confirmation', 'Are you sure you want to reset the game?'):
+        with open(file_name, 'w') as file:
+            file.write('player\n')
+            file.write('name: Bob\n')
+            file.write('skins: [4, 5, 6, 7, 8, 9]\n')
 
-        file.write('garden\n')
-        file.write('day_counter: 0\n')
-        file.write('cur_season: 0\n')
-        file.write('number_planted_trees: 0\n')
-        file.write('number_felled_trees: 0\n')
+            file.write('garden\n')
+            file.write('day_counter: 0\n')
+            file.write('cur_season: 0\n')
+            file.write('number_planted_trees: 0\n')
+            file.write('number_felled_trees: 0\n')
 
 
 def get_player_from_file(file):

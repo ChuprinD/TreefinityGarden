@@ -50,7 +50,7 @@ def choose_tree(cur_name, cur_player, root):
 
 
 def on_mouse_wheel(event, canvas):
-    canvas.yview_scroll(-1 * (event.delta // 120), "units")
+    canvas.yview_scroll(-1 * (event.delta // 120), 'units')
 
 
 def update_scroll_region(event, canvas, scroll_area):
@@ -60,8 +60,6 @@ def update_scroll_region(event, canvas, scroll_area):
 
 def open_window_of_select_tree(root, player):
     select_tree_window = Toplevel(root)
-    select_tree_window.resizable(False, False)
-    select_tree_window.iconbitmap('./sprites/icon.ico')
 
     with open('./trees/skin_counter.txt', 'r') as file:
         number_of_skins = int(file.readline().strip())
@@ -75,19 +73,19 @@ def open_window_of_select_tree(root, player):
     HEIGHT = 600
 
     window = Window(select_tree_window, title='Select Tree', size=[WIDTH, HEIGHT],
-                    path_background_img='./sprites/backgrounds/scroll_background.png',
+                    path_icon='./sprites/icon.ico', path_background_img='./sprites/backgrounds/scroll_background.png',
                     canvases=set_tree_canvases(gap_size=30, picture_tree_size=160, number_row=number_row, numbers_skins_on_last_row=numbers_skins_on_last_row))
 
     scrollbar = Scrollbar(select_tree_window, command=window.canvas.yview)
     scrollbar.pack(side=RIGHT, fill='y')
     window.canvas.configure(yscrollcommand=scrollbar.set)
 
-    window.canvas.bind("<MouseWheel>", lambda event, canvas=window.canvas: on_mouse_wheel(event, canvas))
+    window.canvas.bind('<MouseWheel>', lambda event, canvas=window.canvas: on_mouse_wheel(event, canvas))
     work_area = (0, 0, WIDTH, (160 + 30) * number_row + 30)
     window.canvas.bind('<Configure>', lambda event, canvas=window.canvas, scroll_area=work_area: update_scroll_region(event, canvas, scroll_area))
 
     padlock_image = PhotoImage(file='./sprites/padlock.png')
 
     draw_all_trees(window=window, player=player, picture_tree_size=160, lock_image=padlock_image)
-    window.canvas.pack()
+
     select_tree_window.mainloop()

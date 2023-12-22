@@ -2,33 +2,36 @@ from tkinter import *
 
 
 class Window:
-    def __init__(self, root, title='New window', size=(1280, 720), buttons=[], path_background_img='', canvases=[]):
+    def __init__(self, root, title='New window', size=(1280, 720), path_icon='', buttons=[], path_background_img='', canvases=[]):
         self.root = root
         self.root.resizable(False, False)
+        self.root.iconbitmap(path_icon)
         self.root.title(title)
 
         self.size = size
 
-        self.canvas = Canvas(self.root, width=size[0], height=size[1], bg='green')
+        self.canvas = Canvas(self.root, width=size[0], height=size[1], bg='white')
         if path_background_img != '':
             self.background_img = PhotoImage(file=path_background_img)
             self.canvas.create_image(0, 0, anchor='nw', image=self.background_img)
 
-        self.buttons_img = []
-        self.buttons = []
-        for button in buttons:
+        self.buttons_img = [None] * len(buttons)
+        self.buttons = [None] * len(buttons)
+        for i, button in enumerate(buttons):
             if 'path_img' in button:
-                self.buttons_img.append(PhotoImage(file=button['path_img']))
-                self.buttons.append(Button(self.canvas, anchor='center', width=self.buttons_img[-1].width(), height=self.buttons_img[-1].height(),
-                                           borderwidth=0, image=self.buttons_img[-1], command=button['command']))
+                cur_buttons_img = [PhotoImage(file=button['path_img']), None]
+                cur_button = Button(self.canvas, anchor='center', width=cur_buttons_img[0].width(), height=cur_buttons_img[0].height(),
+                                    borderwidth=0, image=cur_buttons_img[0], command=button['command'])
 
-                self.buttons[-1].place(x=button['x'] - self.buttons_img[-1].width() / 2,
-                                       y=button['y'] - self.buttons_img[-1].height() / 2)
+                self.buttons[i] = cur_button
+                self.buttons_img[i] = cur_buttons_img
+
+                self.buttons[i].place(x=button['x'] - cur_buttons_img[0].width() / 2,
+                                      y=button['y'] - cur_buttons_img[0].height() / 2)
             else:
                 self.buttons.append(Button(self.canvas, command=button['command'], text=button['text'], font=button['font'], width=15))
-                self.buttons[-1].place(x=button['x'] - self.buttons[-1].winfo_reqwidth() / 2,
-                                       y=button['y'] - self.buttons[-1].winfo_reqheight() / 2)
-
+                self.buttons[i].place(x=button['x'] - self.buttons[i].winfo_reqwidth() / 2,
+                                      y=button['y'] - self.buttons[i].winfo_reqheight() / 2)
 
         self.inner_canvases = {}
         self.inner_canvases_picture = {}
@@ -38,6 +41,7 @@ class Window:
             if 'bg_picture' in canvas:
                 image = PhotoImage(file=canvas['bg_picture'])
                 self.inner_canvases_picture.update({name: image})
+
             if 'bg' in canvas:
                 color = canvas['bg']
             else:
@@ -53,6 +57,7 @@ class Window:
             self.inner_canvases.update({name: inner_canvas})
 
         self.center_window()
+        self.canvas.pack()
 
     def center_window(self):
         screen_width = self.root.winfo_screenwidth()

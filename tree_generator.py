@@ -107,15 +107,16 @@ def enter_tree_name(root):
         button_create.place(x=SIZE[0] / 9, y=SIZE[1] * 2 / 9, width=SIZE[0] / 9, height=SIZE[1] / 22)
         enter_window.mainloop()
     else:
-        with open('./trees/skin_counter.txt', 'r') as file:
-            number = int(file.readline().strip())
+        if messagebox.askokcancel('Confirmation', 'Are you sure you want to save this tree?'):
+            with open('./trees/skin_counter.txt', 'r') as file:
+                number = int(file.readline().strip())
 
-        number += 1
+            number += 1
 
-        create_file(name='tree' + str(number))
+            create_file(name='tree' + str(number))
 
-        with open('./trees/skin_counter.txt', 'w') as file:
-            file.write(str(number))
+            with open('./trees/skin_counter.txt', 'w') as file:
+                file.write(str(number))
 
 
 def load_tree(root):
@@ -266,26 +267,21 @@ def run_generator(admin):
     global window, garden, SIZE, is_it_admin
     is_it_admin = admin
     root = Tk()
-    root.resizable(False, False)
-    root.iconbitmap('./sprites/icon.ico')
-    root.title('DEV APP')
-    root.protocol("WM_DELETE_WINDOW", lambda: close_generator(root))
+
+    root.protocol('WM_DELETE_WINDOW', lambda: close_generator(root))
 
 
-    window = Window(root, title='Treefinity Garden', size=[SIZE[0], SIZE[1]],
+    window = Window(root, title='Skin Creator', size=[SIZE[0], SIZE[1]], path_icon='./sprites/icon.ico',
                     path_background_img='./sprites/backgrounds/window_background.png',
-                    canvases=[{'name': 'garden',
-                               'coords': (SIZE[0] / 64, SIZE[0] / 64, SIZE[0] - SIZE[0] / 64, SIZE[1] - SIZE[1] / 8),
-                               'bg': 'blue',
-                               'bg_picture': './sprites/backgrounds/summer_background.png'}])
+                    canvases=[{'name': 'garden', 'bg': 'blue', 'bg_picture': './sprites/backgrounds/summer_background.png',
+                               'coords': (SIZE[0] / 64, SIZE[0] / 64, SIZE[0] - SIZE[0] / 64, SIZE[1] - SIZE[1] / 8)}])
 
     garden = Garden(canvas=window.inner_canvases['garden'])
 
-    tree = Tree(canvas=window.inner_canvases['garden'],
-                pos=(0, 0),
-                trunk_length=100, trunk_angle=90, branch_angle=(30, 60), branch_length_coefficient=0.7,
-                max_recursion_depth=7, min_branch_thickness=1,
-                max_branch_thickness=4, color_function_name='natural_coloring')
+    tree = Tree(canvas=window.inner_canvases['garden'], pos=(0, 0), trunk_length=100,
+                trunk_angle=90, branch_angle=(30, 60), branch_length_coefficient=0.7,
+                max_recursion_depth=7, min_branch_thickness=1, max_branch_thickness=4,
+                color_function_name='natural_coloring')
 
     garden.set_tree_on_position(tree, 2)
     garden.index_cur_tree = 2
@@ -294,20 +290,20 @@ def run_generator(admin):
     buttons_pos = (320, 666)
     save_button = Button(window.canvas, text='save tree', command=lambda: enter_tree_name(root))
     save_button.place(x=buttons_pos[0] - SIZE[0] * 5 / 64, y=buttons_pos[1], width=SIZE[0] * 5 / 32, height=SIZE[1] / 17)
-    save_button.config(font=("Arial", 14))
+    save_button.config(font=('Arial', 14))
 
     if is_it_admin:
         load_button = Button(window.canvas, text='load tree', command=lambda: load_tree(root))
         load_button.place(x=buttons_pos[0] - SIZE[0] * 5 / 64 + 320, y=buttons_pos[1], width=SIZE[0] * 5 / 32, height=SIZE[1] / 17)
-        load_button.config(font=("Arial", 14))
+        load_button.config(font=('Arial', 14))
 
     open_tool_window_button = Button(window.canvas, text='open tool window', command=lambda: open_tool_window(root))
     open_tool_window_button.place(x=buttons_pos[0] - SIZE[0] * 5 / 64 + 640, y=buttons_pos[1], width=SIZE[0] * 5 / 32,
                                   height=SIZE[1] / 17)
-    open_tool_window_button.config(font=("Arial", 14))
+    open_tool_window_button.config(font=('Arial', 14))
 
-    window.canvas.pack()
     root.mainloop()
+
 
 is_it_admin = False
 window = None

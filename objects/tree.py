@@ -118,7 +118,7 @@ class Tree:
     def check_tree_visibility(self):
         self.update_hit_box()
         if (0 <= self.hit_box[0][0] and self.hit_box[1][0] <= self.canvas.winfo_reqwidth() and
-            self.canvas.winfo_reqheight() // 7 <= self.hit_box[0][1] and self.hit_box[1][1] <=self.canvas.winfo_reqheight()):
+            self.canvas.winfo_reqheight() // 7 <= self.hit_box[0][1] and self.hit_box[1][1] <= self.canvas.winfo_reqheight()):
             return True
 
         messagebox.showwarning('Warning', 'Tree is too big')
