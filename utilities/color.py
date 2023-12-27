@@ -51,10 +51,23 @@ def green_black_coloring(depth, max_depth):
     return blend_colors(green, black, depth / max_depth)
 
 
+def luxury_coloring(depth, max_depth):
+    candy = (210, 20, 4)
+    metalic_gold = (219, 172, 52)
+    return blend_colors(candy, metalic_gold, depth / max_depth)
+
+
+def purple_green_coloring(depth, max_depth):
+    purple = (128, 0, 128)
+    sacramento = (0, 78, 56)
+    return blend_colors(sacramento, purple, depth / max_depth)
+
+
 COLORINGS = {'natural_coloring': natural_coloring, 'pink_coloring': pink_coloring,
              'neon_coloring': neon_coloring, 'default_coloring': default_coloring,
              'ukrainian_coloring': ukrainian_coloring, 'red_white_coloring': red_white_coloring,
-             'gold_coloring': gold_coloring, 'green_black_coloring': green_black_coloring}
+             'gold_coloring': gold_coloring, 'green_black_coloring': green_black_coloring,
+             'luxury_coloring': luxury_coloring, 'purple_green_coloring': purple_green_coloring}
 
 
 def get_coloring_by_name(name):

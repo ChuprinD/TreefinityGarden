@@ -28,13 +28,13 @@ def run_menu():
     WIDTH = 420
     HEIGHT = 720
 
-    buttons = [{'x': WIDTH // 2, 'y': HEIGHT * 4 // 9, 'path_img': './sprites/buttons/start_button.png',
+    buttons = [{'x': WIDTH // 2, 'y': HEIGHT * 4 // 9, 'path_img': './sprites/buttons/regular_buttons/start.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/start.png',
                 'command': lambda: close_menu_run_game(root)},
-               {'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT // 10, 'path_img': './sprites/buttons/create_skin_button.png',
+               {'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT // 10, 'path_img': './sprites/buttons/regular_buttons/create_skin.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/create_skin.png',
                 'command': lambda: close_menu_run_generator(root)},
-               {'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT // 5, 'path_img': './sprites/buttons/achievements_button.png',
+               {'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT // 5, 'path_img': './sprites/buttons/regular_buttons/achievements.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/achievements.png',
                 'command': lambda: open_achievement_window(root)},
-               {'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT * 3 // 10, 'path_img': './sprites/buttons/reset_button.png',
+               {'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT * 3 // 10, 'path_img': './sprites/buttons/regular_buttons/reset.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/reset.png',
                 'command': lambda: set_player_default_file('./players/player.txt')}]
 
     window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT], path_icon='./sprites/icon.ico',

@@ -270,9 +270,21 @@ def run_generator(admin):
 
     root.protocol('WM_DELETE_WINDOW', lambda: close_generator(root))
 
+    buttons = [{'x': SIZE[0] // 4, 'y': SIZE[1] * 14 // 15, 'path_img': './sprites/buttons/regular_buttons/save.png',
+                'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/save.png',
+                'command': lambda: enter_tree_name(root)},
+               {'x': SIZE[0] * 3 // 4, 'y': SIZE[1] * 14 // 15,
+                'path_img': './sprites/buttons/regular_buttons/tool_window.png',
+                'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/tool_window.png',
+                'command': lambda: open_tool_window(root)}]
+
+    if is_it_admin:
+        buttons.append({'x': SIZE[0] * 2 // 4, 'y': SIZE[1] * 14 // 15, 'path_img': './sprites/buttons/regular_buttons/load_tree.png',
+                        'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/load_tree.png',
+                        'command': lambda: load_tree(root)})
 
     window = Window(root, title='Skin Creator', size=[SIZE[0], SIZE[1]], path_icon='./sprites/icon.ico',
-                    path_background_img='./sprites/backgrounds/window_background.png',
+                    path_background_img='./sprites/backgrounds/window_background.png', buttons=buttons,
                     canvases=[{'name': 'garden', 'bg': 'blue', 'bg_picture': './sprites/backgrounds/summer_background.png',
                                'coords': (SIZE[0] / 64, SIZE[0] / 64, SIZE[0] - SIZE[0] / 64, SIZE[1] - SIZE[1] / 8)}])
 
@@ -286,21 +298,6 @@ def run_generator(admin):
     garden.set_tree_on_position(tree, 2)
     garden.index_cur_tree = 2
     garden.draw()
-
-    buttons_pos = (320, 666)
-    save_button = Button(window.canvas, text='save tree', command=lambda: enter_tree_name(root))
-    save_button.place(x=buttons_pos[0] - SIZE[0] * 5 / 64, y=buttons_pos[1], width=SIZE[0] * 5 / 32, height=SIZE[1] / 17)
-    save_button.config(font=('Arial', 14))
-
-    if is_it_admin:
-        load_button = Button(window.canvas, text='load tree', command=lambda: load_tree(root))
-        load_button.place(x=buttons_pos[0] - SIZE[0] * 5 / 64 + 320, y=buttons_pos[1], width=SIZE[0] * 5 / 32, height=SIZE[1] / 17)
-        load_button.config(font=('Arial', 14))
-
-    open_tool_window_button = Button(window.canvas, text='open tool window', command=lambda: open_tool_window(root))
-    open_tool_window_button.place(x=buttons_pos[0] - SIZE[0] * 5 / 64 + 640, y=buttons_pos[1], width=SIZE[0] * 5 / 32,
-                                  height=SIZE[1] / 17)
-    open_tool_window_button.config(font=('Arial', 14))
 
     root.mainloop()
 

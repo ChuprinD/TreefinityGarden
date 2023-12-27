@@ -24,7 +24,7 @@ def set_tree_canvases(gap_size, picture_tree_size, number_row, numbers_skins_on_
 
 def draw_all_trees(window, player, picture_tree_size, lock_image):
     for i, (name, canvas) in enumerate(window.inner_canvases.items()):
-        canvas.bind("<MouseWheel>", lambda event, cur_canvas=window.canvas: on_mouse_wheel(event, cur_canvas))
+        canvas.bind('<MouseWheel>', lambda event, cur_canvas=window.canvas: on_mouse_wheel(event, cur_canvas))
         tree = Tree(canvas, pos=(1 / 2, 60 / 63))
         tree.load_tree_from_json('tree' + str(i + 1))
 
@@ -38,6 +38,19 @@ def draw_all_trees(window, player, picture_tree_size, lock_image):
             canvas.config(bg='#065b90')
         else:
             canvas.bind('<Button-1>', lambda event, cur_name=name, cur_player=player, root=window.root: choose_tree(cur_name, player, root))
+
+        canvas.bind('<Enter>', lambda event, cur_canvas=canvas: draw_perimeter(cur_canvas))
+        canvas.bind('<Leave>', lambda event, cur_canvas=canvas: delete_perimeter(cur_canvas))
+
+
+def draw_perimeter(cur_canvas):
+    width = 5
+    cur_canvas.create_rectangle(4, 4, cur_canvas.winfo_reqwidth() - 4 - width, cur_canvas.winfo_reqheight() - 4 - width, width=width, tags='perimeter')
+
+
+def delete_perimeter(cur_canvas):
+    cur_perimeter = cur_canvas.find_withtag('perimeter')
+    cur_canvas.delete(cur_perimeter)
 
 
 def choose_tree(cur_name, cur_player, root):
@@ -53,7 +66,7 @@ def on_mouse_wheel(event, canvas):
     canvas.yview_scroll(-1 * (event.delta // 120), 'units')
 
 
-def update_scroll_region(event, canvas, scroll_area):
+def update_scroll_region(canvas, scroll_area):
     canvas.update_idletasks()
     canvas.config(scrollregion=scroll_area)
 
@@ -82,7 +95,7 @@ def open_window_of_select_tree(root, player):
 
     window.canvas.bind('<MouseWheel>', lambda event, canvas=window.canvas: on_mouse_wheel(event, canvas))
     work_area = (0, 0, WIDTH, (160 + 30) * number_row + 30)
-    window.canvas.bind('<Configure>', lambda event, canvas=window.canvas, scroll_area=work_area: update_scroll_region(event, canvas, scroll_area))
+    window.canvas.bind('<Configure>', lambda event, canvas=window.canvas, scroll_area=work_area: update_scroll_region(canvas, scroll_area))
 
     padlock_image = PhotoImage(file='./sprites/padlock.png')
 

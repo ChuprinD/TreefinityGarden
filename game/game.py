@@ -27,15 +27,15 @@ def run_game(root=None):
     WIDTH = 1280
     HEIGHT = 720
 
-    buttons = [{'x': WIDTH / 6,     'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/sun_button.png',
+    buttons = [{'x': WIDTH / 6,     'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/regular_buttons/sun.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/sun.png',
                 'command': lambda: player.garden.action(Tree.increase_trunk_length)},
-               {'x': WIDTH / 6 * 2, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/fertilizer_button.png',
+               {'x': WIDTH / 6 * 2, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/regular_buttons/fertilizer.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/fertilizer.png',
                 'command': lambda: player.garden.action(Tree.increase_max_recursion_depth)},
-               {'x': WIDTH / 6 * 3, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/water_button.png',
+               {'x': WIDTH / 6 * 3, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/regular_buttons/water.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/water.png',
                 'command': lambda: player.garden.action(Tree.change_branch_angle)},
-               {'x': WIDTH / 6 * 4, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/plant_button.png',
+               {'x': WIDTH / 6 * 4, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/regular_buttons/plant.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/plant.png',
                 'command': lambda: open_window_of_select_tree(root, player)},
-               {'x': WIDTH / 6 * 5, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/delete_button.png',
+               {'x': WIDTH / 6 * 5, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/regular_buttons/delete.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/delete.png',
                 'command': lambda: player.garden.delete_tree()}]
 
     window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT], path_icon='./sprites/icon.ico',

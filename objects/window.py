@@ -11,23 +11,26 @@ class Window:
         self.size = size
 
         self.canvas = Canvas(self.root, width=size[0], height=size[1], bg='white')
+
         if path_background_img != '':
             self.background_img = PhotoImage(file=path_background_img)
             self.canvas.create_image(0, 0, anchor='nw', image=self.background_img)
 
-        self.buttons_img = [None] * len(buttons)
+        self.buttons_img = [[None, None] for _ in range(len(buttons))]
         self.buttons = [None] * len(buttons)
         for i, button in enumerate(buttons):
             if 'path_img' in button:
-                cur_buttons_img = [PhotoImage(file=button['path_img']), None]
-                cur_button = Button(self.canvas, anchor='center', width=cur_buttons_img[0].width(), height=cur_buttons_img[0].height(),
-                                    borderwidth=0, image=cur_buttons_img[0], command=button['command'])
+                self.buttons_img[i][0] = PhotoImage(file=button['path_img'])
+                self.buttons[i] = Button(self.canvas, anchor='center', width=self.buttons_img[i][0].width(), height=self.buttons_img[i][0].height(),
+                                         borderwidth=0, image=self.buttons_img[i][0], command=button['command'])
 
-                self.buttons[i] = cur_button
-                self.buttons_img[i] = cur_buttons_img
+                if 'path_img_under_cursor' in button:
+                    self.buttons_img[i][1] = PhotoImage(file=button['path_img_under_cursor'])
+                    self.buttons[i].bind('<Enter>', lambda event, button_index=i, is_it_under_cursor=1: self.change_button_image(button_index, is_it_under_cursor))
+                    self.buttons[i].bind('<Leave>', lambda event, button_index=i, is_it_under_cursor=0: self.change_button_image(button_index, is_it_under_cursor))
 
-                self.buttons[i].place(x=button['x'] - cur_buttons_img[0].width() / 2,
-                                      y=button['y'] - cur_buttons_img[0].height() / 2)
+                self.buttons[i].place(x=button['x'] - self.buttons_img[i][0].width() / 2,
+                                      y=button['y'] - self.buttons_img[i][0].height() / 2)
             else:
                 self.buttons.append(Button(self.canvas, command=button['command'], text=button['text'], font=button['font'], width=15))
                 self.buttons[i].place(x=button['x'] - self.buttons[i].winfo_reqwidth() / 2,
@@ -58,6 +61,10 @@ class Window:
 
         self.center_window()
         self.canvas.pack()
+
+
+    def change_button_image(self, button_index, is_it_under_cursor):
+        self.buttons[button_index].config(image=self.buttons_img[button_index][is_it_under_cursor])
 
     def center_window(self):
         screen_width = self.root.winfo_screenwidth()
