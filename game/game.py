@@ -27,17 +27,23 @@ def run_game(root=None):
     WIDTH = 1280
     HEIGHT = 720
 
-    buttons = [{'name': 'magnifier',  'x': WIDTH / 7,     'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/regular_buttons/magnifier_off.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/magnifier_off.png',
+    buttons = [{'name': 'magnifier',  'x': WIDTH / 7,     'y': HEIGHT - HEIGHT / 16 - 3,
+                'path_img': './sprites/buttons/regular_buttons/magnifier_off.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/magnifier_off.png',
                 'command': lambda: player.garden.zoom.activate_zoom(window)},
-               {'name': 'sun',        'x': WIDTH / 7 * 2, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/regular_buttons/sun.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/sun.png',
+               {'name': 'sun',        'x': WIDTH / 7 * 2, 'y': HEIGHT - HEIGHT / 16 - 3,
+                'path_img': './sprites/buttons/regular_buttons/sun.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/sun.png',
                 'command': lambda: player.garden.action(Tree.increase_trunk_length)},
-               {'name': 'fertilizer', 'x': WIDTH / 7 * 3, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/regular_buttons/fertilizer.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/fertilizer.png',
+               {'name': 'fertilizer', 'x': WIDTH / 7 * 3, 'y': HEIGHT - HEIGHT / 16 - 3,
+                'path_img': './sprites/buttons/regular_buttons/fertilizer.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/fertilizer.png',
                 'command': lambda: player.garden.action(Tree.increase_max_recursion_depth)},
-               {'name': 'water',      'x': WIDTH / 7 * 4, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/regular_buttons/water.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/water.png',
+               {'name': 'water',      'x': WIDTH / 7 * 4, 'y': HEIGHT - HEIGHT / 16 - 3,
+                'path_img': './sprites/buttons/regular_buttons/water.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/water.png',
                 'command': lambda: player.garden.action(Tree.change_branch_angle)},
-               {'name': 'plant',      'x': WIDTH / 7 * 5, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/regular_buttons/plant.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/plant.png',
+               {'name': 'plant',      'x': WIDTH / 7 * 5, 'y': HEIGHT - HEIGHT / 16 - 3,
+                'path_img': './sprites/buttons/regular_buttons/plant.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/plant.png',
                 'command': lambda: open_window_of_select_tree(root, player)},
-               {'name': 'delete',     'x': WIDTH / 7 * 6, 'y': HEIGHT - HEIGHT / 16 - 3, 'path_img': './sprites/buttons/regular_buttons/delete.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/delete.png',
+               {'name': 'delete',     'x': WIDTH / 7 * 6, 'y': HEIGHT - HEIGHT / 16 - 3,
+                'path_img': './sprites/buttons/regular_buttons/delete.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/delete.png',
                 'command': lambda: player.garden.delete_tree()}]
 
     window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT], path_icon='./sprites/icon.ico',

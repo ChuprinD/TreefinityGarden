@@ -16,8 +16,6 @@ class Window:
             self.background_img = PhotoImage(file=path_background_img)
             self.canvas.create_image(0, 0, anchor='nw', image=self.background_img)
 
-        #self.buttons_img = [[None, None] for _ in range(len(buttons))]
-        #self.buttons = [None] * len(buttons)
         self.buttons_img = {}
         self.buttons = {}
         for button in buttons:
@@ -65,7 +63,6 @@ class Window:
 
         self.center_window()
         self.canvas.pack()
-
 
     def change_button_image(self, button_name, is_it_under_cursor):
         self.buttons[button_name].config(image=self.buttons_img[button_name][is_it_under_cursor])

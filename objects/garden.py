@@ -191,7 +191,6 @@ class Garden:
                                     arrow_y - int(math.cos(math.radians(arrow_angle)) * side_lines_length),
                                     width=5, fill='red', tag='arrow')
 
-
     def delete_arrow_over_selected_tree(self):
         self.index_cur_tree = -1
         arrow_lines = self.canvas.find_withtag('arrow')

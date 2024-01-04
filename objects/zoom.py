@@ -19,7 +19,6 @@ class Zoom:
         self.garden.canvas.unbind('<Button-1>')
         self.garden.canvas.unbind('<Button-3>')
 
-
     def activate_zoom(self, window):
         self.garden.remove_binds()
         self.garden.delete_arrow_over_selected_tree()
@@ -48,6 +47,7 @@ class Zoom:
 
     def zoom_in(self, event):
         if self.cur_zoom * self.zoom_delta > self.max_zoom:
+            messagebox.showwarning('Warning', 'The maximum zoom depth has been reached')
             return
 
         mouse_pos = (event.x, event.y)

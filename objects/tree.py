@@ -90,7 +90,6 @@ class Tree:
         self.max_branch_thickness = loaded_data['max_branch_thickness']
         self.color_function_name = loaded_data['color_function_name']
 
-
     def check_overlapping_hix_box(self, x, y):
         if (self.trunk_hit_box[0][0] <= x <= self.trunk_hit_box[1][0] and
                 self.trunk_hit_box[0][1] <= y <= self.trunk_hit_box[1][1]):
