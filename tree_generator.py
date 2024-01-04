@@ -19,53 +19,89 @@ def create_slider(parent, update_callback, minimum, maximum, pos, initial_value,
     label = Label(parent, text=label_text)
     label.place(x=pos[0], y=pos[1] + 40)
 
-    slider = Scale(parent, from_=minimum, to=maximum, orient='horizontal', command=update_callback,
+    slider = Scale(parent, from_=minimum, to=maximum, orient='horizontal', command=lambda value: update_callback(value, slider.set),
                    variable=DoubleVar(value=initial_value), resolution=ratio, length=200)
 
     slider.place(x=pos[0], y=pos[1])
     return slider
 
 
-def update_trunk_length(value):
+def update_trunk_length(value, callback):
     global garden
+    old_trunk_length = garden.trees[garden.index_cur_tree].trunk_length
     garden.trees[garden.index_cur_tree].trunk_length = int(value)
-    garden.draw()
+
+    if not garden.trees[garden.index_cur_tree].check_tree_visibility(warning_on=False):
+        garden.trees[garden.index_cur_tree].trunk_length = old_trunk_length
+        callback(old_trunk_length)
+
+    garden.draw(warning_on=False)
 
 
-def update_branch_length_coefficient(value):
+def update_branch_length_coefficient(value, callback):
     global garden
+    old_branch_length_coefficient = garden.trees[garden.index_cur_tree].branch_length_coefficient
     garden.trees[garden.index_cur_tree].branch_length_coefficient = float(value)
-    garden.draw()
+
+    if not garden.trees[garden.index_cur_tree].check_tree_visibility(warning_on=False):
+        garden.trees[garden.index_cur_tree].branch_length_coefficient = old_branch_length_coefficient
+        callback(old_branch_length_coefficient)
+
+    garden.draw(warning_on=False)
 
 
-def update_max_recursion_depth(value):
+def update_max_recursion_depth(value, callback):
     global garden
+    old_max_recursion_depth = garden.trees[garden.index_cur_tree].max_recursion_depth
     garden.trees[garden.index_cur_tree].max_recursion_depth = int(value)
-    garden.draw()
+
+    if not garden.trees[garden.index_cur_tree].check_tree_visibility(warning_on=False):
+        garden.trees[garden.index_cur_tree].max_recursion_depth = old_max_recursion_depth
+        callback(old_max_recursion_depth)
+
+    garden.draw(warning_on=False)
 
 
-def update_branch_angle1(value):
+def update_branch_angle1(value, callback):
     global garden
+    old_branch_angle1 = garden.trees[garden.index_cur_tree].branch_angle[0]
     garden.trees[garden.index_cur_tree].branch_angle = (int(value), garden.trees[garden.index_cur_tree].branch_angle[1])
-    garden.draw()
+
+    if not garden.trees[garden.index_cur_tree].check_tree_visibility(warning_on=False):
+        garden.trees[garden.index_cur_tree].branch_angle = (old_branch_angle1, garden.trees[garden.index_cur_tree].branch_angle[1])
+        callback(old_branch_angle1)
+
+    garden.draw(warning_on=False)
 
 
-def update_branch_angle2(value):
+def update_branch_angle2(value, callback):
     global garden
+    old_branch_angle2 = garden.trees[garden.index_cur_tree].branch_angle[1]
     garden.trees[garden.index_cur_tree].branch_angle = (garden.trees[garden.index_cur_tree].branch_angle[0], int(value))
-    garden.draw()
+
+    if not garden.trees[garden.index_cur_tree].check_tree_visibility(warning_on=False):
+        garden.trees[garden.index_cur_tree].branch_angle = (garden.trees[garden.index_cur_tree].branch_angle[0], old_branch_angle2)
+        callback(old_branch_angle2)
+
+    garden.draw(warning_on=False)
 
 
-def update_max_branch_thickness(value):
+def update_max_branch_thickness(value, callback):
     global garden
+    old_max_branch_thickness = garden.trees[garden.index_cur_tree].max_branch_thickness
     garden.trees[garden.index_cur_tree].max_branch_thickness = int(value)
-    garden.draw()
+
+    if not garden.trees[garden.index_cur_tree].check_tree_visibility(warning_on=False):
+        garden.trees[garden.index_cur_tree].max_branch_thickness = old_max_branch_thickness
+        callback(old_max_branch_thickness)
+
+    garden.draw(warning_on=False)
 
 
 def update_color_function_name(pos):
     global garden
     garden.trees[garden.index_cur_tree].color_function_name = str(pos)
-    garden.draw()
+    garden.draw(warning_on=False)
 
 
 def create_file(window=None, name='test'):
@@ -82,7 +118,7 @@ def create_file(window=None, name='test'):
 def load_file(window, name):
     global garden
     garden.trees[garden.index_cur_tree].load_tree_from_json(name)
-    garden.draw()
+    garden.draw(warning_on=False)
 
     window.destroy()
 
@@ -143,13 +179,13 @@ def change_tree_position(pos):
     garden.trees[garden.index_cur_tree].pos = garden.trees_pos[position]
     garden.trees[garden.index_cur_tree], garden.trees[pos] = garden.trees[pos], garden.trees[garden.index_cur_tree]
     garden.index_cur_tree = pos
-    garden.draw()
+    garden.draw(warning_on=False)
 
 
 def change_season(season):
     global garden
     garden.cur_season = season
-    garden.draw()
+    garden.draw(warning_on=False)
 
 
 def open_tool_window(root):
@@ -270,16 +306,16 @@ def run_generator(admin):
 
     root.protocol('WM_DELETE_WINDOW', lambda: close_generator(root))
 
-    buttons = [{'x': SIZE[0] // 4, 'y': SIZE[1] * 14 // 15, 'path_img': './sprites/buttons/regular_buttons/save.png',
+    buttons = [{'name': 'save', 'x': SIZE[0] // 4, 'y': SIZE[1] * 14 // 15, 'path_img': './sprites/buttons/regular_buttons/save.png',
                 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/save.png',
                 'command': lambda: enter_tree_name(root)},
-               {'x': SIZE[0] * 3 // 4, 'y': SIZE[1] * 14 // 15,
+               {'name': 'tool_window', 'x': SIZE[0] * 3 // 4, 'y': SIZE[1] * 14 // 15,
                 'path_img': './sprites/buttons/regular_buttons/tool_window.png',
                 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/tool_window.png',
                 'command': lambda: open_tool_window(root)}]
 
     if is_it_admin:
-        buttons.append({'x': SIZE[0] * 2 // 4, 'y': SIZE[1] * 14 // 15, 'path_img': './sprites/buttons/regular_buttons/load_tree.png',
+        buttons.append({'name': 'load_tree', 'x': SIZE[0] * 2 // 4, 'y': SIZE[1] * 14 // 15, 'path_img': './sprites/buttons/regular_buttons/load_tree.png',
                         'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/load_tree.png',
                         'command': lambda: load_tree(root)})
 
@@ -297,7 +333,7 @@ def run_generator(admin):
 
     garden.set_tree_on_position(tree, 2)
     garden.index_cur_tree = 2
-    garden.draw()
+    garden.draw(warning_on=False)
 
     root.mainloop()
 

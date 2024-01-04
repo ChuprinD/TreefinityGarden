@@ -28,13 +28,13 @@ def run_menu():
     WIDTH = 420
     HEIGHT = 720
 
-    buttons = [{'x': WIDTH // 2, 'y': HEIGHT * 4 // 9, 'path_img': './sprites/buttons/regular_buttons/start.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/start.png',
+    buttons = [{'name': 'start',        'x': WIDTH // 2, 'y': HEIGHT * 4 // 9,                    'path_img': './sprites/buttons/regular_buttons/start.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/start.png',
                 'command': lambda: close_menu_run_game(root)},
-               {'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT // 10, 'path_img': './sprites/buttons/regular_buttons/create_skin.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/create_skin.png',
+               {'name': 'create_skin',  'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT // 10,     'path_img': './sprites/buttons/regular_buttons/create_skin.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/create_skin.png',
                 'command': lambda: close_menu_run_generator(root)},
-               {'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT // 5, 'path_img': './sprites/buttons/regular_buttons/achievements.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/achievements.png',
+               {'name': 'achievements', 'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT // 5,      'path_img': './sprites/buttons/regular_buttons/achievements.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/achievements.png',
                 'command': lambda: open_achievement_window(root)},
-               {'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT * 3 // 10, 'path_img': './sprites/buttons/regular_buttons/reset.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/reset.png',
+               {'name': 'reset',        'x': WIDTH // 2, 'y': HEIGHT * 4 // 9 + HEIGHT * 3 // 10, 'path_img': './sprites/buttons/regular_buttons/reset.png', 'path_img_under_cursor': './sprites/buttons/under_cursor_buttons/reset.png',
                 'command': lambda: set_player_default_file('./players/player.txt')}]
 
     window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT], path_icon='./sprites/icon.ico',

@@ -3,14 +3,15 @@ from tkinter import *
 from tkinter import messagebox
 
 from objects.tree import Tree
+from objects.zoom import Zoom
 
 
 class Garden:
     def __init__(self, canvas):
         self.canvas = canvas
+        self.zoom = Zoom(garden=self, zoom_delta=2)
 
-        self.canvas.bind('<Motion>', self.draw_hit_box)
-        self.canvas.bind('<Button-1>', self.choose_tree)
+        self.set_binds()
 
         self.trees_pos = [(1 / 6, 57 / 63), (2 / 6, 59 / 63), (3 / 6, 61 / 63), (4 / 6, 59 / 63), (5 / 6, 57 / 63)]
         self.max_number_trees = 5
@@ -28,6 +29,14 @@ class Garden:
         self.season_background = None
 
         self.index_cur_tree = -1
+
+    def set_binds(self):
+        self.canvas.bind('<Motion>', self.draw_hit_box)
+        self.canvas.bind('<Button-1>', self.choose_tree)
+
+    def remove_binds(self):
+        self.canvas.unbind('<Motion>')
+        self.canvas.unbind('<Button-1>')
 
     def draw_day_counter(self):
         if self.day_label is not None:
@@ -64,7 +73,7 @@ class Garden:
         else:
             messagebox.showwarning('Warning', 'Max amount of trees was reached')
 
-        self.draw()
+        self.draw(warning_on=True)
 
     def add_tree_from_file(self, file_name):
         tree = Tree(canvas=self.canvas)
@@ -76,35 +85,42 @@ class Garden:
             tree.pos = self.trees_pos[position]
             self.trees[position] = tree
             self.number_planted_trees += 1
-            self.draw()
+            self.draw(warning_on=True)
 
     def delete_tree(self):
-        if self.index_cur_tree == -1:
+        if self.zoom.is_zoom_activated:
+            messagebox.showwarning('Warning', 'You\'re in zoom mode. You can\'t change the garden')
+        elif self.index_cur_tree == -1:
             if self.trees.count(None) != self.max_number_trees:
                 messagebox.showwarning('Warning', 'Please choose a tree')
             else:
                 messagebox.showwarning('Warning', 'The garden is empty')
         else:
             self.trees[self.index_cur_tree] = None
-            self.index_cur_tree = -1
+            self.delete_arrow_over_selected_tree()
             self.number_felled_trees += 1
-            self.draw()
+            self.draw(warning_on=True)
+            self.next_day()
 
-        self.next_day()
-
-    def draw(self):
+    def draw(self, warning_on):
         self.clean_garden()
         self.draw_season()
         self.draw_day_counter()
+
         for tree in self.trees:
             if tree is not None:
-                tree.draw()
+                tree.draw(warning_on)
+
+        if self.index_cur_tree != -1:
+            self.trees[self.index_cur_tree].draw(warning_on)
 
         self.draw_arrow_over_selected_tree()
 
     def action(self, command):
         # only one manipulation with a tree in one day
-        if self.index_cur_tree != -1:
+        if self.zoom.is_zoom_activated:
+            messagebox.showwarning('Warning', 'You\'re in zoom mode. You can\'t change the garden')
+        elif self.index_cur_tree != -1:
             if command(self.trees[self.index_cur_tree]):
                 self.next_day()
         elif self.trees.count(None) != self.max_number_trees:
@@ -116,7 +132,7 @@ class Garden:
         self.day_counter += 1
         if self.day_counter % self.days_in_season == 0:
             self.cur_season = (self.cur_season + 1) % len(self.seasons)
-        self.draw()
+        self.draw(warning_on=True)
 
     def clean_garden(self):
         # delete all stuff except background
@@ -130,27 +146,25 @@ class Garden:
             self.canvas.delete('all')
 
     def draw_hit_box(self, event):
-        mouse_pos = (self.canvas.winfo_pointerx() - self.canvas.winfo_rootx(),
-                     self.canvas.winfo_pointery() - self.canvas.winfo_rooty())
+        mouse_pos = (event.x, event.y)
 
         for i, tree in enumerate(self.trees):
             if tree is not None:
                 if tree.check_overlapping_hix_box(mouse_pos[0], mouse_pos[1]):
                     self.canvas.create_rectangle(tree.trunk_hit_box[0][0], tree.trunk_hit_box[0][1],
                                                  tree.trunk_hit_box[1][0], tree.trunk_hit_box[1][1],
-                                                 width=2, tags='tree_' + str(i))
+                                                 width=3, tags='tree_' + str(i))
 
                 else:
                     self.canvas.delete('tree_' + str(i))
 
     def choose_tree(self, event):
-        mouse_pos = (self.canvas.winfo_pointerx() - self.canvas.winfo_rootx(),
-                     self.canvas.winfo_pointery() - self.canvas.winfo_rooty())
+        mouse_pos = (event.x, event.y)
 
         for i, tree in enumerate(self.trees):
             if tree is not None and tree.check_overlapping_hix_box(mouse_pos[0], mouse_pos[1]):
                 self.index_cur_tree = i
-                self.draw()
+                self.draw(warning_on=True)
 
     def get_first_free_position(self):
         for pos in range(self.max_number_trees):
@@ -165,9 +179,21 @@ class Garden:
             arrow_angle = 30
             side_lines_length = 30
 
-            self.canvas.create_line(arrow_x, arrow_y, arrow_x, 20, width=5, fill='red')
-            self.canvas.create_line(arrow_x, arrow_y,
-                                    arrow_x + int(math.sin(math.radians(arrow_angle)) * side_lines_length), arrow_y - int(math.cos(math.radians(arrow_angle)) * side_lines_length), width=5, fill='red')
-            self.canvas.create_line(arrow_x, arrow_y,
-                                    arrow_x - int(math.sin(math.radians(arrow_angle)) * side_lines_length), arrow_y - int(math.cos(math.radians(arrow_angle)) * side_lines_length), width=5, fill='red')
+            self.canvas.create_line(arrow_x, arrow_y, arrow_x, 20, width=5, fill='red', tag='arrow')
+            self.canvas.create_line(arrow_x,
+                                    arrow_y,
+                                    arrow_x + int(math.sin(math.radians(arrow_angle)) * side_lines_length),
+                                    arrow_y - int(math.cos(math.radians(arrow_angle)) * side_lines_length),
+                                    width=5, fill='red', tag='arrow')
+            self.canvas.create_line(arrow_x,
+                                    arrow_y,
+                                    arrow_x - int(math.sin(math.radians(arrow_angle)) * side_lines_length),
+                                    arrow_y - int(math.cos(math.radians(arrow_angle)) * side_lines_length),
+                                    width=5, fill='red', tag='arrow')
 
+
+    def delete_arrow_over_selected_tree(self):
+        self.index_cur_tree = -1
+        arrow_lines = self.canvas.find_withtag('arrow')
+        for line in arrow_lines:
+            self.canvas.delete(line)

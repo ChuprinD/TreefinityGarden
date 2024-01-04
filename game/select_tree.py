@@ -31,7 +31,7 @@ def draw_all_trees(window, player, picture_tree_size, lock_image):
         tree.trunk_length = 45
         tree.max_recursion_depth = 7
         tree.max_branch_thickness = 5
-        tree.draw()
+        tree.draw(warning_on=False)
 
         if str(i + 1) in player.skins and not player.skins[str(i + 1)][0]:
             tree.canvas.create_image(picture_tree_size // 3, picture_tree_size // 3, anchor='nw', image=lock_image)

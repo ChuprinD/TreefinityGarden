@@ -48,16 +48,16 @@ class Tree:
             self.generate_tree(new_pos, angle - self.branch_angle[0], length, depth - 1, to_draw)
             self.generate_tree(new_pos, angle + self.branch_angle[1], length, depth - 1, to_draw)
 
-    def draw(self):
+    def draw(self, warning_on):
         self.update_trunk_hit_box()
         self.hit_box = [[self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight()], [0, 0]]
-        if self.check_tree_visibility():
+        if self.check_tree_visibility(warning_on):
             self.generate_tree(pos=self.get_tree_coordinates(), angle=self.trunk_angle, length=self.trunk_length,
                                depth=self.max_recursion_depth, to_draw=True)
 
     def increase_trunk_length(self):
         self.trunk_length += 10
-        if not self.check_tree_visibility():
+        if not self.check_tree_visibility(warning_on=True):
             self.trunk_length -= 10
             return False
 
@@ -65,7 +65,7 @@ class Tree:
 
     def increase_max_recursion_depth(self):
         self.max_recursion_depth += 1
-        if not self.check_tree_visibility():
+        if not self.check_tree_visibility(warning_on=True):
             self.max_recursion_depth -= 1
             return False
 
@@ -73,7 +73,7 @@ class Tree:
 
     def change_branch_angle(self):
         self.branch_angle = (self.branch_angle[0] + 10, self.branch_angle[1] - 5)
-        if not self.check_tree_visibility():
+        if not self.check_tree_visibility(warning_on=True):
             self.branch_angle = (self.branch_angle[0] - 10, self.branch_angle[1] + 5)
             return False
 
@@ -115,13 +115,14 @@ class Tree:
     def get_tree_coordinates(self):
         return self.pos[0] * self.canvas.winfo_reqwidth(), self.pos[1] * self.canvas.winfo_reqheight()
 
-    def check_tree_visibility(self):
+    def check_tree_visibility(self, warning_on):
         self.update_hit_box()
         if (0 <= self.hit_box[0][0] and self.hit_box[1][0] <= self.canvas.winfo_reqwidth() and
             self.canvas.winfo_reqheight() // 7 <= self.hit_box[0][1] and self.hit_box[1][1] <= self.canvas.winfo_reqheight()):
             return True
 
-        messagebox.showwarning('Warning', 'Tree is too big')
+        if warning_on:
+            messagebox.showwarning('Warning', 'Tree is too big')
         return False
 
     def update_hit_box(self):
