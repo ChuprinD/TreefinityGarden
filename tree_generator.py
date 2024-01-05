@@ -104,23 +104,23 @@ def update_color_function_name(pos):
     garden.draw(warning_on=False)
 
 
-def create_file(window=None, name='test'):
+def create_file(cur_window=None, name='test'):
     cur_tree = {'branch_length_coefficient': garden.trees[garden.index_cur_tree].branch_length_coefficient, 'branch_angle': garden.trees[garden.index_cur_tree].branch_angle,
                 'max_branch_thickness': garden.trees[garden.index_cur_tree].max_branch_thickness, 'color_function_name': garden.trees[garden.index_cur_tree].color_function_name}
 
     set_tree_to_file(cur_tree, './trees/' + name + '.txt')
     messagebox.showinfo('Saved', 'You have successfully saved the skin!')
 
-    if window is not None:
-        window.destroy()
+    if cur_window is not None:
+        cur_window.destroy()
 
 
-def load_file(window, name):
+def load_file(cur_window, name):
     global garden
     garden.trees[garden.index_cur_tree].load_tree_from_json(name)
     garden.draw(warning_on=False)
 
-    window.destroy()
+    cur_window.destroy()
 
 
 def enter_tree_name(root):
@@ -173,12 +173,21 @@ def load_tree(root):
     button_create.place(x=SIZE[0] / 9, y=SIZE[1] * 2 / 9, width=SIZE[0] / 9, height=SIZE[1] / 22)
 
 
-def change_tree_position(pos):
+def change_tree_position(new_position_index, radio_buttons):
     global garden
-    position = int(pos)
-    garden.trees[garden.index_cur_tree].pos = garden.trees_pos[position]
-    garden.trees[garden.index_cur_tree], garden.trees[pos] = garden.trees[pos], garden.trees[garden.index_cur_tree]
-    garden.index_cur_tree = pos
+    old_tree_pos = garden.trees[garden.index_cur_tree].pos
+    old_tree_index = garden.index_cur_tree
+
+    garden.trees[garden.index_cur_tree].pos = garden.trees_pos[new_position_index]
+    garden.trees[garden.index_cur_tree], garden.trees[new_position_index] = garden.trees[new_position_index], garden.trees[garden.index_cur_tree]
+    garden.index_cur_tree = new_position_index
+
+    if not garden.trees[garden.index_cur_tree].check_tree_visibility(warning_on=True):
+        garden.trees[old_tree_index], garden.trees[new_position_index] = garden.trees[new_position_index], garden.trees[old_tree_index]
+        garden.trees[old_tree_index].pos = old_tree_pos
+        garden.index_cur_tree = old_tree_index
+        radio_buttons[old_tree_index].select()
+
     garden.draw(warning_on=False)
 
 
@@ -237,66 +246,32 @@ def open_tool_window(root):
     label_combobox_color.place(x=combobox_color_pos[0], y=combobox_color_pos[1] - 25)
 
     cur_tree_pos = IntVar()
-    radiobutton_tree_pos = (250, 60)
-    r_position_0 = Radiobutton(tool_window, text='Position 0', variable=cur_tree_pos, value=0,
-                               command=lambda: change_tree_position(cur_tree_pos.get()))
-    r_position_0.place(x=radiobutton_tree_pos[0], y=radiobutton_tree_pos[1])
+    radio_button_tree_pos = (250, 60)
+    tree_pos_radio_buttons = []
+    number_pos_radio_buttons = 5
+    for index_radio_button in range(number_pos_radio_buttons):
+        cur_radio_button = Radiobutton(tool_window, text='Position ' + str(index_radio_button), variable=cur_tree_pos,
+                                       value=index_radio_button, command=lambda: change_tree_position(cur_tree_pos.get(), tree_pos_radio_buttons))
+        cur_radio_button.place(x=radio_button_tree_pos[0], y=radio_button_tree_pos[1] + 30 * index_radio_button)
 
-    r_position_1 = Radiobutton(tool_window, text='Position 1', variable=cur_tree_pos, value=1,
-                               command=lambda: change_tree_position(cur_tree_pos.get()))
-    r_position_1.place(x=radiobutton_tree_pos[0], y=radiobutton_tree_pos[1] + 30)
+        if index_radio_button == garden.index_cur_tree:
+            cur_radio_button.select()
 
-    r_position_2 = Radiobutton(tool_window, text='Position 2', variable=cur_tree_pos, value=2,
-                               command=lambda: change_tree_position(cur_tree_pos.get()))
-    r_position_2.place(x=radiobutton_tree_pos[0], y=radiobutton_tree_pos[1] + 60)
-
-    r_position_3 = Radiobutton(tool_window, text='Position 3', variable=cur_tree_pos, value=3,
-                               command=lambda: change_tree_position(cur_tree_pos.get()))
-    r_position_3.place(x=radiobutton_tree_pos[0], y=radiobutton_tree_pos[1] + 90)
-
-    r_position_4 = Radiobutton(tool_window, text='Position 4', variable=cur_tree_pos, value=4,
-                               command=lambda: change_tree_position(cur_tree_pos.get()))
-    r_position_4.place(x=radiobutton_tree_pos[0], y=radiobutton_tree_pos[1] + 120)
-
-    match garden.index_cur_tree:
-        case 0:
-            r_position_0.select()
-        case 1:
-            r_position_1.select()
-        case 2:
-            r_position_2.select()
-        case 3:
-            r_position_3.select()
-        case 4:
-            r_position_4.select()
+        tree_pos_radio_buttons.append(cur_radio_button)
 
     cur_season = IntVar()
-    radiobutton_season = (350, 60)
-    r_summer = Radiobutton(tool_window, text='Summer', variable=cur_season, value=0,
-                           command=lambda: change_season(cur_season.get()))
-    r_summer.place(x=radiobutton_season[0], y=radiobutton_season[1])
+    radio_button_season = (350, 60)
+    season_radio_buttons = []
+    number_season_radio_buttons = 4
+    for index_radio_button in range(number_season_radio_buttons):
+        cur_radio_button = Radiobutton(tool_window, text=str(garden.seasons[index_radio_button]), variable=cur_season,
+                                       value=index_radio_button, command=lambda: change_season(cur_season.get()))
+        cur_radio_button.place(x=radio_button_season[0], y=radio_button_season[1] + 30 * index_radio_button)
 
-    r_autumn = Radiobutton(tool_window, text='Autumn', variable=cur_season, value=1,
-                           command=lambda: change_season(cur_season.get()))
-    r_autumn.place(x=radiobutton_season[0], y=radiobutton_season[1] + 30)
+        if index_radio_button == garden.cur_season:
+            cur_radio_button.select()
 
-    r_winter = Radiobutton(tool_window, text='Winter', variable=cur_season, value=2,
-                           command=lambda: change_season(cur_season.get()))
-    r_winter.place(x=radiobutton_season[0], y=radiobutton_season[1] + 60)
-
-    r_spring = Radiobutton(tool_window, text='Spring', variable=cur_season, value=3,
-                           command=lambda: change_season(cur_season.get()))
-    r_spring.place(x=radiobutton_season[0], y=radiobutton_season[1] + 90)
-
-    match garden.cur_season:
-        case 0:
-            r_summer.select()
-        case 1:
-            r_autumn.select()
-        case 2:
-            r_winter.select()
-        case 3:
-            r_spring.select()
+        season_radio_buttons.append(cur_radio_button)
 
 
 def run_generator(admin):
