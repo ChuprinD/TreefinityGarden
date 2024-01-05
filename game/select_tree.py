@@ -72,6 +72,10 @@ def update_scroll_region(canvas, scroll_area):
 
 
 def open_window_of_select_tree(root, player):
+    if player.garden.zoom.is_zoom_activated:
+        messagebox.showwarning('Warning', 'You\'re in zoom mode. You can\'t change the garden')
+        return
+
     select_tree_window = Toplevel(root)
 
     with open('./trees/skin_counter.txt', 'r') as file:

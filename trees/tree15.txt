@@ -1,0 +1,5 @@
+tree
+branch_length_coefficient: 0.7
+branch_angle: (90, 90)
+max_branch_thickness: 15
+color_function_name: ukrainian_coloring
