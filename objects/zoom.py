@@ -25,9 +25,9 @@ class Zoom:
         self.set_binds()
         self.prev_mouse_pos.clear()
 
-        window.buttons_img['magnifier'] = [PhotoImage(file='./sprites/buttons/regular_buttons/magnifier_on.png'),
-                                           PhotoImage(file='./sprites/buttons/under_cursor_buttons/magnifier_on.png')]
-        window.buttons['magnifier'].config(image=window.buttons_img['magnifier'][0], command=lambda: self.deactivate_zoom(window))
+        window.set_button_image('magnifier', [PhotoImage(file='./sprites/buttons/regular_buttons/magnifier_on.png'),
+                                PhotoImage(file='./sprites/buttons/under_cursor_buttons/magnifier_on.png')])
+        window.set_button_command('magnifier', lambda: self.deactivate_zoom(window))
 
         self.is_zoom_activated = True
         messagebox.showinfo('Zoom activated', 'Left-click: Zoom In\nRight-click: Zoom Out')
@@ -38,9 +38,10 @@ class Zoom:
 
         while self.cur_zoom != 1:
             self.zoom((0, 0), 1 / self.zoom_delta)
-        window.buttons_img['magnifier'] = [PhotoImage(file='./sprites/buttons/regular_buttons/magnifier_off.png'),
-                                           PhotoImage(file='./sprites/buttons/under_cursor_buttons/magnifier_off.png')]
-        window.buttons['magnifier'].config(image=window.buttons_img['magnifier'][0], command=lambda: self.activate_zoom(window))
+
+        window.set_button_image('magnifier', [PhotoImage(file='./sprites/buttons/regular_buttons/magnifier_off.png'),
+                                PhotoImage(file='./sprites/buttons/under_cursor_buttons/magnifier_off.png')])
+        window.set_button_command('magnifier', command=lambda: self.activate_zoom(window))
 
         self.is_zoom_activated = False
         messagebox.showinfo('Zoom deactivated', 'Zoom successfully deactivated')

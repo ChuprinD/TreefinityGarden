@@ -67,6 +67,13 @@ class Window:
     def change_button_image(self, button_name, is_it_under_cursor):
         self.buttons[button_name].config(image=self.buttons_img[button_name][is_it_under_cursor])
 
+    def set_button_image(self, button_name, img_paths):
+        self.buttons_img[button_name] = img_paths
+        self.buttons[button_name].config(image=self.buttons_img[button_name][0])
+
+    def set_button_command(self, button_name, command):
+        self.buttons[button_name].config(command=command)
+
     def center_window(self):
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
