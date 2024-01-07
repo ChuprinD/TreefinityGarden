@@ -2,8 +2,8 @@ import math
 from tkinter import *
 from tkinter import messagebox
 
-from objects.window import Window
-from objects.tree import Tree
+from src.objects.window import Window
+from src.objects.tree import Tree
 
 
 def set_tree_canvases(gap_size, picture_tree_size, number_row, numbers_skins_on_last_row):
@@ -78,7 +78,7 @@ def open_window_of_select_tree(root, player):
 
     select_tree_window = Toplevel(root)
 
-    with open('./trees/skin_counter.txt', 'r') as file:
+    with open('resources/trees/skin_counter.txt', 'r') as file:
         number_of_skins = int(file.readline().strip())
 
     number_row = math.ceil(number_of_skins / 3)
@@ -90,7 +90,7 @@ def open_window_of_select_tree(root, player):
     HEIGHT = 600
 
     window = Window(select_tree_window, title='Select Tree', size=[WIDTH, HEIGHT],
-                    path_icon='./sprites/icon.ico', path_background_img='./sprites/backgrounds/scroll_background.png',
+                    path_icon='resources/sprites/icon.ico', path_background_img='resources/sprites/backgrounds/scroll_background.png',
                     canvases=set_tree_canvases(gap_size=30, picture_tree_size=160, number_row=number_row, numbers_skins_on_last_row=numbers_skins_on_last_row))
 
     scrollbar = Scrollbar(select_tree_window, command=window.canvas.yview)
@@ -101,7 +101,7 @@ def open_window_of_select_tree(root, player):
     work_area = (0, 0, WIDTH, (160 + 30) * number_row + 30)
     window.canvas.bind('<Configure>', lambda event, canvas=window.canvas, scroll_area=work_area: update_scroll_region(canvas, scroll_area))
 
-    padlock_image = PhotoImage(file='./sprites/padlock.png')
+    padlock_image = PhotoImage(file='resources/sprites/padlock.png')
 
     draw_all_trees(window=window, player=player, picture_tree_size=160, lock_image=padlock_image)
 

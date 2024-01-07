@@ -1,6 +1,6 @@
-from objects.achievement import Achievement
-from objects.tree import Tree
-from utilities.json import get_data_from_file, set_player_to_file
+from src.objects.achievement import Achievement
+from src.objects.tree import Tree
+from src.utilities.json import get_data_from_file, set_player_to_file
 
 
 class Player:
@@ -35,10 +35,10 @@ class Player:
                             'branch_angle': tree.branch_angle, 'max_branch_thickness': tree.max_branch_thickness, 'color_function_name': tree.color_function_name}
                 trees_data.append(cur_tree)
 
-        set_player_to_file(player_data, garden_data, trees_data, './players/player.txt')
+        set_player_to_file(player_data, garden_data, trees_data, 'resources/players/player.txt')
 
     def load_player(self):
-        data = get_data_from_file('./players/player.txt')
+        data = get_data_from_file('resources/players/player.txt')
         player_data = data['player']
         self.name = player_data['name']
         for achievement in self.all_achievements:

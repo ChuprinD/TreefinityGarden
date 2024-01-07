@@ -1,10 +1,10 @@
 from tkinter import *
 
-from objects.window import Window
+from src.objects.window import Window
 
 
 def close_achievements(root):
-    from menu.menu import run_menu
+    from src.menu.menu import run_menu
     root.destroy()
     run_menu()
 

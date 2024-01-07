@@ -25,8 +25,8 @@ class Zoom:
         self.set_binds()
         self.prev_mouse_pos.clear()
 
-        window.set_button_image('magnifier', [PhotoImage(file='./sprites/buttons/regular_buttons/magnifier_on.png'),
-                                PhotoImage(file='./sprites/buttons/under_cursor_buttons/magnifier_on.png')])
+        window.set_button_image('magnifier', [PhotoImage(file='resources/sprites/buttons/regular_buttons/magnifier_on.png'),
+                                PhotoImage(file='resources/sprites/buttons/under_cursor_buttons/magnifier_on.png')])
         window.set_button_command('magnifier', lambda: self.deactivate_zoom(window))
 
         self.is_zoom_activated = True
@@ -39,8 +39,8 @@ class Zoom:
         while self.cur_zoom != 1:
             self.zoom((0, 0), 1 / self.zoom_delta)
 
-        window.set_button_image('magnifier', [PhotoImage(file='./sprites/buttons/regular_buttons/magnifier_off.png'),
-                                PhotoImage(file='./sprites/buttons/under_cursor_buttons/magnifier_off.png')])
+        window.set_button_image('magnifier', [PhotoImage(file='resources/sprites/buttons/regular_buttons/magnifier_off.png'),
+                                PhotoImage(file='resources/sprites/buttons/under_cursor_buttons/magnifier_off.png')])
         window.set_button_command('magnifier', command=lambda: self.activate_zoom(window))
 
         self.is_zoom_activated = False

@@ -1,9 +1,9 @@
 import math
 from tkinter import messagebox
 
-from utilities.color import get_coloring_by_name
-from utilities.math import linear_interpolation
-from utilities.json import get_data_from_file
+from src.utilities.color import get_coloring_by_name
+from src.utilities.math import linear_interpolation
+from src.utilities.json import get_data_from_file
 
 
 class Tree:
@@ -80,7 +80,7 @@ class Tree:
         return True
 
     def load_tree_from_json(self, file_name):
-        loaded_data = get_data_from_file('./trees/' + file_name + '.txt')
+        loaded_data = get_data_from_file('resources/trees/' + file_name + '.txt')
 
         self.trunk_length = 100
         self.max_recursion_depth = 2

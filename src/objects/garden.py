@@ -2,8 +2,8 @@ import math
 from tkinter import *
 from tkinter import messagebox
 
-from objects.tree import Tree
-from objects.zoom import Zoom
+from src.objects.tree import Tree
+from src.objects.zoom import Zoom
 
 
 class Garden:
@@ -50,13 +50,13 @@ class Garden:
             self.season_label.destroy()
 
         if self.cur_season == 0:
-            self.season_background = PhotoImage(file='./sprites/backgrounds/summer_background.png')
+            self.season_background = PhotoImage(file='resources/sprites/backgrounds/summer_background.png')
         elif self.cur_season == 1:
-            self.season_background = PhotoImage(file='./sprites/backgrounds/autumn_background.png')
+            self.season_background = PhotoImage(file='resources/sprites/backgrounds/autumn_background.png')
         elif self.cur_season == 2:
-            self.season_background = PhotoImage(file='./sprites/backgrounds/winter_background.png')
+            self.season_background = PhotoImage(file='resources/sprites/backgrounds/winter_background.png')
         elif self.cur_season == 3:
-            self.season_background = PhotoImage(file='./sprites/backgrounds/spring_background.png')
+            self.season_background = PhotoImage(file='resources/sprites/backgrounds/spring_background.png')
 
         self.canvas.create_image(0, 0, anchor='nw', image=self.season_background, tags='bg')
 
