@@ -28,9 +28,19 @@ def neon_coloring(depth, max_depth):
 
 
 def ukrainian_coloring(depth, max_depth):
-    light_blue = (0, 191, 255)
-    yellow = (255, 186, 0)
-    return blend_colors(light_blue, yellow, depth / max_depth)
+    if depth < max_depth // 2 + 1:
+        return '#00BFFF'
+    else:
+        return '#FFBA00'
+
+
+def russian_coloring(depth, max_depth):
+    if depth < max_depth // 3 + 1:
+        return '#FFFFFF'
+    elif depth < max_depth // 3 * 2 + 1:
+        return '#0C13A1'
+    else:
+        return '#D40C00'
 
 
 def red_white_coloring(depth, max_depth):
@@ -63,11 +73,18 @@ def purple_green_coloring(depth, max_depth):
     return blend_colors(sacramento, purple, depth / max_depth)
 
 
+def tropical_coloring(depth, max_depth):
+    violet = (242, 162, 229)
+    olive = (72, 115, 3)
+    return blend_colors(violet, olive, depth / max_depth)
+
+
 COLORINGS = {'natural_coloring': natural_coloring, 'pink_coloring': pink_coloring,
              'neon_coloring': neon_coloring, 'default_coloring': default_coloring,
              'ukrainian_coloring': ukrainian_coloring, 'red_white_coloring': red_white_coloring,
              'gold_coloring': gold_coloring, 'green_black_coloring': green_black_coloring,
-             'luxury_coloring': luxury_coloring, 'purple_green_coloring': purple_green_coloring}
+             'luxury_coloring': luxury_coloring, 'purple_green_coloring': purple_green_coloring,
+             'tropical_coloring': tropical_coloring, 'russian_coloring': russian_coloring}
 
 
 def get_coloring_by_name(name):

@@ -10,7 +10,7 @@ class Window:
 
         self.size = size
 
-        self.canvas = Canvas(self.root, width=size[0], height=size[1], bg='white')
+        self.canvas = Canvas(self.root, width=size[0], height=size[1], bg='black', borderwidth=0)
 
         if path_background_img != '':
             self.background_img = PhotoImage(file=path_background_img)
@@ -53,7 +53,7 @@ class Window:
                 color = 'black'
 
             canvas_size = (abs(coords[0] - coords[2]), abs(coords[1] - coords[3]))
-            inner_canvas = Canvas(self.root, width=canvas_size[0], height=canvas_size[1], bg=color)
+            inner_canvas = Canvas(self.root, width=canvas_size[0], height=canvas_size[1], bg=color, borderwidth=0)
             inner_canvas.place(x=coords[0], y=coords[1], width=canvas_size[0], height=canvas_size[1])
             self.canvas.create_window(coords[0], coords[1], width=canvas_size[0], height=canvas_size[1], anchor='nw', window=inner_canvas)
             if 'bg_picture' in canvas:

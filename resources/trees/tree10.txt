@@ -1,5 +1,5 @@
 tree
-branch_length_coefficient: 0.62
-branch_angle: [5, 5]
-max_branch_thickness: 12
-color_function_name: gold_coloring
+branch_length_coefficient: 0.7
+branch_angle: (23, 54)
+max_branch_thickness: 13
+color_function_name: tropical_coloring

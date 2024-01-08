@@ -1,3 +1,4 @@
+import os
 import math
 from tkinter import *
 from tkinter import messagebox
@@ -15,8 +16,9 @@ def set_tree_canvases(gap_size, picture_tree_size, number_row, numbers_skins_on_
             max_column = 3
         for x in range(max_column):
             cur_canvas = {'name': 'tree' + str((x + 1) + 3 * y), 'bg': '#87cefa',
-                          'coords': (gap_size + (gap_size + picture_tree_size) * x, gap_size + (gap_size + picture_tree_size) * y,
-                                     (gap_size + picture_tree_size) * (x + 1), (gap_size + picture_tree_size) * (y + 1))}
+                          'coords': (
+                          gap_size + (gap_size + picture_tree_size) * x, gap_size + (gap_size + picture_tree_size) * y,
+                          (gap_size + picture_tree_size) * (x + 1), (gap_size + picture_tree_size) * (y + 1))}
             canvases.append(cur_canvas)
 
     return canvases
@@ -24,16 +26,17 @@ def set_tree_canvases(gap_size, picture_tree_size, number_row, numbers_skins_on_
 
 def draw_all_trees(window, player, picture_tree_size, lock_image):
     for i, (name, canvas) in enumerate(window.inner_canvases.items()):
+        i = len(window.inner_canvases.items()) - i
+        name = 'tree' + str(i)
         canvas.bind('<MouseWheel>', lambda event, cur_canvas=window.canvas: on_mouse_wheel(event, cur_canvas))
         tree = Tree(canvas, pos=(1 / 2, 60 / 63))
-        tree.load_tree_from_json('tree' + str(i + 1))
+        tree.load_tree_from_json(name)
 
         tree.trunk_length = 45
         tree.max_recursion_depth = 7
         tree.max_branch_thickness = 5
         tree.draw(warning_on=False)
-
-        if str(i + 1) in player.skins and not player.skins[str(i + 1)][0]:
+        if str(i) in player.skins and not player.skins[str(i)][0]:
             tree.canvas.create_image(picture_tree_size // 3, picture_tree_size // 3, anchor='nw', image=lock_image)
             canvas.config(bg='#065b90')
         else:
@@ -45,7 +48,9 @@ def draw_all_trees(window, player, picture_tree_size, lock_image):
 
 def draw_perimeter(cur_canvas):
     width = 5
-    cur_canvas.create_rectangle(4, 4, cur_canvas.winfo_reqwidth() - 4 - width, cur_canvas.winfo_reqheight() - 4 - width, width=width, tags='perimeter')
+
+    cur_canvas.create_rectangle(4, 4, cur_canvas.winfo_reqwidth() - 4 - width, cur_canvas.winfo_reqheight() - 4 - width,
+                                width=width, tag='perimeter')
 
 
 def delete_perimeter(cur_canvas):
@@ -90,8 +95,10 @@ def open_window_of_select_tree(root, player):
     HEIGHT = 600
 
     window = Window(select_tree_window, title='Select Tree', size=[WIDTH, HEIGHT],
-                    path_icon='resources/sprites/icon.ico', path_background_img='resources/sprites/backgrounds/scroll_background.png',
-                    canvases=set_tree_canvases(gap_size=30, picture_tree_size=160, number_row=number_row, numbers_skins_on_last_row=numbers_skins_on_last_row))
+                    path_icon='resources/sprites/icon.ico',
+                    path_background_img='resources/sprites/backgrounds/scroll_background.png',
+                    canvases=set_tree_canvases(gap_size=30, picture_tree_size=160, number_row=number_row,
+                                               numbers_skins_on_last_row=numbers_skins_on_last_row))
 
     scrollbar = Scrollbar(select_tree_window, command=window.canvas.yview)
     scrollbar.pack(side=RIGHT, fill='y')
@@ -99,7 +106,9 @@ def open_window_of_select_tree(root, player):
 
     window.canvas.bind('<MouseWheel>', lambda event, canvas=window.canvas: on_mouse_wheel(event, canvas))
     work_area = (0, 0, WIDTH, (160 + 30) * number_row + 30)
-    window.canvas.bind('<Configure>', lambda event, canvas=window.canvas, scroll_area=work_area: update_scroll_region(canvas, scroll_area))
+    window.canvas.bind('<Configure>',
+                       lambda event, canvas=window.canvas, scroll_area=work_area: update_scroll_region(canvas,
+                                                                                                       scroll_area))
 
     padlock_image = PhotoImage(file='resources/sprites/padlock.png')
 

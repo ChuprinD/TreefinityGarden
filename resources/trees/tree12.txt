@@ -1,5 +1,5 @@
 tree
 branch_length_coefficient: 0.685
-branch_angle: (30, 20)
+branch_angle: (40, 68)
 max_branch_thickness: 14
-color_function_name: ukrainian_coloring
+color_function_name: default_coloring

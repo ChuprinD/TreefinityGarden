@@ -2,7 +2,8 @@ from tkinter import messagebox
 
 
 class Achievement:
-    def __init__(self, is_it_unlock, condition, unlocked_tree):
+    def __init__(self, id, is_it_unlock, condition, unlocked_tree):
+        self.id = id
         self.is_it_unlock = is_it_unlock
         self.condition = condition
         self.unlocked_tree = unlocked_tree

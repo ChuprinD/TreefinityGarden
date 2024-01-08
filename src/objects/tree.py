@@ -23,6 +23,7 @@ class Tree:
         self.gap_between_tree_hit_box = 4
         self.trunk_hit_box = []
         self.hit_box = [[self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight()], [0, 0]]
+        self.is_it_max_size = False
 
     def generate_tree(self, pos, angle, length, depth, to_draw):
         if depth:
@@ -51,9 +52,9 @@ class Tree:
     def draw(self, warning_on):
         self.update_trunk_hit_box()
         self.hit_box = [[self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight()], [0, 0]]
-        if self.check_tree_visibility(warning_on):
-            self.generate_tree(pos=self.get_tree_coordinates(), angle=self.trunk_angle, length=self.trunk_length,
-                               depth=self.max_recursion_depth, to_draw=True)
+        #if self.check_tree_visibility(warning_on):
+        self.generate_tree(pos=self.get_tree_coordinates(), angle=self.trunk_angle, length=self.trunk_length,
+                           depth=self.max_recursion_depth, to_draw=True)
 
     def increase_trunk_length(self):
         self.trunk_length += 10
@@ -122,6 +123,7 @@ class Tree:
 
         if warning_on:
             messagebox.showwarning('Warning', 'Tree is too big')
+        self.is_it_max_size = True
         return False
 
     def update_hit_box(self):

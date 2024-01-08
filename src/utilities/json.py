@@ -48,7 +48,7 @@ def set_player_default_file(file_name):
         with open(file_name, 'w') as file:
             file.write('player\n')
             file.write('name: Bob\n')
-            file.write('skins: [4, 5, 6, 7, 8, 9]\n')
+            file.write('skins: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n')
 
             file.write('garden\n')
             file.write('day_counter: 0\n')

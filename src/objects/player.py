@@ -8,13 +8,15 @@ class Player:
         self.name = name
         self.garden = garden
 
-        self.skins = {'4': [False, lambda: self.unlock_tree4()], '5': [False, lambda: self.unlock_tree5()], '6': [False, lambda: self.unlock_tree6()],
-                      '7': [False, lambda: self.unlock_tree7()], '8': [False, lambda: self.unlock_tree8()], '9': [False, lambda: self.unlock_tree9()]}
+        self.skins = {'1':  [False, lambda: self.achievement1()], '2':  [False, lambda: self.achievement2()], '3':  [False, lambda: self.achievement3()],
+                      '4':  [False, lambda: self.achievement4()], '5':  [False, lambda: self.achievement5()], '6':  [False, lambda: self.achievement6()],
+                      '7': [False, lambda: self.achievement7()], '8': [False, lambda: self.achievement8()], '9': [False, lambda: self.achievement9()],
+                      '10': [False, lambda: self.achievement10()]}
 
         self.all_achievements = []
         self.number_achievements = len(self.skins)
-        for key, value in self.skins.items():
-            achievement = Achievement(is_it_unlock=value[0], condition=value[1], unlocked_tree=key)
+        for i, (key, value) in enumerate(self.skins.items()):
+            achievement = Achievement(id=i + 1, is_it_unlock=value[0], condition=value[1], unlocked_tree=key)
             self.all_achievements.append(achievement)
 
     def save_player(self):
@@ -70,32 +72,58 @@ class Player:
         call_id = root.after(500, self.check_all_achievements, root, call_ids)
         call_ids.append(call_id)
 
-    def unlock_tree4(self):
-        if self.garden.day_counter >= 5:
+    def achievement1(self):
+        for tree in self.garden.trees:
+            if tree is not None and tree.is_it_max_size:
+                return True
+        return False
+
+    def achievement2(self):
+        if self.garden.get_number_trees() == 3:
             return True
         return False
 
-    def unlock_tree5(self):
-        if self.garden.seasons[self.garden.cur_season] == 'Winter':
+    def achievement3(self):
+        if self.garden.number_felled_trees == 1:
             return True
         return False
 
-    def unlock_tree6(self):
-        if self.garden.get_first_free_position() == -1:
+    def achievement4(self):
+        if self.garden.number_felled_trees == 3:
             return True
         return False
 
-    def unlock_tree7(self):
-        if self.garden.number_felled_trees >= 5:
+    def achievement5(self):
+        are_all_tree_maxed = True
+        for tree in self.garden.trees:
+            if tree is not None and not tree.is_it_max_size:
+                are_all_tree_maxed = False
+        return are_all_tree_maxed and self.garden.get_first_free_position() == -1
+
+    def achievement6(self):
+        if self.garden.seasons[self.garden.cur_season] == 'Spring':
             return True
         return False
 
-    def unlock_tree8(self):
-        if self.garden.number_planted_trees >= 10:
+    def achievement7(self):
+        if self.garden.day_counter == 365:
             return True
         return False
 
-    def unlock_tree9(self):
-        if self.garden.day_counter >= 50:
+    def achievement8(self):
+        are_all_achievements_unlocked = True
+        for achievement in self.all_achievements:
+            if achievement.id != 8 and not achievement.is_it_unlock:
+                are_all_achievements_unlocked = False
+
+        return are_all_achievements_unlocked
+
+    def achievement9(self):
+        if self.garden.number_felled_trees != 0 and self.garden.get_number_trees() == 0:
             return True
         return False
+
+    def achievement10(self):
+        return False
+
+

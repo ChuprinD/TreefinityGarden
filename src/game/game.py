@@ -49,7 +49,7 @@ def run_game(root=None):
     window = Window(root, title='Treefinity Garden', size=[WIDTH, HEIGHT], path_icon='resources/sprites/icon.ico',
                     path_background_img='resources/sprites/backgrounds/window_background.png', buttons=buttons,
                     canvases=[{'name': 'garden', 'coords': (WIDTH / 64, WIDTH / 64, WIDTH - WIDTH / 64, HEIGHT - HEIGHT / 8),
-                               'bg': 'blue', 'bg_picture': 'resources/sprites/backgrounds/summer_background.png'}])
+                               'bg': 'white', 'bg_picture': 'resources/sprites/backgrounds/summer_background.png'}])
 
     garden = Garden(canvas=window.inner_canvases['garden'])
 

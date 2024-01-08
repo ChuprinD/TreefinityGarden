@@ -1,5 +1,5 @@
 tree
 branch_length_coefficient: 0.68
-branch_angle: (4, 42)
-max_branch_thickness: 5
-color_function_name: neon_coloring
+branch_angle: (90, 90)
+max_branch_thickness: 10
+color_function_name: default_coloring

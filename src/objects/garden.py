@@ -38,6 +38,9 @@ class Garden:
         self.canvas.unbind('<Motion>')
         self.canvas.unbind('<Button-1>')
 
+    def get_number_trees(self):
+        return len(self.trees) - self.trees.count(None)
+
     def draw_day_counter(self):
         if self.day_label is not None:
             self.day_label.destroy()
