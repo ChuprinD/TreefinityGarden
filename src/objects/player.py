@@ -13,10 +13,23 @@ class Player:
                       '7': [False, lambda: self.achievement7()], '8': [False, lambda: self.achievement8()], '9': [False, lambda: self.achievement9()],
                       '10': [False, lambda: self.achievement10()]}
 
+        self.achievements_names = [
+            'Grew your first tree',
+            'Plant your third tree',
+            'Killed your first tree )=',
+            'Killed your third tree )=',
+            'Maxxed out garden!',
+            'Made it through winter!',
+            'Made it to day 365!',
+            'Unlocked all skins!',
+            'Killed all trees )=',
+            'Mystery'
+        ]
+
         self.all_achievements = []
         self.number_achievements = len(self.skins)
         for i, (key, value) in enumerate(self.skins.items()):
-            achievement = Achievement(id=i + 1, is_it_unlock=value[0], condition=value[1], unlocked_tree=key)
+            achievement = Achievement(id=i + 1, name=self.achievements_names[i], is_it_unlock=value[0], condition=value[1], unlocked_tree=key)
             self.all_achievements.append(achievement)
 
     def save_player(self):
@@ -39,7 +52,7 @@ class Player:
 
         set_player_to_file(player_data, garden_data, trees_data, 'resources/players/player.txt')
 
-    def load_player(self):
+    def load(self):
         data = get_data_from_file('resources/players/player.txt')
         player_data = data['player']
         self.name = player_data['name']

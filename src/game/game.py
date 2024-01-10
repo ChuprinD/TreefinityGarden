@@ -3,7 +3,7 @@ from tkinter import *
 from src.objects.tree import Tree
 from src.objects.window import Window
 from src.objects.garden import Garden
-from src.objects.player import Player
+
 from src.game.select_tree import open_window_of_select_tree
 
 
@@ -20,7 +20,7 @@ def close_game(root, player, call_ids):
     run_menu()
 
 
-def run_game(root=None):
+def run_game(player, root=None):
     root = Tk()
     root.protocol('WM_DELETE_WINDOW', lambda: close_game(root, player, call_ids))
 
@@ -51,10 +51,7 @@ def run_game(root=None):
                     canvases=[{'name': 'garden', 'coords': (WIDTH / 64, WIDTH / 64, WIDTH - WIDTH / 64, HEIGHT - HEIGHT / 8),
                                'bg': 'white', 'bg_picture': 'resources/sprites/backgrounds/summer_background.png'}])
 
-    garden = Garden(canvas=window.inner_canvases['garden'])
-
-    player = Player(name='Player1', garden=garden)
-    player.load_player()
+    player.garden.set_canvas(window.inner_canvases['garden'])
 
     player.garden.draw(warning_on=True)
 

@@ -43,7 +43,7 @@ def set_player_to_file(player_data, garden_data, trees_data, file_name):
                 file.write(f'{key}: {value}\n')
 
 
-def set_player_default_file(file_name):
+def set_player_default_file(file_name, player):
     if messagebox.askokcancel('Confirmation', 'Are you sure you want to reset the game?'):
         with open(file_name, 'w') as file:
             file.write('player\n')
@@ -56,6 +56,7 @@ def set_player_default_file(file_name):
             file.write('number_planted_trees: 0\n')
             file.write('number_felled_trees: 0\n')
 
+        player.load()
 
 def get_player_from_file(file):
     result_dict = {}

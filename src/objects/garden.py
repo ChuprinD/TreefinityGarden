@@ -7,11 +7,12 @@ from src.objects.zoom import Zoom
 
 
 class Garden:
-    def __init__(self, canvas):
+    def __init__(self, canvas=None):
         self.canvas = canvas
         self.zoom = Zoom(garden=self, zoom_delta=2)
 
-        self.set_binds()
+        if canvas is not None:
+            self.set_binds()
 
         self.trees_pos = [(1 / 6, 57 / 63), (2 / 6, 59 / 63), (3 / 6, 61 / 63), (4 / 6, 59 / 63), (5 / 6, 57 / 63)]
         self.max_number_trees = 5
@@ -30,6 +31,14 @@ class Garden:
 
         self.index_cur_tree = -1
 
+    def set_canvas(self, canvas):
+        self.canvas = canvas
+        for tree in self.trees:
+            if tree is not None:
+                tree.canvas = canvas
+                tree.set_hit_box()
+        self.set_binds()
+
     def set_binds(self):
         self.canvas.bind('<Motion>', self.draw_hit_box)
         self.canvas.bind('<Button-1>', self.choose_tree)
@@ -39,7 +48,7 @@ class Garden:
         self.canvas.unbind('<Button-1>')
 
     def get_number_trees(self):
-        return len(self.trees) - self.trees.count(None)
+        return self.max_number_trees - self.trees.count(None)
 
     def draw_day_counter(self):
         if self.day_label is not None:
