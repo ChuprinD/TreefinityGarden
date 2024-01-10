@@ -1,5 +1,5 @@
 tree
-branch_length_coefficient: 0.7
+branch_length_coefficient: 0.65
 branch_angle: (0, -62)
 max_branch_thickness: 12
 color_function_name: luxury_coloring

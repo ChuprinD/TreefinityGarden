@@ -137,6 +137,13 @@ class Player:
         return False
 
     def achievement10(self):
-        return False
+        if self.garden.get_number_trees() == self.garden.max_number_trees:
+            different_skins = set()
+            for tree in self.garden.trees:
+                different_skins.add(tree.color_function_name)
 
+            if len(different_skins) == 1:
+                return True
+
+        return False
 
