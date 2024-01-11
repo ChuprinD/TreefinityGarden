@@ -68,7 +68,7 @@ class Zoom:
         self.garden.clean_garden()
 
         if ratio >= 1:
-           self.garden.season_background = self.garden.season_background.zoom(self.zoom_delta)
+            self.garden.season_background = self.garden.season_background.zoom(self.zoom_delta)
         else:
             self.garden.season_background = self.garden.season_background.subsample(self.zoom_delta)
 

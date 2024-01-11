@@ -14,11 +14,11 @@ def set_tree_canvases(gap_size, picture_tree_size, number_row, numbers_skins_on_
             max_column = numbers_skins_on_last_row
         else:
             max_column = 3
+
         for x in range(max_column):
             cur_canvas = {'name': 'tree' + str((x + 1) + 3 * y), 'bg': '#87cefa',
-                          'coords': (
-                          gap_size + (gap_size + picture_tree_size) * x, gap_size + (gap_size + picture_tree_size) * y,
-                          (gap_size + picture_tree_size) * (x + 1), (gap_size + picture_tree_size) * (y + 1))}
+                          'coords': (gap_size + (gap_size + picture_tree_size) * x, gap_size + (gap_size + picture_tree_size) * y,
+                                     (gap_size + picture_tree_size) * (x + 1), (gap_size + picture_tree_size) * (y + 1))}
             canvases.append(cur_canvas)
 
     return canvases
@@ -59,7 +59,7 @@ def delete_perimeter(cur_canvas):
 
 
 def choose_tree(cur_name, cur_player, root):
-    if cur_player.garden.get_first_free_position() == -1:
+    if cur_player.garden.get_number_trees() == cur_player.garden.max_number_trees:
         messagebox.showwarning('Warning', 'Max amount of trees was reached')
         return
 
@@ -106,9 +106,7 @@ def open_window_of_select_tree(root, player):
 
     window.canvas.bind('<MouseWheel>', lambda event, canvas=window.canvas: on_mouse_wheel(event, canvas))
     work_area = (0, 0, WIDTH, (160 + 30) * number_row + 30)
-    window.canvas.bind('<Configure>',
-                       lambda event, canvas=window.canvas, scroll_area=work_area: update_scroll_region(canvas,
-                                                                                                       scroll_area))
+    window.canvas.bind('<Configure>', lambda event, canvas=window.canvas, scroll_area=work_area: update_scroll_region(canvas, scroll_area))
 
     padlock_image = PhotoImage(file='resources/sprites/padlock.png')
 

@@ -1,4 +1,5 @@
 import math
+import random
 from tkinter import messagebox
 
 from src.utilities.color import get_coloring_by_name
@@ -25,6 +26,9 @@ class Tree:
         self.hit_box = []
         self.is_it_max_size = False
 
+        if canvas is not None:
+            self.set_hit_box()
+
     def set_hit_box(self):
         self.hit_box = [[self.canvas.winfo_reqwidth(), self.canvas.winfo_reqheight()], [0, 0]]
 
@@ -45,9 +49,8 @@ class Tree:
             length *= self.branch_length_coefficient
 
             if not to_draw:
-                self.hit_box = [
-                    [min(self.hit_box[0][0], pos[0], new_pos[0]), min(self.hit_box[0][1], pos[1], new_pos[1])],
-                    [max(self.hit_box[1][0], pos[0], new_pos[0]), max(self.hit_box[1][1], pos[1], new_pos[1])]]
+                self.hit_box = [[min(self.hit_box[0][0], pos[0], new_pos[0]), min(self.hit_box[0][1], pos[1], new_pos[1])],
+                                [max(self.hit_box[1][0], pos[0], new_pos[0]), max(self.hit_box[1][1], pos[1], new_pos[1])]]
 
             self.generate_tree(new_pos, angle - self.branch_angle[0], length, depth - 1, to_draw)
             self.generate_tree(new_pos, angle + self.branch_angle[1], length, depth - 1, to_draw)
@@ -76,9 +79,11 @@ class Tree:
         return True
 
     def change_branch_angle(self):
-        self.branch_angle = (self.branch_angle[0] + 10, self.branch_angle[1] - 5)
+        branch_angle_deltas = [random.randint(-20, 20), random.randint(-20, 20)]
+
+        self.branch_angle = (self.branch_angle[0] + branch_angle_deltas[0], self.branch_angle[1] + branch_angle_deltas[1])
         if not self.check_tree_visibility(warning_on=True):
-            self.branch_angle = (self.branch_angle[0] - 10, self.branch_angle[1] + 5)
+            self.branch_angle = (self.branch_angle[0] - branch_angle_deltas[0], self.branch_angle[1] - branch_angle_deltas[1])
             return False
 
         return True

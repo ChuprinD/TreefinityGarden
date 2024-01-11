@@ -21,16 +21,16 @@ def run_achievements(player):
     path_to_achievements = 'resources/sprites/achievements/'
 
     achievements = {
-        'Grew your first tree': [path_to_achievements + 'open_achievements/first_tree.png', path_to_achievements + 'close_achievements/first_tree.png'],
-        'Plant your third tree': [path_to_achievements + 'open_achievements/three_trees.png', path_to_achievements + 'close_achievements/three_trees.png'],
-        'Killed your first tree )=': [path_to_achievements + 'open_achievements/killed_first_tree.png', path_to_achievements + 'close_achievements/killed_first_tree.png'],
-        'Killed your third tree )=': [path_to_achievements + 'open_achievements/killed_third_tree.png', path_to_achievements + 'close_achievements/killed_third_tree.png'],
-        'Maxxed out garden!': [path_to_achievements + 'open_achievements/maxed_garden.png', path_to_achievements + 'close_achievements/maxed_garden.png'],
-        'Made it through winter!': [path_to_achievements + 'open_achievements/winter.png', path_to_achievements + 'close_achievements/winter.png'],
-        'Made it to day 365!': [path_to_achievements + 'open_achievements/1_year.png', path_to_achievements + 'close_achievements/1_year.png'],
-        'Unlocked all skins!': [path_to_achievements + 'open_achievements/unlocked_all_skins.png', path_to_achievements + 'close_achievements/unlocked_all_skins.png'],
-        'Killed all trees )=': [path_to_achievements + 'open_achievements/killed_all_trees.png', path_to_achievements + 'close_achievements/killed_all_trees.png'],
-        'Mystery': [path_to_achievements + 'open_achievements/mystery.png', path_to_achievements + 'close_achievements/mystery.png']
+        'Grew your first tree':      [path_to_achievements + 'open_achievements/first_tree.png',         path_to_achievements + 'close_achievements/first_tree.png'],
+        'Plant your third tree':     [path_to_achievements + 'open_achievements/three_trees.png',        path_to_achievements + 'close_achievements/three_trees.png'],
+        'Killed your first tree )=': [path_to_achievements + 'open_achievements/killed_first_tree.png',  path_to_achievements + 'close_achievements/killed_first_tree.png'],
+        'Killed your third tree )=': [path_to_achievements + 'open_achievements/killed_third_tree.png',  path_to_achievements + 'close_achievements/killed_third_tree.png'],
+        'Maxxed out garden!':        [path_to_achievements + 'open_achievements/maxed_garden.png',       path_to_achievements + 'close_achievements/maxed_garden.png'],
+        'Made it through winter!':   [path_to_achievements + 'open_achievements/winter.png',             path_to_achievements + 'close_achievements/winter.png'],
+        'Made it to day 365!':       [path_to_achievements + 'open_achievements/1_year.png',             path_to_achievements + 'close_achievements/1_year.png'],
+        'Unlocked all skins!':       [path_to_achievements + 'open_achievements/unlocked_all_skins.png', path_to_achievements + 'close_achievements/unlocked_all_skins.png'],
+        'Killed all trees )=':       [path_to_achievements + 'open_achievements/killed_all_trees.png',   path_to_achievements + 'close_achievements/killed_all_trees.png'],
+        'Mystery':                   [path_to_achievements + 'open_achievements/mystery.png',            path_to_achievements + 'close_achievements/mystery.png']
     }
 
     for achievement in player.all_achievements:

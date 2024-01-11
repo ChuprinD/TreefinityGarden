@@ -47,7 +47,7 @@ def set_player_default_file(file_name, player):
     if messagebox.askokcancel('Confirmation', 'Are you sure you want to reset the game?'):
         with open(file_name, 'w') as file:
             file.write('player\n')
-            file.write('name: Bob\n')
+            file.write('name: Player1\n')
             file.write('skins: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n')
 
             file.write('garden\n')
@@ -57,6 +57,7 @@ def set_player_default_file(file_name, player):
             file.write('number_felled_trees: 0\n')
 
         player.load()
+
 
 def get_player_from_file(file):
     result_dict = {}
