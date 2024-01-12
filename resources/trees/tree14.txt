@@ -1,0 +1,5 @@
+tree
+branch_length_coefficient: 0.7
+branch_angle: (39, 34)
+max_branch_thickness: 12
+color_function_name: russian_coloring

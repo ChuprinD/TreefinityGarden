@@ -38,15 +38,16 @@ def run_achievements(player):
             achievement.set_image(achievements[achievement.name][1 - achievement.is_it_unlock])
 
     for i, achievement in enumerate(player.all_achievements):
-        window.canvas.create_image(50, 30 + i * 60, image=achievement.image, anchor='nw')
+        window.canvas.create_image(50, 46 + i * 60, image=achievement.image, anchor='nw')
 
         for dx, dy in [(-1, -1), (-1, 1), (1, -1), (1, 1)]:
-            window.canvas.create_text(200 + dx, 44 + i * 60 + dy, text=achievement.name, anchor='nw', fill='black', font=('Impact', 15))
+            window.canvas.create_text(200 + dx, 60 + i * 60 + dy, text=achievement.name, anchor='nw', fill='black', font=('Impact', 15))
 
+        achievement_color = '#AEB5BF'
         if achievement.is_it_unlock:
-            window.canvas.create_text(200, 44 + i * 60, text=achievement.name, anchor='nw', fill='yellow', font=('Impact', 15))
-        else:
-            window.canvas.create_text(200, 44 + i * 60, text=achievement.name, anchor='nw', fill='#AEB5BF', font=('Impact', 15))
+            achievement_color = 'yellow'
+
+        window.canvas.create_text(200, 60 + i * 60, text=achievement.name, anchor='nw', fill=achievement_color, font=('Impact', 15))
 
 
 

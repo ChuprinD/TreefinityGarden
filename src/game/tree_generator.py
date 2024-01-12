@@ -224,11 +224,11 @@ def open_tool_window(root):
                                                pos=(slider_pos[0], slider_pos[1] + 120),
                                                label_text='max_recursion_depth', initial_value=garden.trees[garden.index_cur_tree].max_recursion_depth)
 
-    slider_branch_angle1 = create_slider(parent=tool_window, minimum=-90, maximum=90,
+    slider_branch_angle1 = create_slider(parent=tool_window, minimum=-180, maximum=180,
                                          update_callback=update_branch_angle1, pos=(slider_pos[0], slider_pos[1] + 180),
                                          label_text='max_trunk_angle1', initial_value=garden.trees[garden.index_cur_tree].branch_angle[0])
 
-    slider_branch_angle2 = create_slider(parent=tool_window, minimum=-90, maximum=90,
+    slider_branch_angle2 = create_slider(parent=tool_window, minimum=-180, maximum=180,
                                          update_callback=update_branch_angle2, pos=(slider_pos[0], slider_pos[1] + 240),
                                          label_text='max_trunk_angle2', initial_value=garden.trees[garden.index_cur_tree].branch_angle[1])
 

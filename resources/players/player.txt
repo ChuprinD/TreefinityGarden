@@ -1,8 +1,16 @@
 player
 name: Player1
-skins: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+skins: [1, 2, 4, 5, 7, 8, 9, 10]
 garden
-day_counter: 0
-cur_season: 0
-number_planted_trees: 0
-number_felled_trees: 0
+day_counter: 27
+cur_season: 1
+number_planted_trees: 2
+number_felled_trees: 1
+tree1
+pos: 1
+trunk_length: 120
+max_recursion_depth: 6
+branch_length_coefficient: 0.7
+branch_angle: [39, 38]
+max_branch_thickness: 12
+color_function_name: purple_green_coloring

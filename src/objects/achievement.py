@@ -13,7 +13,7 @@ class Achievement:
 
     def check_condition(self):
         if self.condition() and not self.is_it_unlock:
-            messagebox.showinfo('Achievement unlocked', self.name + '\nYou\'ve unlocked a new skin for the tree')
+            messagebox.showinfo('Achievement unlocked', self.name + '\nYou\'ve unlocked a new skin')
             self.is_it_unlock = True
 
         return self.is_it_unlock
